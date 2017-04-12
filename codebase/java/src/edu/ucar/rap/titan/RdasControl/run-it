@@ -1,0 +1,1 @@
+java -jar $RAP_INST_JAVA_DIR/RdasControl.jar -instance display -params params/params.test -debug

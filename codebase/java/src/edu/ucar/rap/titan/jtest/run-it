@@ -1,0 +1,3 @@
+java -cp
+~/rap/java/build:/home/dixon/rap/java/ext_lib/jai/jai-1_1_1_01/jai_codec.jar:/home/dixon/rap/java/ext_lib/jdom/jdom-1.0/jdom.jar edu/ucar/rap/titan/jtest/JTest
+

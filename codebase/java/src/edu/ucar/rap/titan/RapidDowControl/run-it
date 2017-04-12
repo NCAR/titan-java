@@ -1,0 +1,6 @@
+java -jar $HOME/cvs/java/dist/lib/RapidDowControl.jar -instance display -params $HOME/cvs/java/src/edu/ucar/rap/titan/RapidDowControl/params/RapidDowControl.test -verbose
+
+
+
+
+

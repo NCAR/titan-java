@@ -1,0 +1,4 @@
+java -jar $RAP_INST_JAVA_DIR/Rvp8Control.jar -instance display -params params/Rvp8Control.ops &
+
+
+

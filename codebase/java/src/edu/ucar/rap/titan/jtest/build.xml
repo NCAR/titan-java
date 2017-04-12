@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+
+<project name="JTest" default="compile" basedir="../../../../../..">
+
+  <property file="src/edu/ucar/rap/ant/build.properties"
+            description="Load common build properties."/>
+
+  <!--Import common targets.-->
+
+  <import file="../../ant/build_includes.xml"/>
+
+  <!--Set dirs and paths -->
+
+  <property name="package.name" value="${ant.project.name}"
+            description="Name of the subpackage. Used for jar name etc."/>
+
+  <filelist id="ext.jar" dir="${basedir}" files="
+    ${jdom.jar}
+    ${mail.jar}
+    ${activation.jar}
+    ${jai_core.jar}
+    ${jai_codec.jar} " />
+
+  <path id="build.classpath" description="Classpath needed to compile.">
+    <pathelement location="${build.dir}" />
+    <pathelement location="${src.dir}" />
+    <filelist refid="ext.jar" />
+  </path>
+
+  <target name="compile" depends="init"
+          description="Call basic compile then package specific stuff.">
+
+    <javac srcdir="${src.dir}" destdir="${build.dir}" debug="${build.debug}"
+      deprecation="false" failonerror="true">
+      <include name="edu/ucar/rap/titan/jtest/**/*.java" />
+      <exclude name="${build.exclude}" />
+      <classpath refid="build.classpath"/>
+    </javac>
+
+  </target>
+
+</project>

@@ -1,0 +1,150 @@
+<?xml version="1.0"?>
+
+<!--
+Note, this file loads properties from build.properties
+  and imports reusable targets from build_includes.
+-->
+
+<project name="RdasControl" default="compile" basedir="../../../../../../">
+
+  <property file="src/edu/ucar/rap/ant/build.properties"
+              description="Load common build properties." />
+
+  <!-- Import build includes -->
+  <import file="../../ant/build_includes.xml" />
+
+  <!-- Define dirs and paths -->
+
+  <property name="rc.reldir" value="edu/ucar/rap/titan/RdasControl" />
+  <property name="jrp.reldir" value="edu/ucar/rap/jrp" />
+
+  <property name="package.dir"  value="${src.dir}/${rc.reldir}"
+            description="Full package name as a directory path." />
+
+  <property environment="env" />
+  <property name="manifestfile"	value="MANIFEST.MF" />
+  <property name="jar.file" value="RdasControl.jar" />
+  <property name="jar.path"
+            value="${build.dir}/${rc.reldir}/${jar.file}" />
+
+  <!-- External jar files needed -->
+
+  <filelist id="ext.jar" dir="${basedir}" files="
+    ${jdom.jar} " />
+
+  <!-- Class path -->
+
+  <path id="build.classpath" description="Classpath needed to compile.">
+    <pathelement location="${build.dir}" />
+    <filelist refid="ext.jar"/>
+  </path>
+
+  <!-- Source needed for this build -->
+
+  <filelist id="build.src" dir="${src.dir}" files="
+    edu/ucar/rap/titan/RdasControl
+    edu/ucar/rap/jrp" />
+
+  <filelist id="build.resources" dir="${basedir}/../"
+            files="java/src/keystore.rap" />
+
+  <!-- Check out all required source and jars from CVS -->
+
+  <target name="cvs-checkout-all"
+          description="Checkout of CVS everything needed.">
+    <!-- all build source packages -->
+    <foreach target="cvs-checkout" param="cvs.module">
+      <path>
+        <filelist refid="build.src" />
+        <filelist refid="ext.jar" />
+        <filelist refid="build.resources" />
+      </path>
+    </foreach>
+  <!-- Required utility target to perform cvs checkout -->
+  </target>
+
+  <target name="cvs-checkout"
+    description="interface to ant libraries' version of checkout">
+    <ant antfile="${libraries.build.file}"
+         target="cvs-checkout" inheritall="true">
+      <reference refid="cvs.module"/>
+    </ant>
+  </target>
+
+  <!-- Compile the package -->
+
+  <target name="compile" depends="init"
+          description="Call basic compile then package specific stuff.">
+
+    <ant antfile="${src.dir}/${jrp.reldir}/build.xml"
+         target="compile" inheritall="false" />
+
+    <javac srcdir="${src.dir}" destdir="${build.dir}" debug="${build.debug}"
+      deprecation="false" failonerror="true">
+      <include name="edu/ucar/rap/titan/RdasControl/**/*.java" />
+      <exclude name="${build.exclude}" />
+      <classpath refid="build.classpath"/>
+    </javac>
+
+  </target>
+
+  <!-- create the jar file -->
+
+  <target name="jar" depends="compile" description="Create java archive">
+
+    <!-- Delete old jar file -->
+    <delete>
+      <fileset dir="${build.dir}/${rc.reldir}">
+         <include name="${jar.file}"/>
+      </fileset>
+    </delete>
+
+    <!-- Copy extra files to build dir -->
+
+    <copy todir="${build.dir}/${jrp.reldir}"
+          overwrite="false" >
+       <fileset dir="${src.dir}/${jrp.reldir}">
+           <include name="images/*.*" />
+       </fileset>
+    </copy>
+
+    <copy todir="${build.dir}/${rc.reldir}"
+          overwrite="false" >
+       <fileset dir="${src.dir}/${rc.reldir}">
+         <include name="calib/*.*" />
+         <include name="images/*.*" />
+         <include name="params/*.*" />
+       </fileset>
+    </copy>
+
+    <!-- Make the jar -->
+    <jar jarfile="${jar.path}"
+         manifest="${package.dir}/${manifestfile}" update="false">
+       <fileset dir="${build.dir}">
+         <!-- Jar up all files in rap.
+            Make sure the build is clean to avoid including extra stuff.
+          -->
+         <include name="edu/ucar/rap/**/*" />
+       </fileset>
+    </jar>
+  </target>
+
+  <!-- create the distribution -->
+
+  <target name="dist" depends="jar" description="Deploy sysview" >
+
+    <copy file="${jar.path}" todir="${dist.dir}/lib" />
+    <copy file="${jdom.jar}" todir="${dist.dir}/lib" />
+
+<!--     <foreach param="file" target="copy" > -->
+<!--       <path> -->
+<!--         <filelist refid="ext.jar" /> -->
+<!--       </path> -->
+<!--       <param name="dir" value="${dist.dir}/lib" /> -->
+<!--     </foreach> -->
+    <!-- ant antfile="${libraries.build.file}" target="sign_3rd_party" inheritall="false" -->
+    <!-- /ant -->
+  </target>
+
+</project>
+

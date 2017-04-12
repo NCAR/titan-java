@@ -1,0 +1,1 @@
+java edu.ucar.rap.titan.RdasRelay.RdasRelay -params $HOME/rap/java/src/edu/ucar/rap/titan/RdasControl/Params.test -edit

@@ -1,0 +1,717 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="yes"?>
+<!DOCTYPE parameters [
+ <!ELEMENT parameters (param+) >
+ <!ELEMENT param (label?, description?, info?, value?, param*) >
+ <!ELEMENT label (#PCDATA)>
+ <!ELEMENT description (#PCDATA)>
+ <!ELEMENT info (#PCDATA)>
+ <!ELEMENT value (#PCDATA)>
+ <!ATTLIST param name NMTOKEN #REQUIRED>
+ <!ATTLIST param type NMTOKEN #REQUIRED>
+ <!ATTLIST param type ( String | Boolean | Integer | Float | Double | Option | Collection ) #REQUIRED>
+ <!ATTLIST param view_x NMTOKEN #IMPLIED>
+ <!ATTLIST param view_y NMTOKEN #IMPLIED>
+ <!ATTLIST param view_width NMTOKEN #IMPLIED>
+ <!ATTLIST param view_height NMTOKEN #IMPLIED>
+]>
+
+<parameters>
+
+  <!-- ====== start of collection Root ====== -->
+
+  <param name="Root" type="Collection" view_x="47" view_y="21" view_width="350" view_height="485">
+    <label>Param manager</label>
+    <description>Root-depth parameter manager</description>
+
+    <param name="debug" type="Boolean">
+      <label>Debugging flag</label>
+      <description></description>
+      <value>false</value>
+    </param>
+
+    <param name="verbose" type="Boolean">
+      <label>Verbose flag</label>
+      <description></description>
+      <value>false</value>
+    </param>
+
+    <!-- ====== start of collection site ====== -->
+
+    <param name="site" type="Collection" view_x="-1" view_y="-1" view_width="415" view_height="218">
+      <label>Site params</label>
+      <description>Params for the site</description>
+
+      <param name="siteName" type="String">
+        <label>Site name</label>
+        <description>The name of the site</description>
+        <info>
+          <![CDATA[
+          The site name must be a text description of the geographical geographical location of the radar installation, such as a farm name or nearby town.
+          ]]>
+        </info>
+        <value>Marshall</value>
+      </param>
+
+      <param name="latitude" type="Double">
+        <label>Latitude</label>
+        <description>Radar latitude (decimal deg)</description>
+        <value>39.950199</value>
+      </param>
+
+      <param name="longitude" type="Double">
+        <label>Longitude</label>
+        <description>Radar longitude (decimal deg)</description>
+        <value>-105.195099</value>
+      </param>
+
+      <param name="altitude" type="Double">
+        <label>Altitude</label>
+        <description>Radar altitude (km)</description>
+        <value>1.742</value>
+      </param>
+
+    </param>
+
+    <!-- ======= end of collection site ======= -->
+
+    <!-- ====== start of collection receive ====== -->
+
+    <param name="receive" type="Collection" view_x="-1" view_y="-1" view_width="456" view_height="160">
+      <label>Receive params</label>
+      <description>DOW receive parameters</description>
+      <info>
+        <![CDATA[
+        These parameters control the DOW IFD and DSP. They set up the gate characteristics. These apply to both active and passive modes.
+        ]]>
+      </info>
+
+      <param name="nGates" type="Integer">
+        <label>N gates</label>
+        <description>Number of gates requested</description>
+        <info>
+          <![CDATA[
+          If the number of gates requested exceeds the unambiguous range, the measured number will be reduced accordingly.
+          ]]>
+        </info>
+        <value>1200</value>
+      </param>
+
+      <param name="gateSpacingM" type="Double">
+        <label>Gate spacing (m)</label>
+        <description>Gate-to-gate spacing (meters)</description>
+        <value>150.0</value>
+      </param>
+
+    </param>
+
+    <!-- ======= end of collection receive ======= -->
+
+    <!-- ====== start of collection transmit ====== -->
+
+    <param name="transmit" type="Collection" view_x="97" view_y="71" view_width="493" view_height="258">
+      <label>Transmit params</label>
+      <description>DOW transmit mode parameters</description>
+      <info>
+        <![CDATA[
+        These parameters control the transmit modes set up by the DOW in active mode. These do not apply in passive mode.
+        ]]>
+      </info>
+
+      <param name="opsMode" type="Option">
+        <label>Operational mode</label>
+        <description>DOW mode</description>
+        <info>
+          <![CDATA[
+          Set to active if the DOW triggers the transmitter. Set to passive if not.
+          ]]>
+        </info>
+        <value>passive</value>
+      </param>
+
+      <param name="prfMode" type="Option">
+        <label>Prf mode</label>
+        <description>DOW PRF mode</description>
+        <info>
+          <![CDATA[
+          Fixed or staggered PRT modes. Has no effect in DOW passive mode.
+          ]]>
+        </info>
+        <value>fixed</value>
+      </param>
+
+      <param name="prf" type="Double">
+        <label>PRF</label>
+        <description>Pulse repetition frequency (s-1)</description>
+        <info>
+          <![CDATA[
+          Has no effect in DOW passive mode.
+          ]]>
+        </info>
+        <value>1000.0</value>
+      </param>
+
+      <param name="phaseCoding" type="Option">
+        <label>Phase coding</label>
+        <description>Phase coding sequence</description>
+        <info>
+          <![CDATA[
+          fixed is normal klystron mode. random is normal magnetron mode.
+          ]]>
+        </info>
+        <value>fixed</value>
+      </param>
+
+      <param name="polarization" type="Option">
+        <label>Polarization</label>
+        <description>Polarization setup</description>
+        <info>
+          <![CDATA[
+          Has no effect in passive mode. alternating: fast alternating, as in SPOL and CHILL simultaneous: with a splitter, as in NEXRAD
+          ]]>
+        </info>
+        <value>alternating</value>
+      </param>
+
+    </param>
+
+    <!-- ======= end of collection transmit ======= -->
+
+    <!-- ====== start of collection moments ====== -->
+
+    <param name="moments" type="Collection" view_x="100" view_y="100" view_width="478" view_height="364">
+      <label>Moments params</label>
+      <description>Edit the moments generation parameters</description>
+      <info>
+        <![CDATA[
+        These parameters control the way the DOW computes moments. They affect the moments computed on the DOW itself. They DO NOT AFFECT moments computed from the time series data.
+        ]]>
+      </info>
+
+      <param name="indexedBeams" type="Boolean">
+        <label>Index beams?</label>
+        <description>Index the beams to exact azimuths?</description>
+        <info>
+          <![CDATA[
+          Only applies to DOW moments. If true, beams are computed on exact, repeatable azimuths. If false, beams are computed every nPulses pulses.
+          ]]>
+        </info>
+        <value>true</value>
+      </param>
+
+      <param name="nSamples" type="Integer">
+        <label>N Samples</label>
+        <description>N samples for DOW processing</description>
+        <info>
+          <![CDATA[
+          This is the number of samples used to compute the DOW moments for a single beam.
+          ]]>
+        </info>
+        <value>64</value>
+      </param>
+
+      <param name="majorMode" type="Option">
+        <label>Major mode</label>
+        <description>DOW major mode for moments</description>
+        <info>
+          <![CDATA[
+          The major mode applies to the DOW moments.
+          ]]>
+        </info>
+        <value>pulse-pair</value>
+      </param>
+
+      <param name="fftWindow" type="Option">
+        <label>FFT window</label>
+        <description>Window function for FFT moments modes</description>
+        <info>
+          <![CDATA[
+          blkmanex: extended Blackman
+          ]]>
+        </info>
+        <value>vonhann</value>
+      </param>
+
+      <param name="clutFilter" type="Option">
+        <label>Clutter filter</label>
+        <description>DOW clutter filter</description>
+        <info>
+          <![CDATA[
+          Ranges from 0 - 7. 0: no filter. 1: least aggressive filter. 7: most aggressive filter.
+          ]]>
+        </info>
+        <value>0:none</value>
+      </param>
+
+      <param name="rangeSmoothing" type="Option">
+        <label>Range smoothing</label>
+        <description>Apply smoothing to DOW moments</description>
+        <info>
+          <![CDATA[
+          Ranges from 0 - 3. 0: no smoothing. 1: smooth pairs. 2: running smoothing on 3 gates. 3: running smoothing on 4 gates.
+          ]]>
+        </info>
+        <value>0:none</value>
+      </param>
+
+      <param name="speckleFilter" type="Option">
+        <label>Speckle filter?</label>
+        <description>Apply speckle filter dbz and/or vel.</description>
+        <info>
+          <![CDATA[
+          If true, the DOW moments are cleaned up using a gate-to-gate speckle filter.
+          ]]>
+        </info>
+        <value>off</value>
+      </param>
+
+    </param>
+
+    <!-- ======= end of collection moments ======= -->
+
+    <!-- ====== start of collection singlePolFields ====== -->
+
+    <param name="singlePolFields" type="Collection" view_x="-1" view_y="-1" view_width="267" view_height="334">
+      <label>Single Pol Fields</label>
+      <description>Select the single pol fields  to be computed on the DOW.</description>
+      <info>
+        <![CDATA[
+         They DO NOT AFFECT moments computed from the time series data.
+        ]]>
+      </info>
+
+      <param name="dbz" type="Boolean">
+        <label>dbz</label>
+        <description></description>
+        <value>true</value>
+      </param>
+
+      <param name="vel" type="Boolean">
+        <label>vel</label>
+        <description></description>
+        <value>true</value>
+      </param>
+
+      <param name="width" type="Boolean">
+        <label>width</label>
+        <description></description>
+        <value>true</value>
+      </param>
+
+      <param name="dbt" type="Boolean">
+        <label>dbt</label>
+        <description></description>
+        <value>false</value>
+      </param>
+
+      <param name="dbzc" type="Boolean">
+        <label>dbzc</label>
+        <description></description>
+        <value>false</value>
+      </param>
+
+      <param name="velc" type="Boolean">
+        <label>velc</label>
+        <description></description>
+        <value>false</value>
+      </param>
+
+      <param name="flags" type="Boolean">
+        <label>flags</label>
+        <description></description>
+        <value>false</value>
+      </param>
+
+      <param name="sqi" type="Boolean">
+        <label>sqi</label>
+        <description></description>
+        <value>false</value>
+      </param>
+
+    </param>
+
+    <!-- ======= end of collection singlePolFields ======= -->
+
+    <!-- ====== start of collection dualPolFields ====== -->
+
+    <param name="dualPolFields" type="Collection" view_x="97" view_y="71" view_width="263" view_height="397">
+      <label>Dual Pol Fields</label>
+      <description>Select the dual pol fields  to be computed on the DOW.</description>
+      <info>
+        <![CDATA[
+         They DO NOT AFFECT moments computed from the time series data.
+        ]]>
+      </info>
+
+      <param name="kdp" type="Boolean">
+        <label>kdp</label>
+        <description></description>
+        <value>false</value>
+      </param>
+
+      <param name="ldrh" type="Boolean">
+        <label>ldrh</label>
+        <description></description>
+        <value>false</value>
+      </param>
+
+      <param name="ldrv" type="Boolean">
+        <label>ldrv</label>
+        <description></description>
+        <value>false</value>
+      </param>
+
+      <param name="phidp" type="Boolean">
+        <label>phidp</label>
+        <description></description>
+        <value>false</value>
+      </param>
+
+      <param name="phih" type="Boolean">
+        <label>phih</label>
+        <description></description>
+        <value>false</value>
+      </param>
+
+      <param name="phiv" type="Boolean">
+        <label>phiv</label>
+        <description></description>
+        <value>false</value>
+      </param>
+
+      <param name="rhoh" type="Boolean">
+        <label>rhoh</label>
+        <description></description>
+        <value>false</value>
+      </param>
+
+      <param name="rhohv" type="Boolean">
+        <label>rhohv</label>
+        <description></description>
+        <value>false</value>
+      </param>
+
+      <param name="rhov" type="Boolean">
+        <label>rhov</label>
+        <description></description>
+        <value>false</value>
+      </param>
+
+      <param name="zdr" type="Boolean">
+        <label> zdr</label>
+        <description></description>
+        <value>false</value>
+      </param>
+
+    </param>
+
+    <!-- ======= end of collection dualPolFields ======= -->
+
+    <!-- ====== start of collection comms ====== -->
+
+    <param name="comms" type="Collection" view_x="-1" view_y="-1" view_width="489" view_height="192">
+      <label>Communications</label>
+      <description>Edit the communication parameters</description>
+
+      <param name="driverHost" type="String">
+        <label>DOW driver host</label>
+        <description>IP name of driver host</description>
+        <info>
+          <![CDATA[
+          This can be either a hostname or IP address.
+          ]]>
+        </info>
+        <value>dow</value>
+      </param>
+
+      <param name="driverPort" type="Integer">
+        <label>DOW driver port</label>
+        <description>TCP/IP port for DOW driver</description>
+        <value>11000</value>
+      </param>
+
+    </param>
+
+    <!-- ======= end of collection comms ======= -->
+
+    <!-- ====== start of collection mainWindow ====== -->
+
+    <param name="mainWindow" type="Collection" view_x="-1" view_y="-1" view_width="428" view_height="160">
+      <label>Main window</label>
+      <description>Main window</description>
+
+      <param name="imageName" type="String">
+        <label>Image name</label>
+        <description>Name of image in main window</description>
+        <value>/edu/ucar/rap/titan/RapidDowControl/images/rapid_dow.png</value>
+      </param>
+
+      <param name="fontSize" type="Float">
+        <label>Font size</label>
+        <description>Font size for pos and time</description>
+        <info>
+          <![CDATA[
+          This is the font size for rendering the time and antenna position over the main image.
+          ]]>
+        </info>
+        <value>20.0</value>
+      </param>
+
+      <param name="xx" type="Integer">
+        <label>X offset</label>
+        <description>The X offset from the parent</description>
+        <info>
+          <![CDATA[
+          This the the X offset, in pixels, from the main frame of the application.
+          ]]>
+        </info>
+        <value>0</value>
+      </param>
+
+      <param name="yy" type="Integer">
+        <label>Y offset</label>
+        <description>The Y offset from the parent</description>
+        <info>
+          <![CDATA[
+          This the the Y offset, in pixels, from the main frame of the application.
+          ]]>
+        </info>
+        <value>0</value>
+      </param>
+
+      <param name="width" type="Integer">
+        <label>Width</label>
+        <description>The window width in pixels</description>
+        <value>600</value>
+      </param>
+
+      <param name="height" type="Integer">
+        <label>Height</label>
+        <description>The window height in pixels</description>
+        <value>506</value>
+      </param>
+
+    </param>
+
+    <!-- ======= end of collection mainWindow ======= -->
+
+    <!-- ====== start of collection control ====== -->
+
+    <param name="control" type="Collection" view_x="100" view_y="100" view_width="327" view_height="144">
+      <label>Control panel</label>
+      <description>Control panel</description>
+
+      <param name="allowResize" type="Boolean">
+        <label>Allow resize</label>
+        <description>Allow the window to be resized</description>
+        <info>
+          <![CDATA[
+          Normally this will be set to false. If the developer makes changes this may be set to true while the changes are made and then back to false when done.
+          ]]>
+        </info>
+        <value>false</value>
+      </param>
+
+      <param name="xx" type="Integer">
+        <label>X offset</label>
+        <description>The X offset from the parent</description>
+        <info>
+          <![CDATA[
+          This the the X offset, in pixels, from the main frame of the application.
+          ]]>
+        </info>
+        <value>597</value>
+      </param>
+
+      <param name="yy" type="Integer">
+        <label>Y offset</label>
+        <description>The Y offset from the parent</description>
+        <info>
+          <![CDATA[
+          This the the Y offset, in pixels, from the main frame of the application.
+          ]]>
+        </info>
+        <value>0</value>
+      </param>
+
+      <param name="width" type="Integer">
+        <label>Width</label>
+        <description>The window width in pixels</description>
+        <value>354</value>
+      </param>
+
+      <param name="height" type="Integer">
+        <label>Height</label>
+        <description>The window height in pixels</description>
+        <value>615</value>
+      </param>
+
+      <param name="startVisible" type="Boolean">
+        <label>Start visible</label>
+        <description>Start with the window visible?</description>
+        <info>
+          <![CDATA[
+          If true, the program will start with the Control Panel visible. If not, it will be hidden at startup
+          ]]>
+        </info>
+        <value>true</value>
+      </param>
+
+    </param>
+
+    <!-- ======= end of collection control ======= -->
+
+    <!-- ====== start of collection status ====== -->
+
+    <param name="status" type="Collection" view_x="-1" view_y="-1" view_width="550" view_height="194">
+      <label>Status panel</label>
+      <description>Status panel</description>
+
+      <param name="intervalSecs" type="Double">
+        <label>Status data interval (s).</label>
+        <description>Interval for getting status (secs).</description>
+        <info>
+          <![CDATA[
+          A special thread is started to gather status information from the DowDriver. This is the interval, in seconds, between gathering the status data.
+          ]]>
+        </info>
+        <value>1.0</value>
+      </param>
+
+      <param name="fontSize" type="Float">
+        <label>Font size</label>
+        <description>Font size for pos and time</description>
+        <info>
+          <![CDATA[
+          This is the font size for rendering the antenna and sun position, and the radar and clock time.
+          ]]>
+        </info>
+        <value>14.0</value>
+      </param>
+
+      <param name="allowResize" type="Boolean">
+        <label>Allow resize</label>
+        <description>Allow the window to be resized</description>
+        <info>
+          <![CDATA[
+          Normally this will be set to false. If the developer makes changes this may be set to true while the changes are made and then back to false when done.
+          ]]>
+        </info>
+        <value>false</value>
+      </param>
+
+      <param name="xx" type="Integer">
+        <label>X offset</label>
+        <description>The X offset from the parent</description>
+        <info>
+          <![CDATA[
+          This the the X offset, in pixels, from the main frame of the application.
+          ]]>
+        </info>
+        <value>878</value>
+      </param>
+
+      <param name="yy" type="Integer">
+        <label>Y offset</label>
+        <description>The Y offset from the parent</description>
+        <info>
+          <![CDATA[
+          This the the Y offset, in pixels, from the main frame of the application.
+          ]]>
+        </info>
+        <value>371</value>
+      </param>
+
+      <param name="width" type="Integer">
+        <label>Width</label>
+        <description>The window width in pixels</description>
+        <value>397</value>
+      </param>
+
+      <param name="height" type="Integer">
+        <label>Height</label>
+        <description>The window height in pixels</description>
+        <value>598</value>
+      </param>
+
+      <param name="startVisible" type="Boolean">
+        <label>Start visible</label>
+        <description>Start with the window visible?</description>
+        <info>
+          <![CDATA[
+          If true, the program will start with the Status Panel visible. If not, it will be hidden at startup
+          ]]>
+        </info>
+        <value>true</value>
+      </param>
+
+    </param>
+
+    <!-- ======= end of collection status ======= -->
+
+    <!-- ====== start of collection JrpViewParameters ====== -->
+
+    <param name="JrpViewParameters" type="Collection" view_x="-1" view_y="-1" view_width="473" view_height="279">
+      <label>View params</label>
+      <description>Parameters for controlling the View.</description>
+      <info>
+        <![CDATA[
+        This sets parameters which control how the View for editing the parameters is laid out.
+        ]]>
+      </info>
+
+      <param name="cascadeOffsetX" type="Integer">
+        <label>Cascade offset X</label>
+        <description>The X offset when cascading.</description>
+        <info>
+          <![CDATA[
+          Parameters collections may be nested to any depth. This is the offset applied to cascade the X offset for the View window as the user opens a parameter at the next level down.
+          ]]>
+        </info>
+        <value>50</value>
+      </param>
+
+      <param name="cascadeOffsetY" type="Integer">
+        <label>Cascade offset Y</label>
+        <description>The Y offset when cascading.</description>
+        <info>
+          <![CDATA[
+          Parameters collections may be nested to any depth. This is the offset applied to cascade the Y offset for the View window as the user opens a parameter at the next level down.
+          ]]>
+        </info>
+        <value>50</value>
+      </param>
+
+      <param name="infoX" type="Integer">
+        <label>Info window X</label>
+        <description>The X location of the Info window</description>
+        <value>800</value>
+      </param>
+
+      <param name="infoY" type="Integer">
+        <label>Info window Y</label>
+        <description>The Y location of the Info window</description>
+        <value>0</value>
+      </param>
+
+      <param name="infoWidth" type="Integer">
+        <label>Info window width</label>
+        <description>The width of the Info window</description>
+        <value>500</value>
+      </param>
+
+      <param name="infoHeight" type="Integer">
+        <label>Info window height</label>
+        <description>The height of the Info window</description>
+        <value>300</value>
+      </param>
+
+    </param>
+
+    <!-- ======= end of collection JrpViewParameters ======= -->
+
+  </param>
+
+  <!-- ======= end of collection Root ======= -->
+
+</parameters>
+

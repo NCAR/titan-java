@@ -1,0 +1,2 @@
+java -jar $RAP_INST_JAVA_DIR/RdasControl.jar -relay -instance relay -params params/params.test -debug
+

@@ -1,0 +1,4545 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="yes"?>
+<!DOCTYPE parameters [
+ <!ELEMENT parameters (param+) >
+ <!ELEMENT param (label?, description?, info?, value?, param*) >
+ <!ELEMENT label (#PCDATA)>
+ <!ELEMENT description (#PCDATA)>
+ <!ELEMENT info (#PCDATA)>
+ <!ELEMENT value (#PCDATA)>
+ <!ATTLIST param name NMTOKEN #REQUIRED>
+ <!ATTLIST param type NMTOKEN #REQUIRED>
+ <!ATTLIST param type ( String | Boolean | Integer | Float | Double | Option | Collection ) #REQUIRED>
+ <!ATTLIST param view_x NMTOKEN #IMPLIED>
+ <!ATTLIST param view_y NMTOKEN #IMPLIED>
+ <!ATTLIST param view_width NMTOKEN #IMPLIED>
+ <!ATTLIST param view_height NMTOKEN #IMPLIED>
+]>
+
+<parameters>
+
+  <!-- ====== start of collection Root ====== -->
+
+  <param name="Root" type="Collection" view_x="50" view_y="50" view_width="390" view_height="685">
+    <label>Param manager</label>
+    <description>Root-depth parameter manager</description>
+
+    <param name="debug" type="Boolean">
+      <label>Debugging flag</label>
+      <description></description>
+      <value>true</value>
+    </param>
+
+    <param name="verbose" type="Boolean">
+      <label>Verbose debugging flag</label>
+      <description></description>
+      <value>false</value>
+    </param>
+
+    <!-- ====== start of collection radar ====== -->
+
+    <param name="radar" type="Collection" view_x="-1" view_y="-1" view_width="517" view_height="533">
+      <label>Radar params</label>
+      <description>Edit the radar parameters</description>
+
+      <param name="siteNum" type="Integer">
+        <label>Site number</label>
+        <description>The indexed number for this site</description>
+        <info>
+          <![CDATA[
+          You should arrange these numbers with reference to other sites in the area. The number is used identify the radar site if mode than one radar is used in the network
+          ]]>
+        </info>
+        <value>0</value>
+      </param>
+
+      <param name="siteName" type="String">
+        <label>Site name</label>
+        <description>The name of the site</description>
+        <info>
+          <![CDATA[
+          The site name must be a text description of the geographical geographical location of the radar installation, such as a farm name or nearby town.
+          ]]>
+        </info>
+        <value>Denver</value>
+      </param>
+
+      <param name="userName" type="String">
+        <label>User name</label>
+        <description>The name of the technician or user</description>
+        <info>
+          <![CDATA[
+          The technician or user of the program can put their name in this field. The reason for having it is to keep track of who performed the last calibration.
+          ]]>
+        </info>
+        <value>Unknown</value>
+      </param>
+
+      <param name="latitude" type="Double">
+        <label>Latitude</label>
+        <description>Radar latitude (decimal deg)</description>
+        <value>40.0</value>
+      </param>
+
+      <param name="longitude" type="Double">
+        <label>Longitude</label>
+        <description>Radar longitude (decimal deg)</description>
+        <value>-105.0</value>
+      </param>
+
+      <param name="altitude" type="Double">
+        <label>Altitude</label>
+        <description>Radar altitude (km)</description>
+        <value>1.7</value>
+      </param>
+
+      <param name="frequency" type="Double">
+        <label>Frequency (GHz)</label>
+        <description>Radar frequency (GHz)</description>
+        <value>5.5</value>
+      </param>
+
+      <param name="horizBeamWidth" type="Double">
+        <label>Horiz beam width</label>
+        <description>Antenna horizontal beam width (deg)</description>
+        <info>
+          <![CDATA[
+          Half-power horizontal beam width in degrees
+          ]]>
+        </info>
+        <value>1.0</value>
+      </param>
+
+      <param name="vertBeamWidth" type="Double">
+        <label>Vert beam width</label>
+        <description>Antenna vertical beam width (deg)</description>
+        <info>
+          <![CDATA[
+          Half-power vertical beam width in degrees
+          ]]>
+        </info>
+        <value>1.0</value>
+      </param>
+
+      <param name="antGain" type="Double">
+        <label>Antenna gain</label>
+        <description>Antenna gain (dB)</description>
+        <info>
+          <![CDATA[
+          Antenna gain in dB
+          ]]>
+        </info>
+        <value>44.0</value>
+      </param>
+
+    </param>
+
+    <!-- ======= end of collection radar ======= -->
+
+    <!-- ====== start of collection scan ====== -->
+
+    <param name="scan" type="Collection" view_x="-1" view_y="-1" view_width="515" view_height="542">
+      <label>Scan strategy</label>
+      <description>Edit the RDAS comm parameters</description>
+
+      <param name="elevationList" type="String">
+        <label>Elevation list</label>
+        <description>Comma-delimited elevation angle list</description>
+        <info>
+          <![CDATA[
+          Enter the elevation angles in a comma-delimited list.
+          ]]>
+        </info>
+        <value>0.5, 1.5, 2.5, 3.5, 4.5, 5.5, 6.5, 7.5, 8.5, 9.9</value>
+      </param>
+
+      <param name="azSlewRate" type="Double">
+        <label>Azimuth slew rate</label>
+        <description>Antenna slew rate in azimuth (deg/sec)</description>
+        <value>19.0</value>
+      </param>
+
+      <param name="elSlewRate" type="Double">
+        <label>Elevation slew rate</label>
+        <description>Antenna slew rate in elevation (deg/sec)</description>
+        <value>9.0</value>
+      </param>
+
+      <param name="nGates" type="Integer">
+        <label>N Gates</label>
+        <description>Number of gates per beam</description>
+        <value>500</value>
+      </param>
+
+      <param name="startRange" type="Double">
+        <label>Start range</label>
+        <description>Range to center of first gate (km)</description>
+        <value>0.125</value>
+      </param>
+
+      <param name="gateSpacing" type="Double">
+        <label>Gate spacing</label>
+        <description>Spacing between gates (km)</description>
+        <value>0.25</value>
+      </param>
+
+      <param name="prf" type="Double">
+        <label>PRF</label>
+        <description>Pulse Repetition Frequency (/s)</description>
+        <value>1000.0</value>
+      </param>
+
+      <param name="samplesPerAz" type="Integer">
+        <label>N samples per az</label>
+        <description>Number of samples per az</description>
+        <info>
+          <![CDATA[
+          If more than 1, this implies averaging in azimuth
+          ]]>
+        </info>
+        <value>8</value>
+      </param>
+
+      <param name="samplesPerGate" type="Integer">
+        <label>N samples per gate</label>
+        <description>Number of samples per gate</description>
+        <info>
+          <![CDATA[
+          If more than 1, this implies averaging in range
+          ]]>
+        </info>
+        <value>4</value>
+      </param>
+
+      <param name="polarization" type="Option">
+        <label>Polarization</label>
+        <description>Polarization type</description>
+        <value>Horizontal</value>
+      </param>
+
+    </param>
+
+    <!-- ======= end of collection scan ======= -->
+
+    <!-- ====== start of collection rdasComm ====== -->
+
+    <param name="rdasComm" type="Collection" view_x="100" view_y="100" view_width="573" view_height="709">
+      <label>RDAS socket</label>
+      <description></description>
+
+      <param name="connectAtStartup" type="Boolean">
+        <label>Connect at startup</label>
+        <description>Connect to RDAS or relay at startup.</description>
+        <info>
+          <![CDATA[
+          If TRUE, the socket connection to either RDAS or RELAY will be set up at startup. The connection can be open or closed using the COMMS menu.
+          ]]>
+        </info>
+        <value>true</value>
+      </param>
+
+      <param name="host" type="String">
+        <label>RDAS host</label>
+        <description>IP name of RDAS host</description>
+        <info>
+          <![CDATA[
+          This can be either a hostname or IP address.
+          ]]>
+        </info>
+        <value>localhost</value>
+      </param>
+
+      <param name="port" type="Integer">
+        <label>RDAS port</label>
+        <description>TCP/IP port for RDAS server</description>
+        <value>10000</value>
+      </param>
+
+      <param name="relayHost" type="String">
+        <label>RDAS relay host</label>
+        <description>IP name of host of RDAS relay service</description>
+        <info>
+          <![CDATA[
+          This can be either a hostname or IP address.
+          ]]>
+        </info>
+        <value>localhost</value>
+      </param>
+
+      <param name="relayPort" type="Integer">
+        <label>RDAS relay port</label>
+        <description>TCP/IP port for RDAS relay service</description>
+        <value>11000</value>
+      </param>
+
+      <param name="viaRelay" type="Boolean">
+        <label>Contact relay server?</label>
+        <description>Option to contact relay host.</description>
+        <info>
+          <![CDATA[
+          If FALSE, contacts RDAS directly. If true, contacts relay host
+          ]]>
+        </info>
+        <value>false</value>
+      </param>
+
+      <param name="timeBetweenRelayBeams" type="Double">
+        <label>Time between beams (secs)</label>
+        <description>Time between beams when getting data via relay</description>
+        <info>
+          <![CDATA[
+          Normally, every available beam is sent from the relay server to the client. However, if network speed is limited this may not be practical. If you set this parameter to a value greater than 0, in seconds, beams will only be sent at this interval. Note that the value does not need to be an integer - a value of 0.5 means a beam will be sent every half second. The default is 0, which means every beam will be sent.
+          ]]>
+        </info>
+        <value>0.0</value>
+      </param>
+
+      <param name="acceptRemoteCommands" type="Boolean">
+        <label>Accept remote commands?</label>
+        <description>Accept commands in relay mode.</description>
+        <info>
+          <![CDATA[
+          Only applies to relay mode. If TRUE, will accept commands from a remote instance of RdasControl. If FALSE, will not accept remote commands. If FALSE, the only way to shut down the radar is to terminate the relay application.
+          ]]>
+        </info>
+        <value>true</value>
+      </param>
+
+      <param name="maxDataQueueSize" type="Integer">
+        <label>Max data queue size</label>
+        <description>Max size of incoming radar data queue</description>
+        <info>
+          <![CDATA[
+          This is the maximum number of messages which can be waiting for attention at any time. Limiting the size prevents memory usage from growing in an uncontrolled manner if an error occurs within the program.
+          ]]>
+        </info>
+        <value>1000</value>
+      </param>
+
+      <param name="maxCommandQueueSize" type="Integer">
+        <label>Max command queue size</label>
+        <description>Max size of command queue</description>
+        <info>
+          <![CDATA[
+          This is the maximum number of commands which can be waiting to be sent at any time.
+          ]]>
+        </info>
+        <value>100</value>
+      </param>
+
+      <param name="connectDelay" type="Integer">
+        <label>Connect delay (msecs)</label>
+        <description>Delay after connection established - msecs</description>
+        <info>
+          <![CDATA[
+          This is the delay after the connection is established before any commands are sent to RDAS.
+          ]]>
+        </info>
+        <value>500</value>
+      </param>
+
+      <param name="commandDelay" type="Integer">
+        <label>Command delay (msecs)</label>
+        <description>Delay before message is sent - msecs</description>
+        <info>
+          <![CDATA[
+          For debugging. You can set this to a value greater than 0 to cause a delay before each command is sent to RDAS.
+          ]]>
+        </info>
+        <value>100</value>
+      </param>
+
+      <param name="bigEndian" type="Boolean">
+        <label>Big-endian data?</label>
+        <description>Is data in BE - network byte order - format?</description>
+        <info>
+          <![CDATA[
+          If FALSE, data is in little-endian format.
+          ]]>
+        </info>
+        <value>true</value>
+      </param>
+
+    </param>
+
+    <!-- ======= end of collection rdasComm ======= -->
+
+    <!-- ====== start of collection calib ====== -->
+
+    <param name="calib" type="Collection" view_x="100" view_y="100" view_width="574" view_height="1075">
+      <label>Calibration parameters</label>
+      <description>Edit the calibration values</description>
+
+      <param name="fileFolder" type="String">
+        <label>Calibration file folder</label>
+        <description>Folder in which to save and retrieve calibration files</description>
+        <value>./calib</value>
+      </param>
+
+      <param name="filePath" type="String">
+        <label>Calibration file path</label>
+        <description>Current calibration file</description>
+        <value>./calib/20041206_013027.cal.xml</value>
+      </param>
+
+      <param name="peakPower" type="Double">
+        <label>Peak power (dBm)</label>
+        <description>Peak transmitter power (dBm)</description>
+        <value>84.0</value>
+      </param>
+
+      <param name="pulseWidth" type="Double">
+        <label>Pulse width</label>
+        <description>Pulse width (us)</description>
+        <value>2.0</value>
+      </param>
+
+      <param name="waveguideLoss" type="Double">
+        <label>Waveguide loss</label>
+        <description>One-way waveguide loss (dB)</description>
+        <info>
+          <![CDATA[
+          Typical loss values:
+<p>  C-band: 1.75 dB per 100 ft / 30 m
+<p>  S-band: 0.75 dB per 100 ft / 30 m
+
+          ]]>
+        </info>
+        <value>0.5</value>
+      </param>
+
+      <param name="radomeLoss" type="Double">
+        <label>Radome loss</label>
+        <description>Two-way radome loss (dB)</description>
+        <info>
+          <![CDATA[
+          If no radome set to 0.
+          ]]>
+        </info>
+        <value>0.5</value>
+      </param>
+
+      <param name="receiverLoss" type="Double">
+        <label>Receiver loss</label>
+        <description>Receiver bandwidth loss (dB)</description>
+        <info>
+          <![CDATA[
+          Loss due to the effective bandpass filter associated with the receiver (dB)
+          ]]>
+        </info>
+        <value>0.0</value>
+      </param>
+
+      <param name="testCableAtten" type="Double">
+        <label>Test cable attenuation</label>
+        <description>Test cable attenuation (dB)</description>
+        <info>
+          <![CDATA[
+          Typical values:
+<p>C-band: 0.6 dB/ft with RG58 or similar
+<p>S-band: 0.4 dB/ft with RG58 or similar
+
+          ]]>
+        </info>
+        <value>3.8</value>
+      </param>
+
+      <param name="couplerAtten" type="Double">
+        <label>Coupler attenuation</label>
+        <description>Coupler attenuation (dB)</description>
+        <info>
+          <![CDATA[
+          If the signal generator input is connected directly to the receiver set this to 0
+          ]]>
+        </info>
+        <value>30.75</value>
+      </param>
+
+      <param name="nPointsTable" type="Integer">
+        <label>N Points Table</label>
+        <description>Number of points in calibration table</description>
+        <info>
+          <![CDATA[
+          This is the number of available points in the table. Not all of the points are necessarily used.
+          ]]>
+        </info>
+        <value>15</value>
+      </param>
+
+      <param name="minDbz" type="Double">
+        <label>Min dBZ</label>
+        <description>Minimim dBZ for sampling</description>
+        <info>
+          <![CDATA[
+          This the min dBZ value in the calibration table
+          ]]>
+        </info>
+        <value>0.0</value>
+      </param>
+
+      <param name="deltaDbz" type="Double">
+        <label>Delta dBZ</label>
+        <description>dBZ step for calib table</description>
+        <info>
+          <![CDATA[
+          This the dBZ step in the calibration table
+          ]]>
+        </info>
+        <value>5.0</value>
+      </param>
+
+      <param name="fitDbzLow" type="Double">
+        <label>Fit dBZ low</label>
+        <description>Low dBZ limit for linear fit</description>
+        <info>
+          <![CDATA[
+          The linear fit is computed for points which lie between the low and high dBZ limits
+          ]]>
+        </info>
+        <value>5.0</value>
+      </param>
+
+      <param name="fitDbzHigh" type="Double">
+        <label>Fit dBZ high</label>
+        <description>High dBZ limit for linear fit</description>
+        <info>
+          <![CDATA[
+          The fit is computed for points which lie between the low and high dBZ limits
+          ]]>
+        </info>
+        <value>65.0</value>
+      </param>
+
+      <param name="calRange" type="Double">
+        <label>Calib range (km)</label>
+        <description>Range for calibration test pulse (km)</description>
+        <info>
+          <![CDATA[
+          The is the effective range for the test pulse. Final calibration is computed for 1km
+          ]]>
+        </info>
+        <value>100.0</value>
+      </param>
+
+      <param name="roundSiggen" type="Boolean">
+        <label>Round siggen?</label>
+        <description>If true, the siggen values will be rounded to the nearest 'siggenRoundValue'. Other columns in the table will be adjusted accordingly.</description>
+        <value>true</value>
+      </param>
+
+      <param name="siggenRoundValue" type="Double">
+        <label>Siggen round value</label>
+        <description>Val to which siggen vals are rounded</description>
+        <info>
+          <![CDATA[
+          See roundSiggen
+          ]]>
+        </info>
+        <value>5.0</value>
+      </param>
+
+      <param name="slope" type="Double">
+        <label>Slope</label>
+        <description>Slope of calibration line</description>
+        <value>118.5948</value>
+      </param>
+
+      <param name="offset1km" type="Double">
+        <label>Offset-1km</label>
+        <description>Offset (in counts) for dBZ at 1km</description>
+        <value>4730.227</value>
+      </param>
+
+      <param name="offsetCalRng" type="Double">
+        <label>Offset at cal range</label>
+        <description>Offset (in counts) for dBZ at calib range</description>
+        <value>-178.4109</value>
+      </param>
+
+      <param name="topMargin" type="Integer">
+        <label>Top margin</label>
+        <description>Top margin (pixels)</description>
+        <value>25</value>
+      </param>
+
+      <param name="bottomMargin" type="Integer">
+        <label>Bottom margin</label>
+        <description>Bottom margin (pixels)</description>
+        <value>30</value>
+      </param>
+
+      <param name="leftMargin" type="Integer">
+        <label>Left margin</label>
+        <description>Left margin (pixels)</description>
+        <value>45</value>
+      </param>
+
+      <param name="rightMargin" type="Integer">
+        <label>Right margin</label>
+        <description>Right margin (pixels)</description>
+        <value>35</value>
+      </param>
+
+      <param name="xx" type="Integer">
+        <label>X offset</label>
+        <description>The X offset from the parent</description>
+        <info>
+          <![CDATA[
+          This the the X offset, in pixels, from the main frame of the application.
+          ]]>
+        </info>
+        <value>601</value>
+      </param>
+
+      <param name="yy" type="Integer">
+        <label>Y offset</label>
+        <description>The Y offset from the parent</description>
+        <info>
+          <![CDATA[
+          This the the Y offset, in pixels, from the main frame of the application.
+          ]]>
+        </info>
+        <value>232</value>
+      </param>
+
+      <param name="width" type="Integer">
+        <label>Width</label>
+        <description>The window width in pixels</description>
+        <value>573</value>
+      </param>
+
+      <param name="height" type="Integer">
+        <label>Height</label>
+        <description>The window height in pixels</description>
+        <value>769</value>
+      </param>
+
+      <param name="tableRowHt" type="Integer">
+        <label>TableRowHeight</label>
+        <description>Height of a table row in pixels</description>
+        <info>
+          <![CDATA[
+          Adjust so that the table fits nicely into the viewport and just does not scroll.
+          ]]>
+        </info>
+        <value>16</value>
+      </param>
+
+      <param name="startVisible" type="Boolean">
+        <label>Start visible</label>
+        <description>Start with the window visible?</description>
+        <info>
+          <![CDATA[
+          If true, the program will start with the PPI visible. If not, it will be hidden at startup
+          ]]>
+        </info>
+        <value>false</value>
+      </param>
+
+      <param name="testPath" type="File">
+        <label>Test path</label>
+        <description>Path for test file</description>
+        <value>unknown</value>
+      </param>
+
+    </param>
+
+    <!-- ======= end of collection calib ======= -->
+
+    <!-- ====== start of collection eng ====== -->
+
+    <param name="eng" type="Collection" view_x="100" view_y="100" view_width="583" view_height="672">
+      <label>Engineering parameters</label>
+      <description>Edit the engineering values</description>
+
+      <param name="maxCount" type="Integer">
+        <label>Max count</label>
+        <description>Max count possible from RDAS</description>
+        <value>16384</value>
+      </param>
+
+      <param name="autoResetTimeout" type="Integer">
+        <label>Auto-reset timeout</label>
+        <description>Timeout (s) to trigger auto-reset.</description>
+        <info>
+          <![CDATA[
+          Sometimes the system will lock up and require resetting. If the system locks up for more than this timeout values, in secs, a reset will be triggered.
+          ]]>
+        </info>
+        <value>10</value>
+      </param>
+
+      <param name="elevTolerance" type="Double">
+        <label>Elev tolerance</label>
+        <description>Elevation control tolerance (deg).</description>
+        <info>
+          <![CDATA[
+          The elevation angle must be withing this tolerance of the theoretical value before a PPI can start.
+          ]]>
+        </info>
+        <value>0.31</value>
+      </param>
+
+      <param name="ppiAzOverlap" type="Double">
+        <label>PPI azimuth overlap</label>
+        <description>Azimuth overlap for full PPI (deg)</description>
+        <info>
+          <![CDATA[
+          In order to complete a full PPI, some overlap is required to avoid missing beams. This is the overlap which must be reached before a PPI will complete.
+          ]]>
+        </info>
+        <value>10.0</value>
+      </param>
+
+      <param name="antennaElCorr" type="Double">
+        <label>Antenna El Correction</label>
+        <description>Correction for pedestal antenna position in elevation (decimal deg)</description>
+        <info>
+          <![CDATA[
+          This value is added to the pedestal readout to correct the elevation value.
+          ]]>
+        </info>
+        <value>0.0</value>
+      </param>
+
+      <param name="antennaAzCorr" type="Double">
+        <label>Antenna Az Correction</label>
+        <description>Correction for pedestal antenna position in azimuth (decimal deg)</description>
+        <info>
+          <![CDATA[
+          This value is added to the pedestal readout to correct the azimuth value.
+          ]]>
+        </info>
+        <value>0.0</value>
+      </param>
+
+      <param name="controlElCorr" type="Double">
+        <label>Control El Correction</label>
+        <description>Correction for driving antenna in elevation (decimal deg)</description>
+        <info>
+          <![CDATA[
+          If the antenna elevation readout does not match the intended value, correct it by inserting a correction value here.
+          ]]>
+        </info>
+        <value>0.0</value>
+      </param>
+
+      <param name="controlAzCorr" type="Double">
+        <label>Control Az Correction</label>
+        <description>Correction for driving antenna in azimuth (decimal deg)</description>
+        <info>
+          <![CDATA[
+          If the antenna azimuth readout does not match the intended value, correct it by inserting a correction value here.
+          ]]>
+        </info>
+        <value>0.0</value>
+      </param>
+
+      <param name="antennaMinElev" type="Double">
+        <label>Antenna min el</label>
+        <description>Min antenna elevation (deg)</description>
+        <info>
+          <![CDATA[
+          The antenna cannot go below this elevation. Therefore the control program will not request elevation angles below this value.
+          ]]>
+        </info>
+        <value>0.0</value>
+      </param>
+
+      <param name="antennaMaxElev" type="Double">
+        <label>Antenna max el</label>
+        <description>Max antenna elevation (deg)</description>
+        <info>
+          <![CDATA[
+          The antenna cannot go above this elevation. Therefore the control program will not request elevation angles above this value.
+          ]]>
+        </info>
+        <value>45.0</value>
+      </param>
+
+      <param name="antennaMaxElSlewRate" type="Double">
+        <label>Antenna max el slew rate</label>
+        <description>Max el slew rate (deg/s)</description>
+        <info>
+          <![CDATA[
+          The antenna cannot slew faster than this. Therefore the control program will not request slew rates above this value.
+          ]]>
+        </info>
+        <value>10.0</value>
+      </param>
+
+      <param name="antennaMaxAzSlewRate" type="Double">
+        <label>Antenna max az slew rate</label>
+        <description>Max az slew rate (deg/s)</description>
+        <info>
+          <![CDATA[
+          The antenna cannot slew faster than this. Therefore the control program will not request slew rates above this value.
+          ]]>
+        </info>
+        <value>24.0</value>
+      </param>
+
+      <param name="elVoltagePositive" type="Boolean">
+        <label>El voltage positive?</label>
+        <description>Is the el control voltage sense positive?</description>
+        <info>
+          <![CDATA[
+          If the el control voltage sense is negative, set this to false.
+          ]]>
+        </info>
+        <value>true</value>
+      </param>
+
+      <param name="azVoltagePositive" type="Boolean">
+        <label>Az voltage positive?</label>
+        <description>Is the az control voltage sense positive?</description>
+        <info>
+          <![CDATA[
+          If the az control voltage sense is negative, set this to false.
+          ]]>
+        </info>
+        <value>true</value>
+      </param>
+
+    </param>
+
+    <!-- ======= end of collection eng ======= -->
+
+    <!-- ====== start of collection aScope ====== -->
+
+    <param name="aScope" type="Collection" view_x="100" view_y="100" view_width="525" view_height="845">
+      <label>A-Scope</label>
+      <description>A-scope display - for calibration</description>
+      <info>
+        <![CDATA[
+        Parameters for the size, location, etc. of the A-scope
+        ]]>
+      </info>
+
+      <param name="dbzColor" type="Color">
+        <label>dBZ plot color</label>
+        <description>Color of dBZ line on plot.</description>
+        <value>0x000000</value>
+      </param>
+
+      <param name="startupField" type="Option">
+        <label>Field at startup</label>
+        <description>Field to be displayed at startup</description>
+        <value>DBZ</value>
+      </param>
+
+      <param name="minDbz" type="Double">
+        <label>Min dbz</label>
+        <description>Min dbz to be displayed - Y axis</description>
+        <value>-20.0</value>
+      </param>
+
+      <param name="maxDbz" type="Double">
+        <label>Max dbz</label>
+        <description>Max dbz to be displayed - Y axis</description>
+        <value>80.0</value>
+      </param>
+
+      <param name="minSnr" type="Double">
+        <label>Min snr</label>
+        <description>Min snr to be displayed - Y axis</description>
+        <value>0.0</value>
+      </param>
+
+      <param name="maxSnr" type="Double">
+        <label>Max snr</label>
+        <description>Max snr to be displayed - Y axis</description>
+        <value>120.0</value>
+      </param>
+
+      <param name="maxCount" type="Integer">
+        <label>Max count</label>
+        <description>Max count plotted on AScope</description>
+        <value>20000</value>
+      </param>
+
+      <param name="plotCount" type="Boolean">
+        <label>Plot count?</label>
+        <description>Option to plot count values</description>
+        <value>true</value>
+      </param>
+
+      <param name="plotDbzSnr" type="Boolean">
+        <label>Plot dbz/snr?</label>
+        <description>Option to plot DBZ/SNR values</description>
+        <value>true</value>
+      </param>
+
+      <param name="performSampling" type="Boolean">
+        <label>Perform sampling?</label>
+        <description>Option to sample count and dBZ data.</description>
+        <info>
+          <![CDATA[
+          You have the option to sample the values over a selected number of gates.
+          ]]>
+        </info>
+        <value>false</value>
+      </param>
+
+      <param name="plotBeamRate" type="Boolean">
+        <label>Plot beam rate?</label>
+        <description>Option to plot beam rates.</description>
+        <info>
+          <![CDATA[
+          You have the option to plot the incoming beam rate and the displayed beam rate.
+          ]]>
+        </info>
+        <value>true</value>
+      </param>
+
+      <param name="sampleCenter" type="Integer">
+        <label>Sample center</label>
+        <description>Location of the center of the sampled region (gates).</description>
+        <value>110</value>
+      </param>
+
+      <param name="sampleNGates" type="Integer">
+        <label>Sample N Gates</label>
+        <description>Number of gates in sample.</description>
+        <info>
+          <![CDATA[
+          This is the width of the sample in gates
+          ]]>
+        </info>
+        <value>11</value>
+      </param>
+
+      <param name="sampleNBeams" type="Integer">
+        <label>Sample N Beams</label>
+        <description>Number of beams for averaging sample.</description>
+        <info>
+          <![CDATA[
+          This is the number of beams used to compute the average sample
+          ]]>
+        </info>
+        <value>40</value>
+      </param>
+
+      <param name="fastPaint" type="Boolean">
+        <label>Fast paint</label>
+        <description>Force fast paint</description>
+        <info>
+          <![CDATA[
+          Normally the repaint method will be used for redrawing the AScope. Setting this option to true forces draws directly to the graphics  object which speeds up painting.
+          ]]>
+        </info>
+        <value>true</value>
+      </param>
+
+      <param name="repaintMsecs" type="Integer">
+        <label>Repaint msecs</label>
+        <description>Delay before repaint - millisecs.</description>
+        <info>
+          <![CDATA[
+          This is the max delay before repainting after a beam arrives. Set to a low value for fast painting.  This will also increase the CPU usage
+          ]]>
+        </info>
+        <value>30</value>
+      </param>
+
+      <param name="nFreeze" type="Integer">
+        <label>N freeze</label>
+        <description>Number of freeze data bemas.</description>
+        <info>
+          <![CDATA[
+          You can freeze the AScope to look at past data. This is the number of beams in the freeze queue
+          ]]>
+        </info>
+        <value>360</value>
+      </param>
+
+      <param name="topMargin" type="Integer">
+        <label>Top margin</label>
+        <description>Top margin (pixels)</description>
+        <value>30</value>
+      </param>
+
+      <param name="bottomMargin" type="Integer">
+        <label>Bottom margin</label>
+        <description>Bottom margin (pixels)</description>
+        <value>30</value>
+      </param>
+
+      <param name="leftMargin" type="Integer">
+        <label>Left margin</label>
+        <description>Left margin (pixels)</description>
+        <value>45</value>
+      </param>
+
+      <param name="rightMargin" type="Integer">
+        <label>Right margin</label>
+        <description>Right margin (pixels)</description>
+        <value>50</value>
+      </param>
+
+      <param name="xx" type="Integer">
+        <label>X offset</label>
+        <description>The X offset from the parent</description>
+        <info>
+          <![CDATA[
+          This the the X offset, in pixels, from the main frame of the application.
+          ]]>
+        </info>
+        <value>0</value>
+      </param>
+
+      <param name="yy" type="Integer">
+        <label>Y offset</label>
+        <description>The Y offset from the parent</description>
+        <info>
+          <![CDATA[
+          This the the Y offset, in pixels, from the main frame of the application.
+          ]]>
+        </info>
+        <value>508</value>
+      </param>
+
+      <param name="width" type="Integer">
+        <label>Width</label>
+        <description>The window width in pixels</description>
+        <value>601</value>
+      </param>
+
+      <param name="height" type="Integer">
+        <label>Height</label>
+        <description>The window height in pixels</description>
+        <value>461</value>
+      </param>
+
+      <param name="startVisible" type="Boolean">
+        <label>Start visible</label>
+        <description>Start with the window visible?</description>
+        <info>
+          <![CDATA[
+          If true, the program will start with the A-Scope visible. If not, it will be hidden at startup
+          ]]>
+        </info>
+        <value>false</value>
+      </param>
+
+    </param>
+
+    <!-- ======= end of collection aScope ======= -->
+
+    <!-- ====== start of collection ppi ====== -->
+
+    <param name="ppi" type="Collection" view_x="79" view_y="112" view_width="577" view_height="782">
+      <label>PPI Display</label>
+      <description>PPI Display for viewing polar radar data</description>
+      <info>
+        <![CDATA[
+        Parameters for the size, location, etc. of the PPI display
+        ]]>
+      </info>
+
+      <param name="maxRange" type="Double">
+        <label>Max range</label>
+        <description>Max range to be displayed - km</description>
+        <value>130.0</value>
+      </param>
+
+      <param name="rangeRingSpacing" type="Double">
+        <label>Range ring spacing</label>
+        <description>Spacing of range rings (km)</description>
+        <value>25.0</value>
+      </param>
+
+      <param name="startupField" type="Option">
+        <label>Field at startup</label>
+        <description>Field to be displayed at startup</description>
+        <value>DBZ</value>
+      </param>
+
+      <param name="topMargin" type="Integer">
+        <label>Top margin</label>
+        <description>Top margin (pixels)</description>
+        <value>30</value>
+      </param>
+
+      <param name="bottomMargin" type="Integer">
+        <label>Bottom margin</label>
+        <description>Bottom margin (pixels)</description>
+        <value>30</value>
+      </param>
+
+      <param name="leftMargin" type="Integer">
+        <label>Left margin</label>
+        <description>Left margin (pixels)</description>
+        <value>50</value>
+      </param>
+
+      <param name="rightMargin" type="Integer">
+        <label>Right margin</label>
+        <description>Right margin (pixels)</description>
+        <value>20</value>
+      </param>
+
+      <param name="colorScaleWidth" type="Integer">
+        <label>Color scale width</label>
+        <description>Color scale width (pixels)</description>
+        <value>60</value>
+      </param>
+
+      <param name="colorScaleTopMargin" type="Integer">
+        <label>Color scale top margin</label>
+        <description>Color scale top margin (pixels)</description>
+        <value>10</value>
+      </param>
+
+      <param name="colorScaleBottomMargin" type="Integer">
+        <label>Color scale bottom margin</label>
+        <description>Color scale bottom margin (pixels)</description>
+        <value>10</value>
+      </param>
+
+      <param name="colorScaleLeftMargin" type="Integer">
+        <label>Color scale left margin</label>
+        <description>Color scale left margin (pixels)</description>
+        <value>5</value>
+      </param>
+
+      <param name="colorScaleRightMargin" type="Integer">
+        <label>Color scale right margin</label>
+        <description>Color scale right margin (pixels)</description>
+        <value>15</value>
+      </param>
+
+      <param name="repaintMsecs" type="Integer">
+        <label>Repaint interval</label>
+        <description>Repaint interval (microsecs)</description>
+        <info>
+          <![CDATA[
+          The image is drawn to the screen at this interval. The lower this number the more CPU will be used.
+          ]]>
+        </info>
+        <value>1000</value>
+      </param>
+
+      <param name="clickTextDuration" type="Integer">
+        <label>Click text duration</label>
+        <description>Duration of click data label (secs)</description>
+        <info>
+          <![CDATA[
+          After clicking in the image, the position and data value will be printed in the bottom margin. This is the number of seconds the text will remain there before being aged off.
+          ]]>
+        </info>
+        <value>60</value>
+      </param>
+
+      <param name="clickIconSize" type="Integer">
+        <label>Click icon size</label>
+        <description>Size of icon showing click position</description>
+        <info>
+          <![CDATA[
+          When you click in the image, to obtain the position and data value, a cross is drawn to show the click point. This is the size of each limb of the cross. For example, if it is set to 5, the cross will be from -5 to +5 in each direction around the click point.
+          ]]>
+        </info>
+        <value>5</value>
+      </param>
+
+      <param name="beamQueueSize" type="Integer">
+        <label>Size of beam queue</label>
+        <description>Number of beams saved for redrawing on zoom.</description>
+        <info>
+          <![CDATA[
+          A number of beams are saved so that the image can be redrawn when a zoom occurs. This should be set to the typical number of beams in a PPI.
+          ]]>
+        </info>
+        <value>600</value>
+      </param>
+
+      <param name="xx" type="Integer">
+        <label>X offset</label>
+        <description>The X offset from the parent</description>
+        <info>
+          <![CDATA[
+          This the the X offset, in pixels, from the main frame of the application.
+          ]]>
+        </info>
+        <value>689</value>
+      </param>
+
+      <param name="yy" type="Integer">
+        <label>Y offset</label>
+        <description>The Y offset from the parent</description>
+        <info>
+          <![CDATA[
+          This the the Y offset, in pixels, from the main frame of the application.
+          ]]>
+        </info>
+        <value>635</value>
+      </param>
+
+      <param name="width" type="Integer">
+        <label>Width</label>
+        <description>The window width in pixels</description>
+        <value>522</value>
+      </param>
+
+      <param name="height" type="Integer">
+        <label>Height</label>
+        <description>The window height in pixels</description>
+        <value>524</value>
+      </param>
+
+      <param name="startVisible" type="Boolean">
+        <label>Start visible</label>
+        <description>Start with the window visible?</description>
+        <info>
+          <![CDATA[
+          If true, the program will start with the PPI visible. If not, it will be hidden at startup
+          ]]>
+        </info>
+        <value>false</value>
+      </param>
+
+    </param>
+
+    <!-- ======= end of collection ppi ======= -->
+
+    <!-- ====== start of collection bscan ====== -->
+
+    <param name="bscan" type="Collection" view_x="100" view_y="100" view_width="577" view_height="753">
+      <label>BSCAN Display</label>
+      <description>BSCAN Display for viewing raw radar data</description>
+      <info>
+        <![CDATA[
+        Parameters for the size, location, etc. of the BSCAN display
+        ]]>
+      </info>
+
+      <param name="maxRange" type="Double">
+        <label>Max range</label>
+        <description>Max range to be displayed - km</description>
+        <value>200.0</value>
+      </param>
+
+      <param name="deltaAzimuth" type="Double">
+        <label>Delta azimuth</label>
+        <description>Expected delta azimith - deg</description>
+        <info>
+          <![CDATA[
+          This is the expected azimith spacing between beams in degrees. When rendering, the beam will be made slightly larger than this to prevent unwanted gaps.
+          ]]>
+        </info>
+        <value>1.0</value>
+      </param>
+
+      <param name="repaintMsecs" type="Integer">
+        <label>Repaint interval</label>
+        <description>Repaint interval (microsecs)</description>
+        <info>
+          <![CDATA[
+          The image is drawn to the screen at this interval. The lower this number the more CPU will be used.
+          ]]>
+        </info>
+        <value>1000</value>
+      </param>
+
+      <param name="startupField" type="Option">
+        <label>Field at startup</label>
+        <description>Field to be displayed at startup</description>
+        <value>DBZ</value>
+      </param>
+
+      <param name="topMargin" type="Integer">
+        <label>Top margin</label>
+        <description>Top margin (pixels)</description>
+        <value>30</value>
+      </param>
+
+      <param name="bottomMargin" type="Integer">
+        <label>Bottom margin</label>
+        <description>Bottom margin (pixels)</description>
+        <value>30</value>
+      </param>
+
+      <param name="leftMargin" type="Integer">
+        <label>Left margin</label>
+        <description>Left margin (pixels)</description>
+        <value>50</value>
+      </param>
+
+      <param name="rightMargin" type="Integer">
+        <label>Right margin</label>
+        <description>Right margin (pixels)</description>
+        <value>20</value>
+      </param>
+
+      <param name="colorScaleWidth" type="Integer">
+        <label>Color scale width</label>
+        <description>Color scale width (pixels)</description>
+        <value>60</value>
+      </param>
+
+      <param name="colorScaleTopMargin" type="Integer">
+        <label>Color scale top margin</label>
+        <description>Color scale top margin (pixels)</description>
+        <value>10</value>
+      </param>
+
+      <param name="colorScaleBottomMargin" type="Integer">
+        <label>Color scale bottom margin</label>
+        <description>Color scale bottom margin (pixels)</description>
+        <value>10</value>
+      </param>
+
+      <param name="colorScaleLeftMargin" type="Integer">
+        <label>Color scale left margin</label>
+        <description>Color scale left margin (pixels)</description>
+        <value>5</value>
+      </param>
+
+      <param name="colorScaleRightMargin" type="Integer">
+        <label>Color scale right margin</label>
+        <description>Color scale right margin (pixels)</description>
+        <value>15</value>
+      </param>
+
+      <param name="clickTextDuration" type="Integer">
+        <label>Click text duration</label>
+        <description>Duration of click data label (secs)</description>
+        <info>
+          <![CDATA[
+          After clicking in the image, the position and data value will be printed in the bottom margin. This is the number of seconds the text will remain there before being aged off.
+          ]]>
+        </info>
+        <value>60</value>
+      </param>
+
+      <param name="clickIconSize" type="Integer">
+        <label>Click icon size</label>
+        <description>Size of icon showing click position</description>
+        <info>
+          <![CDATA[
+          When you click in the image, to obtain the position and data value, a cross is drawn to show the click point. This is the size of each limb of the cross. For example, if it is set to 5, the cross will be from -5 to +5 in each direction around the click point.
+          ]]>
+        </info>
+        <value>5</value>
+      </param>
+
+      <param name="xx" type="Integer">
+        <label>X offset</label>
+        <description>The X offset from the parent</description>
+        <info>
+          <![CDATA[
+          This the the X offset, in pixels, from the main frame of the application.
+          ]]>
+        </info>
+        <value>24</value>
+      </param>
+
+      <param name="yy" type="Integer">
+        <label>Y offset</label>
+        <description>The Y offset from the parent</description>
+        <info>
+          <![CDATA[
+          This the the Y offset, in pixels, from the main frame of the application.
+          ]]>
+        </info>
+        <value>750</value>
+      </param>
+
+      <param name="width" type="Integer">
+        <label>Width</label>
+        <description>The window width in pixels</description>
+        <value>571</value>
+      </param>
+
+      <param name="height" type="Integer">
+        <label>Height</label>
+        <description>The window height in pixels</description>
+        <value>428</value>
+      </param>
+
+      <param name="startVisible" type="Boolean">
+        <label>Start visible</label>
+        <description>Start with the window visible?</description>
+        <info>
+          <![CDATA[
+          If true, the program will start with the BSCAN visible. If not, it will be hidden at startup
+          ]]>
+        </info>
+        <value>false</value>
+      </param>
+
+    </param>
+
+    <!-- ======= end of collection bscan ======= -->
+
+    <!-- ====== start of collection smessage ====== -->
+
+    <param name="smessage" type="Collection" view_x="100" view_y="100" view_width="483" view_height="291">
+      <label>Statue Message Display</label>
+      <description>Status message display</description>
+      <info>
+        <![CDATA[
+        The status message display provides a scrolling pane containing the latest status messages.
+        ]]>
+      </info>
+
+      <param name="nLines" type="Integer">
+        <label>N lines</label>
+        <description>Number of lines in text area</description>
+        <value>30</value>
+      </param>
+
+      <param name="topLatest" type="Boolean">
+        <label>Latest at top?</label>
+        <description>Place latest messages at top of windowd</description>
+        <info>
+          <![CDATA[
+          If true, latest messages appear at the top. If false, latest messages appear at the end of the list.False gives the normal scrolling text window behavior.
+          ]]>
+        </info>
+        <value>true</value>
+      </param>
+
+      <param name="printToStderr" type="Boolean">
+        <label>Print status to stderr?</label>
+        <description>Print status messages to stderr</description>
+        <info>
+          <![CDATA[
+          If true, messages will be echoed to stderr. Only unique messages will be echoed.They will only be printed when a status change occurs.
+          ]]>
+        </info>
+        <value>false</value>
+      </param>
+
+      <param name="xx" type="Integer">
+        <label>X offset</label>
+        <description>The X offset from the parent</description>
+        <info>
+          <![CDATA[
+          This the the X offset, in pixels, from the main frame of the application.
+          ]]>
+        </info>
+        <value>0</value>
+      </param>
+
+      <param name="yy" type="Integer">
+        <label>Y offset</label>
+        <description>The Y offset from the parent</description>
+        <info>
+          <![CDATA[
+          This the the Y offset, in pixels, from the main frame of the application.
+          ]]>
+        </info>
+        <value>510</value>
+      </param>
+
+      <param name="width" type="Integer">
+        <label>Width</label>
+        <description>The window width in pixels</description>
+        <value>689</value>
+      </param>
+
+      <param name="height" type="Integer">
+        <label>Height</label>
+        <description>The window height in pixels</description>
+        <value>437</value>
+      </param>
+
+      <param name="startVisible" type="Boolean">
+        <label>Start visible</label>
+        <description>Start with the window visible?</description>
+        <info>
+          <![CDATA[
+          If true, the program will start with the PPI visible. If not, it will be hidden at startup
+          ]]>
+        </info>
+        <value>false</value>
+      </param>
+
+    </param>
+
+    <!-- ======= end of collection smessage ======= -->
+
+    <!-- ====== start of collection control ====== -->
+
+    <param name="control" type="Collection" view_x="0" view_y="163" view_width="548" view_height="537">
+      <label>Control Panel</label>
+      <description>Radar control panel</description>
+      <info>
+        <![CDATA[
+        Parameters for the size, location, etc. of the control panel
+        ]]>
+      </info>
+
+      <param name="startOpMode" type="Option">
+        <label>Startup Op Mode</label>
+        <description>Op mode at startup</description>
+        <value>Operate</value>
+      </param>
+
+      <param name="shutdownOpMode" type="Option">
+        <label>Shutdown Op Mode</label>
+        <description>Op mode at shutdown.</description>
+        <info>
+          <![CDATA[
+          The state in which to leave the radar when RdasControl shuts down.
+          ]]>
+        </info>
+        <value>Off</value>
+      </param>
+
+      <param name="startScanMode" type="Option">
+        <label>Startup Scan Mode</label>
+        <description>Scan mode at startup</description>
+        <value>Auto-Volume</value>
+      </param>
+
+      <param name="startElev" type="Double">
+        <label>Start elev (deg).</label>
+        <description>Startup elevations, ppi or manual mode.</description>
+        <info>
+          <![CDATA[
+          If the system starts up in auto-PPI or manual mode, the antenna will initially be set to this elevation angle.
+          ]]>
+        </info>
+        <value>0.5</value>
+      </param>
+
+      <param name="startAz" type="Double">
+        <label>Start az (deg).</label>
+        <description>Startup azimuth, manual mode.</description>
+        <info>
+          <![CDATA[
+          If the system starts up in manual mode, the antenna will initially be set to this azimuth angle.
+          ]]>
+        </info>
+        <value>180.0</value>
+      </param>
+
+      <param name="fontSize" type="Float">
+        <label>Font size</label>
+        <description>Font size for pos and time</description>
+        <info>
+          <![CDATA[
+          This is the font size for rendering the antenna and sun position, and the radar and clock time.
+          ]]>
+        </info>
+        <value>13.0</value>
+      </param>
+
+      <!-- ====== start of collection PowerStatus ====== -->
+
+      <param name="PowerStatus" type="Collection" view_x="100" view_y="428" view_width="312" view_height="252">
+        <label>Power status</label>
+        <description>Params to set up power status.</description>
+
+        <!-- ====== start of collection powerChannel_0 ====== -->
+
+        <param name="powerChannel_0" type="Collection" view_x="-1" view_y="-1" view_width="494" view_height="223">
+          <label>PowerChannel 0</label>
+          <description>Params for power channel 0</description>
+
+          <param name="labelStr" type="String">
+            <label>Power channel label</label>
+            <description>Label for power channel.</description>
+            <info>
+              <![CDATA[
+              Power channel can be used for any power circuit. Set this label to indicate the purpose of this channel.
+              ]]>
+            </info>
+            <value>Main power</value>
+          </param>
+
+          <param name="active" type="Boolean">
+            <label>Power channel active?</label>
+            <description>Set to true to use this channel?</description>
+            <info>
+              <![CDATA[
+              Set to false if this power circuit is not used.
+              ]]>
+            </info>
+            <value>true</value>
+          </param>
+
+          <param name="invertPolarity" type="Boolean">
+            <label>Invert channel polarity?</label>
+            <description>Invert the polarity of this channel?</description>
+            <info>
+              <![CDATA[
+              Normally, the indicator will show green when the channel is on and red when it is off.If the polarity is inverted, the indicator sense is also inverted.
+              ]]>
+            </info>
+            <value>false</value>
+          </param>
+
+          <param name="warn" type="Boolean">
+            <label>Warn</label>
+            <description>Warn on this channel if power is off?</description>
+            <info>
+              <![CDATA[
+              If set, this channel will warn if the power is off.
+              ]]>
+            </info>
+            <value>true</value>
+          </param>
+
+        </param>
+
+        <!-- ======= end of collection powerChannel_0 ======= -->
+
+        <!-- ====== start of collection powerChannel_1 ====== -->
+
+        <param name="powerChannel_1" type="Collection" view_x="-1" view_y="-1" view_width="494" view_height="223">
+          <label>PowerChannel 1</label>
+          <description>Params for power channel 1</description>
+
+          <param name="labelStr" type="String">
+            <label>Power channel label</label>
+            <description>Label for power channel.</description>
+            <info>
+              <![CDATA[
+              Power channel can be used for any power circuit. Set this label to indicate the purpose of this channel.
+              ]]>
+            </info>
+            <value>System ready</value>
+          </param>
+
+          <param name="active" type="Boolean">
+            <label>Power channel active?</label>
+            <description>Set to true to use this channel?</description>
+            <info>
+              <![CDATA[
+              Set to false if this power circuit is not used.
+              ]]>
+            </info>
+            <value>true</value>
+          </param>
+
+          <param name="invertPolarity" type="Boolean">
+            <label>Invert channel polarity?</label>
+            <description>Invert the polarity of this channel?</description>
+            <info>
+              <![CDATA[
+              Normally, the indicator will show green when the channel is on and red when it is off.If the polarity is inverted, the indicator sense is also inverted.
+              ]]>
+            </info>
+            <value>false</value>
+          </param>
+
+          <param name="warn" type="Boolean">
+            <label>Warn</label>
+            <description>Warn on this channel if power is off?</description>
+            <info>
+              <![CDATA[
+              If set, this channel will warn if the power is off.
+              ]]>
+            </info>
+            <value>true</value>
+          </param>
+
+        </param>
+
+        <!-- ======= end of collection powerChannel_1 ======= -->
+
+        <!-- ====== start of collection powerChannel_2 ====== -->
+
+        <param name="powerChannel_2" type="Collection" view_x="-1" view_y="-1" view_width="494" view_height="223">
+          <label>PowerChannel 2</label>
+          <description>Params for power channel 2</description>
+
+          <param name="labelStr" type="String">
+            <label>Power channel label</label>
+            <description>Label for power channel.</description>
+            <info>
+              <![CDATA[
+              Power channel can be used for any power circuit. Set this label to indicate the purpose of this channel.
+              ]]>
+            </info>
+            <value>Servo power</value>
+          </param>
+
+          <param name="active" type="Boolean">
+            <label>Power channel active?</label>
+            <description>Set to true to use this channel?</description>
+            <info>
+              <![CDATA[
+              Set to false if this power circuit is not used.
+              ]]>
+            </info>
+            <value>true</value>
+          </param>
+
+          <param name="invertPolarity" type="Boolean">
+            <label>Invert channel polarity?</label>
+            <description>Invert the polarity of this channel?</description>
+            <info>
+              <![CDATA[
+              Normally, the indicator will show green when the channel is on and red when it is off.If the polarity is inverted, the indicator sense is also inverted.
+              ]]>
+            </info>
+            <value>false</value>
+          </param>
+
+          <param name="warn" type="Boolean">
+            <label>Warn</label>
+            <description>Warn on this channel if power is off?</description>
+            <info>
+              <![CDATA[
+              If set, this channel will warn if the power is off.
+              ]]>
+            </info>
+            <value>true</value>
+          </param>
+
+        </param>
+
+        <!-- ======= end of collection powerChannel_2 ======= -->
+
+        <!-- ====== start of collection powerChannel_3 ====== -->
+
+        <param name="powerChannel_3" type="Collection" view_x="-1" view_y="-1" view_width="494" view_height="223">
+          <label>PowerChannel 3</label>
+          <description>Params for power channel 3</description>
+
+          <param name="labelStr" type="String">
+            <label>Power channel label</label>
+            <description>Label for power channel.</description>
+            <info>
+              <![CDATA[
+              Power channel can be used for any power circuit. Set this label to indicate the purpose of this channel.
+              ]]>
+            </info>
+            <value>Radiate</value>
+          </param>
+
+          <param name="active" type="Boolean">
+            <label>Power channel active?</label>
+            <description>Set to true to use this channel?</description>
+            <info>
+              <![CDATA[
+              Set to false if this power circuit is not used.
+              ]]>
+            </info>
+            <value>true</value>
+          </param>
+
+          <param name="invertPolarity" type="Boolean">
+            <label>Invert channel polarity?</label>
+            <description>Invert the polarity of this channel?</description>
+            <info>
+              <![CDATA[
+              Normally, the indicator will show green when the channel is on and red when it is off.If the polarity is inverted, the indicator sense is also inverted.
+              ]]>
+            </info>
+            <value>false</value>
+          </param>
+
+          <param name="warn" type="Boolean">
+            <label>Warn</label>
+            <description>Warn on this channel if power is off?</description>
+            <info>
+              <![CDATA[
+              If set, this channel will warn if the power is off.
+              ]]>
+            </info>
+            <value>true</value>
+          </param>
+
+        </param>
+
+        <!-- ======= end of collection powerChannel_3 ======= -->
+
+      </param>
+
+      <!-- ======= end of collection PowerStatus ======= -->
+
+      <!-- ====== start of collection switches ====== -->
+
+      <param name="switches" type="Collection" view_x="302" view_y="0" view_width="298" view_height="522">
+        <label>Switch channels</label>
+        <description>Params to set up the switches.</description>
+
+        <!-- ====== start of collection switch_0 ====== -->
+
+        <param name="switch_0" type="Collection" view_x="10" view_y="395" view_width="562" view_height="355">
+          <label>Switch 0</label>
+          <description>Parameters for switch channel 0</description>
+
+          <param name="labelStr" type="String">
+            <label>Channel label</label>
+            <description>Label for this switch channel</description>
+            <info>
+              <![CDATA[
+              This label will appear in the GUI next to the controls and LED for this channel.
+              ]]>
+            </info>
+            <value>Lights</value>
+          </param>
+
+          <param name="onAtStartup" type="Boolean">
+            <label>OnAtStartup</label>
+            <description>Is this switch on at startup?</description>
+            <info>
+              <![CDATA[
+              If true, the switch will be set on automatically at startup.
+              ]]>
+            </info>
+            <value>true</value>
+          </param>
+
+          <param name="enableSwitch" type="Boolean">
+            <label>Enable switch?</label>
+            <description>Do we enable the switch for this channel?</description>
+            <info>
+              <![CDATA[
+              If false, the channel is only used to monitor the line. The switch will be disabled (grayed-out).
+              ]]>
+            </info>
+            <value>true</value>
+          </param>
+
+          <param name="active" type="Boolean">
+            <label>Channel active?</label>
+            <description>Is this switch channel active?</description>
+            <info>
+              <![CDATA[
+              The user can configure which switches are active. Only the active channels will be shown.
+              ]]>
+            </info>
+            <value>true</value>
+          </param>
+
+          <param name="invertPolarity" type="Boolean">
+            <label>Invert channel polarity?</label>
+            <description>Invert the polarity of this switch?</description>
+            <info>
+              <![CDATA[
+              Normally, the indicator will show green when the channel is on and red when it is off.If the polarity is inverted, the indicator sense is inverted accordingly.
+              ]]>
+            </info>
+            <value>false</value>
+          </param>
+
+          <param name="normalState" type="Option">
+            <label>Normal state</label>
+            <description>Normal state for this channel.</description>
+            <info>
+              <![CDATA[
+              The light will be green if the channel is in this state
+              ]]>
+            </info>
+            <value>ON</value>
+          </param>
+
+          <param name="warn" type="Boolean">
+            <label>Warn</label>
+            <description>Warn on this channel if state is not normal?</description>
+            <info>
+              <![CDATA[
+              If set, this channel will warn if the state is not the normal state selected.
+              ]]>
+            </info>
+            <value>false</value>
+          </param>
+
+        </param>
+
+        <!-- ======= end of collection switch_0 ======= -->
+
+        <!-- ====== start of collection switch_1 ====== -->
+
+        <param name="switch_1" type="Collection" view_x="200" view_y="200" view_width="524" view_height="355">
+          <label>Switch 1</label>
+          <description>Parameters for switch channel 1</description>
+
+          <param name="labelStr" type="String">
+            <label>Channel label</label>
+            <description>Label for this switch channel</description>
+            <info>
+              <![CDATA[
+              This label will appear in the GUI next to the controls and LED for this channel.
+              ]]>
+            </info>
+            <value>AC22</value>
+          </param>
+
+          <param name="onAtStartup" type="Boolean">
+            <label>OnAtStartup</label>
+            <description>Is this switch on at startup?</description>
+            <info>
+              <![CDATA[
+              If true, the switch will be set on automatically at startup.
+              ]]>
+            </info>
+            <value>true</value>
+          </param>
+
+          <param name="enableSwitch" type="Boolean">
+            <label>Enable switch?</label>
+            <description>Do we enable the switch for this channel?</description>
+            <info>
+              <![CDATA[
+              If false, the channel is only used to monitor the line. The switch will be disabled (grayed-out).
+              ]]>
+            </info>
+            <value>true</value>
+          </param>
+
+          <param name="active" type="Boolean">
+            <label>Channel active?</label>
+            <description>Is this switch channel active?</description>
+            <info>
+              <![CDATA[
+              The user can configure which switches are active. Only the active channels will be shown.
+              ]]>
+            </info>
+            <value>true</value>
+          </param>
+
+          <param name="invertPolarity" type="Boolean">
+            <label>Invert channel polarity?</label>
+            <description>Invert the polarity of this switch?</description>
+            <info>
+              <![CDATA[
+              Normally, the indicator will show green when the channel is on and red when it is off.If the polarity is inverted, the indicator sense is inverted accordingly.
+              ]]>
+            </info>
+            <value>false</value>
+          </param>
+
+          <param name="normalState" type="Option">
+            <label>Normal state</label>
+            <description>Normal state for this channel.</description>
+            <info>
+              <![CDATA[
+              The light will be green if the channel is in this state
+              ]]>
+            </info>
+            <value>ON</value>
+          </param>
+
+          <param name="warn" type="Boolean">
+            <label>Warn</label>
+            <description>Warn on this channel if state is not normal?</description>
+            <info>
+              <![CDATA[
+              If set, this channel will warn if the state is not the normal state selected.
+              ]]>
+            </info>
+            <value>false</value>
+          </param>
+
+        </param>
+
+        <!-- ======= end of collection switch_1 ======= -->
+
+        <!-- ====== start of collection switch_2 ====== -->
+
+        <param name="switch_2" type="Collection" view_x="200" view_y="200" view_width="500" view_height="338">
+          <label>Switch 2</label>
+          <description>Parameters for switch channel 2</description>
+
+          <param name="labelStr" type="String">
+            <label>Channel label</label>
+            <description>Label for this switch channel</description>
+            <info>
+              <![CDATA[
+              This label will appear in the GUI next to the controls and LED for this channel.
+              ]]>
+            </info>
+            <value>Fan</value>
+          </param>
+
+          <param name="onAtStartup" type="Boolean">
+            <label>OnAtStartup</label>
+            <description>Is this switch on at startup?</description>
+            <info>
+              <![CDATA[
+              If true, the switch will be set on automatically at startup.
+              ]]>
+            </info>
+            <value>false</value>
+          </param>
+
+          <param name="enableSwitch" type="Boolean">
+            <label>Enable switch?</label>
+            <description>Do we enable the switch for this channel?</description>
+            <info>
+              <![CDATA[
+              If false, the channel is only used to monitor the line. The switch will be disabled (grayed-out).
+              ]]>
+            </info>
+            <value>false</value>
+          </param>
+
+          <param name="active" type="Boolean">
+            <label>Channel active?</label>
+            <description>Is this switch channel active?</description>
+            <info>
+              <![CDATA[
+              The user can configure which switches are active. Only the active channels will be shown.
+              ]]>
+            </info>
+            <value>true</value>
+          </param>
+
+          <param name="invertPolarity" type="Boolean">
+            <label>Invert channel polarity?</label>
+            <description>Invert the polarity of this switch?</description>
+            <info>
+              <![CDATA[
+              Normally, the indicator will show green when the channel is on and red when it is off.If the polarity is inverted, the indicator sense is inverted accordingly.
+              ]]>
+            </info>
+            <value>false</value>
+          </param>
+
+          <param name="normalState" type="Option">
+            <label>Normal state</label>
+            <description>Normal state for this channel.</description>
+            <info>
+              <![CDATA[
+              The light will be green if the channel is in this state
+              ]]>
+            </info>
+            <value>OFF</value>
+          </param>
+
+          <param name="warn" type="Boolean">
+            <label>Warn</label>
+            <description>Warn on this channel if state is not normal?</description>
+            <info>
+              <![CDATA[
+              If set, this channel will warn if the state is not the normal state selected.
+              ]]>
+            </info>
+            <value>true</value>
+          </param>
+
+        </param>
+
+        <!-- ======= end of collection switch_2 ======= -->
+
+        <!-- ====== start of collection switch_3 ====== -->
+
+        <param name="switch_3" type="Collection" view_x="200" view_y="200" view_width="485" view_height="338">
+          <label>Switch 3</label>
+          <description>Parameters for switch channel 3</description>
+
+          <param name="labelStr" type="String">
+            <label>Channel label</label>
+            <description>Label for this switch channel</description>
+            <info>
+              <![CDATA[
+              This label will appear in the GUI next to the controls and LED for this channel.
+              ]]>
+            </info>
+            <value>Alarm</value>
+          </param>
+
+          <param name="onAtStartup" type="Boolean">
+            <label>OnAtStartup</label>
+            <description>Is this switch on at startup?</description>
+            <info>
+              <![CDATA[
+              If true, the switch will be set on automatically at startup.
+              ]]>
+            </info>
+            <value>true</value>
+          </param>
+
+          <param name="enableSwitch" type="Boolean">
+            <label>Enable switch?</label>
+            <description>Do we enable the switch for this channel?</description>
+            <info>
+              <![CDATA[
+              If false, the channel is only used to monitor the line. The switch will be disabled (grayed-out).
+              ]]>
+            </info>
+            <value>false</value>
+          </param>
+
+          <param name="active" type="Boolean">
+            <label>Channel active?</label>
+            <description>Is this switch channel active?</description>
+            <info>
+              <![CDATA[
+              The user can configure which switches are active. Only the active channels will be shown.
+              ]]>
+            </info>
+            <value>true</value>
+          </param>
+
+          <param name="invertPolarity" type="Boolean">
+            <label>Invert channel polarity?</label>
+            <description>Invert the polarity of this switch?</description>
+            <info>
+              <![CDATA[
+              Normally, the indicator will show green when the channel is on and red when it is off.If the polarity is inverted, the indicator sense is inverted accordingly.
+              ]]>
+            </info>
+            <value>false</value>
+          </param>
+
+          <param name="normalState" type="Option">
+            <label>Normal state</label>
+            <description>Normal state for this channel.</description>
+            <info>
+              <![CDATA[
+              The light will be green if the channel is in this state
+              ]]>
+            </info>
+            <value>ON</value>
+          </param>
+
+          <param name="warn" type="Boolean">
+            <label>Warn</label>
+            <description>Warn on this channel if state is not normal?</description>
+            <info>
+              <![CDATA[
+              If set, this channel will warn if the state is not the normal state selected.
+              ]]>
+            </info>
+            <value>false</value>
+          </param>
+
+        </param>
+
+        <!-- ======= end of collection switch_3 ======= -->
+
+        <!-- ====== start of collection switch_4 ====== -->
+
+        <param name="switch_4" type="Collection" view_x="200" view_y="200" view_width="508" view_height="333">
+          <label>Switch 4</label>
+          <description>Parameters for switch channel 4</description>
+
+          <param name="labelStr" type="String">
+            <label>Channel label</label>
+            <description>Label for this switch channel</description>
+            <info>
+              <![CDATA[
+              This label will appear in the GUI next to the controls and LED for this channel.
+              ]]>
+            </info>
+            <value>lights</value>
+          </param>
+
+          <param name="onAtStartup" type="Boolean">
+            <label>OnAtStartup</label>
+            <description>Is this switch on at startup?</description>
+            <info>
+              <![CDATA[
+              If true, the switch will be set on automatically at startup.
+              ]]>
+            </info>
+            <value>false</value>
+          </param>
+
+          <param name="enableSwitch" type="Boolean">
+            <label>Enable switch?</label>
+            <description>Do we enable the switch for this channel?</description>
+            <info>
+              <![CDATA[
+              If false, the channel is only used to monitor the line. The switch will be disabled (grayed-out).
+              ]]>
+            </info>
+            <value>true</value>
+          </param>
+
+          <param name="active" type="Boolean">
+            <label>Channel active?</label>
+            <description>Is this switch channel active?</description>
+            <info>
+              <![CDATA[
+              The user can configure which switches are active. Only the active channels will be shown.
+              ]]>
+            </info>
+            <value>true</value>
+          </param>
+
+          <param name="invertPolarity" type="Boolean">
+            <label>Invert channel polarity?</label>
+            <description>Invert the polarity of this switch?</description>
+            <info>
+              <![CDATA[
+              Normally, the indicator will show green when the channel is on and red when it is off.If the polarity is inverted, the indicator sense is inverted accordingly.
+              ]]>
+            </info>
+            <value>false</value>
+          </param>
+
+          <param name="normalState" type="Option">
+            <label>Normal state</label>
+            <description>Normal state for this channel.</description>
+            <info>
+              <![CDATA[
+              The light will be green if the channel is in this state
+              ]]>
+            </info>
+            <value>OFF</value>
+          </param>
+
+          <param name="warn" type="Boolean">
+            <label>Warn</label>
+            <description>Warn on this channel if state is not normal?</description>
+            <info>
+              <![CDATA[
+              If set, this channel will warn if the state is not the normal state selected.
+              ]]>
+            </info>
+            <value>false</value>
+          </param>
+
+        </param>
+
+        <!-- ======= end of collection switch_4 ======= -->
+
+        <!-- ====== start of collection switch_5 ====== -->
+
+        <param name="switch_5" type="Collection" view_x="200" view_y="200" view_width="502" view_height="335">
+          <label>Switch 5</label>
+          <description>Parameters for switch channel 5</description>
+
+          <param name="labelStr" type="String">
+            <label>Channel label</label>
+            <description>Label for this switch channel</description>
+            <info>
+              <![CDATA[
+              This label will appear in the GUI next to the controls and LED for this channel.
+              ]]>
+            </info>
+            <value>not-set</value>
+          </param>
+
+          <param name="onAtStartup" type="Boolean">
+            <label>OnAtStartup</label>
+            <description>Is this switch on at startup?</description>
+            <info>
+              <![CDATA[
+              If true, the switch will be set on automatically at startup.
+              ]]>
+            </info>
+            <value>false</value>
+          </param>
+
+          <param name="enableSwitch" type="Boolean">
+            <label>Enable switch?</label>
+            <description>Do we enable the switch for this channel?</description>
+            <info>
+              <![CDATA[
+              If false, the channel is only used to monitor the line. The switch will be disabled (grayed-out).
+              ]]>
+            </info>
+            <value>true</value>
+          </param>
+
+          <param name="active" type="Boolean">
+            <label>Channel active?</label>
+            <description>Is this switch channel active?</description>
+            <info>
+              <![CDATA[
+              The user can configure which switches are active. Only the active channels will be shown.
+              ]]>
+            </info>
+            <value>false</value>
+          </param>
+
+          <param name="invertPolarity" type="Boolean">
+            <label>Invert channel polarity?</label>
+            <description>Invert the polarity of this switch?</description>
+            <info>
+              <![CDATA[
+              Normally, the indicator will show green when the channel is on and red when it is off.If the polarity is inverted, the indicator sense is inverted accordingly.
+              ]]>
+            </info>
+            <value>false</value>
+          </param>
+
+          <param name="normalState" type="Option">
+            <label>Normal state</label>
+            <description>Normal state for this channel.</description>
+            <info>
+              <![CDATA[
+              The light will be green if the channel is in this state
+              ]]>
+            </info>
+            <value>ON</value>
+          </param>
+
+          <param name="warn" type="Boolean">
+            <label>Warn</label>
+            <description>Warn on this channel if state is not normal?</description>
+            <info>
+              <![CDATA[
+              If set, this channel will warn if the state is not the normal state selected.
+              ]]>
+            </info>
+            <value>false</value>
+          </param>
+
+        </param>
+
+        <!-- ======= end of collection switch_5 ======= -->
+
+        <!-- ====== start of collection switch_6 ====== -->
+
+        <param name="switch_6" type="Collection" view_x="-1" view_y="-1" view_width="503" view_height="277">
+          <label>Switch 6</label>
+          <description>Parameters for switch channel 6</description>
+
+          <param name="labelStr" type="String">
+            <label>Channel label</label>
+            <description>Label for this switch channel</description>
+            <info>
+              <![CDATA[
+              This label will appear in the GUI next to the controls and LED for this channel.
+              ]]>
+            </info>
+            <value>not-set</value>
+          </param>
+
+          <param name="onAtStartup" type="Boolean">
+            <label>OnAtStartup</label>
+            <description>Is this switch on at startup?</description>
+            <info>
+              <![CDATA[
+              If true, the switch will be set on automatically at startup.
+              ]]>
+            </info>
+            <value>false</value>
+          </param>
+
+          <param name="enableSwitch" type="Boolean">
+            <label>Enable switch?</label>
+            <description>Do we enable the switch for this channel?</description>
+            <info>
+              <![CDATA[
+              If false, the channel is only used to monitor the line. The switch will be disabled (grayed-out).
+              ]]>
+            </info>
+            <value>true</value>
+          </param>
+
+          <param name="active" type="Boolean">
+            <label>Channel active?</label>
+            <description>Is this switch channel active?</description>
+            <info>
+              <![CDATA[
+              The user can configure which switches are active. Only the active channels will be shown.
+              ]]>
+            </info>
+            <value>false</value>
+          </param>
+
+          <param name="invertPolarity" type="Boolean">
+            <label>Invert channel polarity?</label>
+            <description>Invert the polarity of this switch?</description>
+            <info>
+              <![CDATA[
+              Normally, the indicator will show green when the channel is on and red when it is off.If the polarity is inverted, the indicator sense is inverted accordingly.
+              ]]>
+            </info>
+            <value>false</value>
+          </param>
+
+          <param name="normalState" type="Option">
+            <label>Normal state</label>
+            <description>Normal state for this channel.</description>
+            <info>
+              <![CDATA[
+              The light will be green if the channel is in this state
+              ]]>
+            </info>
+            <value>ON</value>
+          </param>
+
+          <param name="warn" type="Boolean">
+            <label>Warn</label>
+            <description>Warn on this channel if state is not normal?</description>
+            <info>
+              <![CDATA[
+              If set, this channel will warn if the state is not the normal state selected.
+              ]]>
+            </info>
+            <value>false</value>
+          </param>
+
+        </param>
+
+        <!-- ======= end of collection switch_6 ======= -->
+
+        <!-- ====== start of collection switch_7 ====== -->
+
+        <param name="switch_7" type="Collection" view_x="182" view_y="194" view_width="502" view_height="321">
+          <label>Switch 7</label>
+          <description>Parameters for switch channel 7</description>
+
+          <param name="labelStr" type="String">
+            <label>Channel label</label>
+            <description>Label for this switch channel</description>
+            <info>
+              <![CDATA[
+              This label will appear in the GUI next to the controls and LED for this channel.
+              ]]>
+            </info>
+            <value>test</value>
+          </param>
+
+          <param name="onAtStartup" type="Boolean">
+            <label>OnAtStartup</label>
+            <description>Is this switch on at startup?</description>
+            <info>
+              <![CDATA[
+              If true, the switch will be set on automatically at startup.
+              ]]>
+            </info>
+            <value>false</value>
+          </param>
+
+          <param name="enableSwitch" type="Boolean">
+            <label>Enable switch?</label>
+            <description>Do we enable the switch for this channel?</description>
+            <info>
+              <![CDATA[
+              If false, the channel is only used to monitor the line. The switch will be disabled (grayed-out).
+              ]]>
+            </info>
+            <value>true</value>
+          </param>
+
+          <param name="active" type="Boolean">
+            <label>Channel active?</label>
+            <description>Is this switch channel active?</description>
+            <info>
+              <![CDATA[
+              The user can configure which switches are active. Only the active channels will be shown.
+              ]]>
+            </info>
+            <value>true</value>
+          </param>
+
+          <param name="invertPolarity" type="Boolean">
+            <label>Invert channel polarity?</label>
+            <description>Invert the polarity of this switch?</description>
+            <info>
+              <![CDATA[
+              Normally, the indicator will show green when the channel is on and red when it is off.If the polarity is inverted, the indicator sense is inverted accordingly.
+              ]]>
+            </info>
+            <value>false</value>
+          </param>
+
+          <param name="normalState" type="Option">
+            <label>Normal state</label>
+            <description>Normal state for this channel.</description>
+            <info>
+              <![CDATA[
+              The light will be green if the channel is in this state
+              ]]>
+            </info>
+            <value>OFF</value>
+          </param>
+
+          <param name="warn" type="Boolean">
+            <label>Warn</label>
+            <description>Warn on this channel if state is not normal?</description>
+            <info>
+              <![CDATA[
+              If set, this channel will warn if the state is not the normal state selected.
+              ]]>
+            </info>
+            <value>true</value>
+          </param>
+
+        </param>
+
+        <!-- ======= end of collection switch_7 ======= -->
+
+        <!-- ====== start of collection switch_8 ====== -->
+
+        <param name="switch_8" type="Collection" view_x="-1" view_y="-1" view_width="494" view_height="310">
+          <label>Switch 8</label>
+          <description>Parameters for switch channel 8</description>
+
+          <param name="labelStr" type="String">
+            <label>Channel label</label>
+            <description>Label for this switch channel</description>
+            <info>
+              <![CDATA[
+              This label will appear in the GUI next to the controls and LED for this channel.
+              ]]>
+            </info>
+            <value>test2</value>
+          </param>
+
+          <param name="onAtStartup" type="Boolean">
+            <label>OnAtStartup</label>
+            <description>Is this switch on at startup?</description>
+            <info>
+              <![CDATA[
+              If true, the switch will be set on automatically at startup.
+              ]]>
+            </info>
+            <value>false</value>
+          </param>
+
+          <param name="enableSwitch" type="Boolean">
+            <label>Enable switch?</label>
+            <description>Do we enable the switch for this channel?</description>
+            <info>
+              <![CDATA[
+              If false, the channel is only used to monitor the line. The switch will be disabled (grayed-out).
+              ]]>
+            </info>
+            <value>true</value>
+          </param>
+
+          <param name="active" type="Boolean">
+            <label>Channel active?</label>
+            <description>Is this switch channel active?</description>
+            <info>
+              <![CDATA[
+              The user can configure which switches are active. Only the active channels will be shown.
+              ]]>
+            </info>
+            <value>false</value>
+          </param>
+
+          <param name="invertPolarity" type="Boolean">
+            <label>Invert channel polarity?</label>
+            <description>Invert the polarity of this switch?</description>
+            <info>
+              <![CDATA[
+              Normally, the indicator will show green when the channel is on and red when it is off.If the polarity is inverted, the indicator sense is inverted accordingly.
+              ]]>
+            </info>
+            <value>false</value>
+          </param>
+
+          <param name="normalState" type="Option">
+            <label>Normal state</label>
+            <description>Normal state for this channel.</description>
+            <info>
+              <![CDATA[
+              The light will be green if the channel is in this state
+              ]]>
+            </info>
+            <value>ON</value>
+          </param>
+
+          <param name="warn" type="Boolean">
+            <label>Warn</label>
+            <description>Warn on this channel if state is not normal?</description>
+            <info>
+              <![CDATA[
+              If set, this channel will warn if the state is not the normal state selected.
+              ]]>
+            </info>
+            <value>false</value>
+          </param>
+
+        </param>
+
+        <!-- ======= end of collection switch_8 ======= -->
+
+        <!-- ====== start of collection switch_9 ====== -->
+
+        <param name="switch_9" type="Collection" view_x="-1" view_y="-1" view_width="494" view_height="310">
+          <label>Switch 9</label>
+          <description>Parameters for switch channel 9</description>
+
+          <param name="labelStr" type="String">
+            <label>Channel label</label>
+            <description>Label for this switch channel</description>
+            <info>
+              <![CDATA[
+              This label will appear in the GUI next to the controls and LED for this channel.
+              ]]>
+            </info>
+            <value>test3</value>
+          </param>
+
+          <param name="onAtStartup" type="Boolean">
+            <label>OnAtStartup</label>
+            <description>Is this switch on at startup?</description>
+            <info>
+              <![CDATA[
+              If true, the switch will be set on automatically at startup.
+              ]]>
+            </info>
+            <value>false</value>
+          </param>
+
+          <param name="enableSwitch" type="Boolean">
+            <label>Enable switch?</label>
+            <description>Do we enable the switch for this channel?</description>
+            <info>
+              <![CDATA[
+              If false, the channel is only used to monitor the line. The switch will be disabled (grayed-out).
+              ]]>
+            </info>
+            <value>true</value>
+          </param>
+
+          <param name="active" type="Boolean">
+            <label>Channel active?</label>
+            <description>Is this switch channel active?</description>
+            <info>
+              <![CDATA[
+              The user can configure which switches are active. Only the active channels will be shown.
+              ]]>
+            </info>
+            <value>false</value>
+          </param>
+
+          <param name="invertPolarity" type="Boolean">
+            <label>Invert channel polarity?</label>
+            <description>Invert the polarity of this switch?</description>
+            <info>
+              <![CDATA[
+              Normally, the indicator will show green when the channel is on and red when it is off.If the polarity is inverted, the indicator sense is inverted accordingly.
+              ]]>
+            </info>
+            <value>false</value>
+          </param>
+
+          <param name="normalState" type="Option">
+            <label>Normal state</label>
+            <description>Normal state for this channel.</description>
+            <info>
+              <![CDATA[
+              The light will be green if the channel is in this state
+              ]]>
+            </info>
+            <value>ON</value>
+          </param>
+
+          <param name="warn" type="Boolean">
+            <label>Warn</label>
+            <description>Warn on this channel if state is not normal?</description>
+            <info>
+              <![CDATA[
+              If set, this channel will warn if the state is not the normal state selected.
+              ]]>
+            </info>
+            <value>false</value>
+          </param>
+
+        </param>
+
+        <!-- ======= end of collection switch_9 ======= -->
+
+        <!-- ====== start of collection switch_10 ====== -->
+
+        <param name="switch_10" type="Collection" view_x="-1" view_y="-1" view_width="494" view_height="310">
+          <label>Switch 10</label>
+          <description>Parameters for switch channel 10</description>
+
+          <param name="labelStr" type="String">
+            <label>Channel label</label>
+            <description>Label for this switch channel</description>
+            <info>
+              <![CDATA[
+              This label will appear in the GUI next to the controls and LED for this channel.
+              ]]>
+            </info>
+            <value>test4</value>
+          </param>
+
+          <param name="onAtStartup" type="Boolean">
+            <label>OnAtStartup</label>
+            <description>Is this switch on at startup?</description>
+            <info>
+              <![CDATA[
+              If true, the switch will be set on automatically at startup.
+              ]]>
+            </info>
+            <value>false</value>
+          </param>
+
+          <param name="enableSwitch" type="Boolean">
+            <label>Enable switch?</label>
+            <description>Do we enable the switch for this channel?</description>
+            <info>
+              <![CDATA[
+              If false, the channel is only used to monitor the line. The switch will be disabled (grayed-out).
+              ]]>
+            </info>
+            <value>true</value>
+          </param>
+
+          <param name="active" type="Boolean">
+            <label>Channel active?</label>
+            <description>Is this switch channel active?</description>
+            <info>
+              <![CDATA[
+              The user can configure which switches are active. Only the active channels will be shown.
+              ]]>
+            </info>
+            <value>false</value>
+          </param>
+
+          <param name="invertPolarity" type="Boolean">
+            <label>Invert channel polarity?</label>
+            <description>Invert the polarity of this switch?</description>
+            <info>
+              <![CDATA[
+              Normally, the indicator will show green when the channel is on and red when it is off.If the polarity is inverted, the indicator sense is inverted accordingly.
+              ]]>
+            </info>
+            <value>false</value>
+          </param>
+
+          <param name="normalState" type="Option">
+            <label>Normal state</label>
+            <description>Normal state for this channel.</description>
+            <info>
+              <![CDATA[
+              The light will be green if the channel is in this state
+              ]]>
+            </info>
+            <value>ON</value>
+          </param>
+
+          <param name="warn" type="Boolean">
+            <label>Warn</label>
+            <description>Warn on this channel if state is not normal?</description>
+            <info>
+              <![CDATA[
+              If set, this channel will warn if the state is not the normal state selected.
+              ]]>
+            </info>
+            <value>false</value>
+          </param>
+
+        </param>
+
+        <!-- ======= end of collection switch_10 ======= -->
+
+        <!-- ====== start of collection switch_11 ====== -->
+
+        <param name="switch_11" type="Collection" view_x="106" view_y="281" view_width="494" view_height="310">
+          <label>Switch 11</label>
+          <description>Parameters for switch channel 11</description>
+
+          <param name="labelStr" type="String">
+            <label>Channel label</label>
+            <description>Label for this switch channel</description>
+            <info>
+              <![CDATA[
+              This label will appear in the GUI next to the controls and LED for this channel.
+              ]]>
+            </info>
+            <value>UPS</value>
+          </param>
+
+          <param name="onAtStartup" type="Boolean">
+            <label>OnAtStartup</label>
+            <description>Is this switch on at startup?</description>
+            <info>
+              <![CDATA[
+              If true, the switch will be set on automatically at startup.
+              ]]>
+            </info>
+            <value>true</value>
+          </param>
+
+          <param name="enableSwitch" type="Boolean">
+            <label>Enable switch?</label>
+            <description>Do we enable the switch for this channel?</description>
+            <info>
+              <![CDATA[
+              If false, the channel is only used to monitor the line. The switch will be disabled (grayed-out).
+              ]]>
+            </info>
+            <value>true</value>
+          </param>
+
+          <param name="active" type="Boolean">
+            <label>Channel active?</label>
+            <description>Is this switch channel active?</description>
+            <info>
+              <![CDATA[
+              The user can configure which switches are active. Only the active channels will be shown.
+              ]]>
+            </info>
+            <value>true</value>
+          </param>
+
+          <param name="invertPolarity" type="Boolean">
+            <label>Invert channel polarity?</label>
+            <description>Invert the polarity of this switch?</description>
+            <info>
+              <![CDATA[
+              Normally, the indicator will show green when the channel is on and red when it is off.If the polarity is inverted, the indicator sense is inverted accordingly.
+              ]]>
+            </info>
+            <value>false</value>
+          </param>
+
+          <param name="normalState" type="Option">
+            <label>Normal state</label>
+            <description>Normal state for this channel.</description>
+            <info>
+              <![CDATA[
+              The light will be green if the channel is in this state
+              ]]>
+            </info>
+            <value>ON</value>
+          </param>
+
+          <param name="warn" type="Boolean">
+            <label>Warn</label>
+            <description>Warn on this channel if state is not normal?</description>
+            <info>
+              <![CDATA[
+              If set, this channel will warn if the state is not the normal state selected.
+              ]]>
+            </info>
+            <value>true</value>
+          </param>
+
+        </param>
+
+        <!-- ======= end of collection switch_11 ======= -->
+
+      </param>
+
+      <!-- ======= end of collection switches ======= -->
+
+      <!-- ====== start of collection analogs ====== -->
+
+      <param name="analogs" type="Collection" view_x="-1" view_y="-1" view_width="283" view_height="427">
+        <label>Analog channels</label>
+        <description>Set up the analog channels</description>
+
+        <!-- ====== start of collection analog_0 ====== -->
+
+        <param name="analog_0" type="Collection" view_x="-1" view_y="-1" view_width="488" view_height="437">
+          <label>Analog 0</label>
+          <description>Parameters for analog channel 0</description>
+
+          <param name="labelStr" type="String">
+            <label>Channel label</label>
+            <description>Label for this channel</description>
+            <info>
+              <![CDATA[
+              This label will appear in the GUI next to the readout for this channel.
+              ]]>
+            </info>
+            <value>Mag current</value>
+          </param>
+
+          <param name="unitsStr" type="String">
+            <label>Units</label>
+            <description>Units for this channel</description>
+            <info>
+              <![CDATA[
+              The units string will appear in the GUI next to the readout for this channel.
+              ]]>
+            </info>
+            <value>A</value>
+          </param>
+
+          <param name="offset" type="Double">
+            <label>Offset</label>
+            <description>Offset for computing analog value.</description>
+            <info>
+              <![CDATA[
+              The analog channel will return a voltage between -10V and +10V. This real value will be computed as volts * slope + offset.
+              ]]>
+            </info>
+            <value>0.0</value>
+          </param>
+
+          <param name="slope" type="Double">
+            <label>Slope</label>
+            <description>Slope for computing analog value.</description>
+            <info>
+              <![CDATA[
+              The analog channel will return a voltage between -10V and +10V. This real value will be computed as volts * slope + offset.
+              ]]>
+            </info>
+            <value>2.5</value>
+          </param>
+
+          <param name="warn" type="Boolean">
+            <label>Warn</label>
+            <description>Warn on this channel if out of limits?</description>
+            <info>
+              <![CDATA[
+              If set, this channel will warn if the value is not between the minimum and maximum values.
+              ]]>
+            </info>
+            <value>true</value>
+          </param>
+
+          <param name="minimum" type="Double">
+            <label>Minimum</label>
+            <description>Minimum valid valud for this channel.</description>
+            <info>
+              <![CDATA[
+              If the value goes below this, and warn is true this channel will generate a warning
+              ]]>
+            </info>
+            <value>0.0</value>
+          </param>
+
+          <param name="maximum" type="Double">
+            <label>Maximum</label>
+            <description>Maximum valid valud for this channel.</description>
+            <info>
+              <![CDATA[
+              If the value goes above this, and warn is true this channel will generate a warning
+              ]]>
+            </info>
+            <value>7.0</value>
+          </param>
+
+          <param name="active" type="Boolean">
+            <label>Active</label>
+            <description>Is this channel active?</description>
+            <info>
+              <![CDATA[
+              It is possible that not all analog channels will be active. This flag indicates the active status of the channel.
+              ]]>
+            </info>
+            <value>true</value>
+          </param>
+
+        </param>
+
+        <!-- ======= end of collection analog_0 ======= -->
+
+        <!-- ====== start of collection analog_1 ====== -->
+
+        <param name="analog_1" type="Collection" view_x="-1" view_y="-1" view_width="483" view_height="432">
+          <label>Analog 1</label>
+          <description>Parameters for analog channel 1</description>
+
+          <param name="labelStr" type="String">
+            <label>Channel label</label>
+            <description>Label for this channel</description>
+            <info>
+              <![CDATA[
+              This label will appear in the GUI next to the readout for this channel.
+              ]]>
+            </info>
+            <value>Cabinet temp</value>
+          </param>
+
+          <param name="unitsStr" type="String">
+            <label>Units</label>
+            <description>Units for this channel</description>
+            <info>
+              <![CDATA[
+              The units string will appear in the GUI next to the readout for this channel.
+              ]]>
+            </info>
+            <value>C</value>
+          </param>
+
+          <param name="offset" type="Double">
+            <label>Offset</label>
+            <description>Offset for computing analog value.</description>
+            <info>
+              <![CDATA[
+              The analog channel will return a voltage between -10V and +10V. This real value will be computed as volts * slope + offset.
+              ]]>
+            </info>
+            <value>10.0</value>
+          </param>
+
+          <param name="slope" type="Double">
+            <label>Slope</label>
+            <description>Slope for computing analog value.</description>
+            <info>
+              <![CDATA[
+              The analog channel will return a voltage between -10V and +10V. This real value will be computed as volts * slope + offset.
+              ]]>
+            </info>
+            <value>3.1</value>
+          </param>
+
+          <param name="warn" type="Boolean">
+            <label>Warn</label>
+            <description>Warn on this channel if out of limits?</description>
+            <info>
+              <![CDATA[
+              If set, this channel will warn if the value is not between the minimum and maximum values.
+              ]]>
+            </info>
+            <value>true</value>
+          </param>
+
+          <param name="minimum" type="Double">
+            <label>Minimum</label>
+            <description>Minimum valid valud for this channel.</description>
+            <info>
+              <![CDATA[
+              If the value goes below this, and warn is true this channel will generate a warning
+              ]]>
+            </info>
+            <value>-10.0</value>
+          </param>
+
+          <param name="maximum" type="Double">
+            <label>Maximum</label>
+            <description>Maximum valid valud for this channel.</description>
+            <info>
+              <![CDATA[
+              If the value goes above this, and warn is true this channel will generate a warning
+              ]]>
+            </info>
+            <value>40.0</value>
+          </param>
+
+          <param name="active" type="Boolean">
+            <label>Active</label>
+            <description>Is this channel active?</description>
+            <info>
+              <![CDATA[
+              It is possible that not all analog channels will be active. This flag indicates the active status of the channel.
+              ]]>
+            </info>
+            <value>true</value>
+          </param>
+
+        </param>
+
+        <!-- ======= end of collection analog_1 ======= -->
+
+        <!-- ====== start of collection analog_2 ====== -->
+
+        <param name="analog_2" type="Collection" view_x="200" view_y="200" view_width="495" view_height="442">
+          <label>Analog 2</label>
+          <description>Parameters for analog channel 2</description>
+
+          <param name="labelStr" type="String">
+            <label>Channel label</label>
+            <description>Label for this channel</description>
+            <info>
+              <![CDATA[
+              This label will appear in the GUI next to the readout for this channel.
+              ]]>
+            </info>
+            <value>Room temp</value>
+          </param>
+
+          <param name="unitsStr" type="String">
+            <label>Units</label>
+            <description>Units for this channel</description>
+            <info>
+              <![CDATA[
+              The units string will appear in the GUI next to the readout for this channel.
+              ]]>
+            </info>
+            <value>C</value>
+          </param>
+
+          <param name="offset" type="Double">
+            <label>Offset</label>
+            <description>Offset for computing analog value.</description>
+            <info>
+              <![CDATA[
+              The analog channel will return a voltage between -10V and +10V. This real value will be computed as volts * slope + offset.
+              ]]>
+            </info>
+            <value>-3.0</value>
+          </param>
+
+          <param name="slope" type="Double">
+            <label>Slope</label>
+            <description>Slope for computing analog value.</description>
+            <info>
+              <![CDATA[
+              The analog channel will return a voltage between -10V and +10V. This real value will be computed as volts * slope + offset.
+              ]]>
+            </info>
+            <value>1.2</value>
+          </param>
+
+          <param name="warn" type="Boolean">
+            <label>Warn</label>
+            <description>Warn on this channel if out of limits?</description>
+            <info>
+              <![CDATA[
+              If set, this channel will warn if the value is not between the minimum and maximum values.
+              ]]>
+            </info>
+            <value>false</value>
+          </param>
+
+          <param name="minimum" type="Double">
+            <label>Minimum</label>
+            <description>Minimum valid valud for this channel.</description>
+            <info>
+              <![CDATA[
+              If the value goes below this, and warn is true this channel will generate a warning
+              ]]>
+            </info>
+            <value>-10.0</value>
+          </param>
+
+          <param name="maximum" type="Double">
+            <label>Maximum</label>
+            <description>Maximum valid valud for this channel.</description>
+            <info>
+              <![CDATA[
+              If the value goes above this, and warn is true this channel will generate a warning
+              ]]>
+            </info>
+            <value>10.0</value>
+          </param>
+
+          <param name="active" type="Boolean">
+            <label>Active</label>
+            <description>Is this channel active?</description>
+            <info>
+              <![CDATA[
+              It is possible that not all analog channels will be active. This flag indicates the active status of the channel.
+              ]]>
+            </info>
+            <value>true</value>
+          </param>
+
+        </param>
+
+        <!-- ======= end of collection analog_2 ======= -->
+
+        <!-- ====== start of collection analog_3 ====== -->
+
+        <param name="analog_3" type="Collection" view_x="-1" view_y="-1" view_width="485" view_height="430">
+          <label>Analog 3</label>
+          <description>Parameters for analog channel 3</description>
+
+          <param name="labelStr" type="String">
+            <label>Channel label</label>
+            <description>Label for this channel</description>
+            <info>
+              <![CDATA[
+              This label will appear in the GUI next to the readout for this channel.
+              ]]>
+            </info>
+            <value>Line voltage</value>
+          </param>
+
+          <param name="unitsStr" type="String">
+            <label>Units</label>
+            <description>Units for this channel</description>
+            <info>
+              <![CDATA[
+              The units string will appear in the GUI next to the readout for this channel.
+              ]]>
+            </info>
+            <value>V</value>
+          </param>
+
+          <param name="offset" type="Double">
+            <label>Offset</label>
+            <description>Offset for computing analog value.</description>
+            <info>
+              <![CDATA[
+              The analog channel will return a voltage between -10V and +10V. This real value will be computed as volts * slope + offset.
+              ]]>
+            </info>
+            <value>0.0</value>
+          </param>
+
+          <param name="slope" type="Double">
+            <label>Slope</label>
+            <description>Slope for computing analog value.</description>
+            <info>
+              <![CDATA[
+              The analog channel will return a voltage between -10V and +10V. This real value will be computed as volts * slope + offset.
+              ]]>
+            </info>
+            <value>23.5</value>
+          </param>
+
+          <param name="warn" type="Boolean">
+            <label>Warn</label>
+            <description>Warn on this channel if out of limits?</description>
+            <info>
+              <![CDATA[
+              If set, this channel will warn if the value is not between the minimum and maximum values.
+              ]]>
+            </info>
+            <value>false</value>
+          </param>
+
+          <param name="minimum" type="Double">
+            <label>Minimum</label>
+            <description>Minimum valid valud for this channel.</description>
+            <info>
+              <![CDATA[
+              If the value goes below this, and warn is true this channel will generate a warning
+              ]]>
+            </info>
+            <value>105.0</value>
+          </param>
+
+          <param name="maximum" type="Double">
+            <label>Maximum</label>
+            <description>Maximum valid valud for this channel.</description>
+            <info>
+              <![CDATA[
+              If the value goes above this, and warn is true this channel will generate a warning
+              ]]>
+            </info>
+            <value>120.0</value>
+          </param>
+
+          <param name="active" type="Boolean">
+            <label>Active</label>
+            <description>Is this channel active?</description>
+            <info>
+              <![CDATA[
+              It is possible that not all analog channels will be active. This flag indicates the active status of the channel.
+              ]]>
+            </info>
+            <value>true</value>
+          </param>
+
+        </param>
+
+        <!-- ======= end of collection analog_3 ======= -->
+
+        <!-- ====== start of collection analog_4 ====== -->
+
+        <param name="analog_4" type="Collection" view_x="-1" view_y="-1" view_width="481" view_height="426">
+          <label>Analog 4</label>
+          <description>Parameters for analog channel 4</description>
+
+          <param name="labelStr" type="String">
+            <label>Channel label</label>
+            <description>Label for this channel</description>
+            <info>
+              <![CDATA[
+              This label will appear in the GUI next to the readout for this channel.
+              ]]>
+            </info>
+            <value>Not-set</value>
+          </param>
+
+          <param name="unitsStr" type="String">
+            <label>Units</label>
+            <description>Units for this channel</description>
+            <info>
+              <![CDATA[
+              The units string will appear in the GUI next to the readout for this channel.
+              ]]>
+            </info>
+            <value>not-set</value>
+          </param>
+
+          <param name="offset" type="Double">
+            <label>Offset</label>
+            <description>Offset for computing analog value.</description>
+            <info>
+              <![CDATA[
+              The analog channel will return a voltage between -10V and +10V. This real value will be computed as volts * slope + offset.
+              ]]>
+            </info>
+            <value>0.0</value>
+          </param>
+
+          <param name="slope" type="Double">
+            <label>Slope</label>
+            <description>Slope for computing analog value.</description>
+            <info>
+              <![CDATA[
+              The analog channel will return a voltage between -10V and +10V. This real value will be computed as volts * slope + offset.
+              ]]>
+            </info>
+            <value>1.0</value>
+          </param>
+
+          <param name="warn" type="Boolean">
+            <label>Warn</label>
+            <description>Warn on this channel if out of limits?</description>
+            <info>
+              <![CDATA[
+              If set, this channel will warn if the value is not between the minimum and maximum values.
+              ]]>
+            </info>
+            <value>false</value>
+          </param>
+
+          <param name="minimum" type="Double">
+            <label>Minimum</label>
+            <description>Minimum valid valud for this channel.</description>
+            <info>
+              <![CDATA[
+              If the value goes below this, and warn is true this channel will generate a warning
+              ]]>
+            </info>
+            <value>-10.0</value>
+          </param>
+
+          <param name="maximum" type="Double">
+            <label>Maximum</label>
+            <description>Maximum valid valud for this channel.</description>
+            <info>
+              <![CDATA[
+              If the value goes above this, and warn is true this channel will generate a warning
+              ]]>
+            </info>
+            <value>10.0</value>
+          </param>
+
+          <param name="active" type="Boolean">
+            <label>Active</label>
+            <description>Is this channel active?</description>
+            <info>
+              <![CDATA[
+              It is possible that not all analog channels will be active. This flag indicates the active status of the channel.
+              ]]>
+            </info>
+            <value>false</value>
+          </param>
+
+        </param>
+
+        <!-- ======= end of collection analog_4 ======= -->
+
+        <!-- ====== start of collection analog_5 ====== -->
+
+        <param name="analog_5" type="Collection" view_x="-1" view_y="-1" view_width="477" view_height="430">
+          <label>Analog 5</label>
+          <description>Parameters for analog channel 5</description>
+
+          <param name="labelStr" type="String">
+            <label>Channel label</label>
+            <description>Label for this channel</description>
+            <info>
+              <![CDATA[
+              This label will appear in the GUI next to the readout for this channel.
+              ]]>
+            </info>
+            <value>Not-set</value>
+          </param>
+
+          <param name="unitsStr" type="String">
+            <label>Units</label>
+            <description>Units for this channel</description>
+            <info>
+              <![CDATA[
+              The units string will appear in the GUI next to the readout for this channel.
+              ]]>
+            </info>
+            <value>not-set</value>
+          </param>
+
+          <param name="offset" type="Double">
+            <label>Offset</label>
+            <description>Offset for computing analog value.</description>
+            <info>
+              <![CDATA[
+              The analog channel will return a voltage between -10V and +10V. This real value will be computed as volts * slope + offset.
+              ]]>
+            </info>
+            <value>0.0</value>
+          </param>
+
+          <param name="slope" type="Double">
+            <label>Slope</label>
+            <description>Slope for computing analog value.</description>
+            <info>
+              <![CDATA[
+              The analog channel will return a voltage between -10V and +10V. This real value will be computed as volts * slope + offset.
+              ]]>
+            </info>
+            <value>1.0</value>
+          </param>
+
+          <param name="warn" type="Boolean">
+            <label>Warn</label>
+            <description>Warn on this channel if out of limits?</description>
+            <info>
+              <![CDATA[
+              If set, this channel will warn if the value is not between the minimum and maximum values.
+              ]]>
+            </info>
+            <value>false</value>
+          </param>
+
+          <param name="minimum" type="Double">
+            <label>Minimum</label>
+            <description>Minimum valid valud for this channel.</description>
+            <info>
+              <![CDATA[
+              If the value goes below this, and warn is true this channel will generate a warning
+              ]]>
+            </info>
+            <value>-10.0</value>
+          </param>
+
+          <param name="maximum" type="Double">
+            <label>Maximum</label>
+            <description>Maximum valid valud for this channel.</description>
+            <info>
+              <![CDATA[
+              If the value goes above this, and warn is true this channel will generate a warning
+              ]]>
+            </info>
+            <value>10.0</value>
+          </param>
+
+          <param name="active" type="Boolean">
+            <label>Active</label>
+            <description>Is this channel active?</description>
+            <info>
+              <![CDATA[
+              It is possible that not all analog channels will be active. This flag indicates the active status of the channel.
+              ]]>
+            </info>
+            <value>false</value>
+          </param>
+
+        </param>
+
+        <!-- ======= end of collection analog_5 ======= -->
+
+        <!-- ====== start of collection analog_6 ====== -->
+
+        <param name="analog_6" type="Collection" view_x="-1" view_y="-1" view_width="477" view_height="429">
+          <label>Analog 6</label>
+          <description>Parameters for analog channel 6</description>
+
+          <param name="labelStr" type="String">
+            <label>Channel label</label>
+            <description>Label for this channel</description>
+            <info>
+              <![CDATA[
+              This label will appear in the GUI next to the readout for this channel.
+              ]]>
+            </info>
+            <value>Not-set</value>
+          </param>
+
+          <param name="unitsStr" type="String">
+            <label>Units</label>
+            <description>Units for this channel</description>
+            <info>
+              <![CDATA[
+              The units string will appear in the GUI next to the readout for this channel.
+              ]]>
+            </info>
+            <value>not-set</value>
+          </param>
+
+          <param name="offset" type="Double">
+            <label>Offset</label>
+            <description>Offset for computing analog value.</description>
+            <info>
+              <![CDATA[
+              The analog channel will return a voltage between -10V and +10V. This real value will be computed as volts * slope + offset.
+              ]]>
+            </info>
+            <value>0.0</value>
+          </param>
+
+          <param name="slope" type="Double">
+            <label>Slope</label>
+            <description>Slope for computing analog value.</description>
+            <info>
+              <![CDATA[
+              The analog channel will return a voltage between -10V and +10V. This real value will be computed as volts * slope + offset.
+              ]]>
+            </info>
+            <value>1.0</value>
+          </param>
+
+          <param name="warn" type="Boolean">
+            <label>Warn</label>
+            <description>Warn on this channel if out of limits?</description>
+            <info>
+              <![CDATA[
+              If set, this channel will warn if the value is not between the minimum and maximum values.
+              ]]>
+            </info>
+            <value>false</value>
+          </param>
+
+          <param name="minimum" type="Double">
+            <label>Minimum</label>
+            <description>Minimum valid valud for this channel.</description>
+            <info>
+              <![CDATA[
+              If the value goes below this, and warn is true this channel will generate a warning
+              ]]>
+            </info>
+            <value>-10.0</value>
+          </param>
+
+          <param name="maximum" type="Double">
+            <label>Maximum</label>
+            <description>Maximum valid valud for this channel.</description>
+            <info>
+              <![CDATA[
+              If the value goes above this, and warn is true this channel will generate a warning
+              ]]>
+            </info>
+            <value>10.0</value>
+          </param>
+
+          <param name="active" type="Boolean">
+            <label>Active</label>
+            <description>Is this channel active?</description>
+            <info>
+              <![CDATA[
+              It is possible that not all analog channels will be active. This flag indicates the active status of the channel.
+              ]]>
+            </info>
+            <value>false</value>
+          </param>
+
+        </param>
+
+        <!-- ======= end of collection analog_6 ======= -->
+
+        <!-- ====== start of collection analog_7 ====== -->
+
+        <param name="analog_7" type="Collection" view_x="-1" view_y="-1" view_width="478" view_height="427">
+          <label>Analog 7</label>
+          <description>Parameters for analog channel 7</description>
+
+          <param name="labelStr" type="String">
+            <label>Channel label</label>
+            <description>Label for this channel</description>
+            <info>
+              <![CDATA[
+              This label will appear in the GUI next to the readout for this channel.
+              ]]>
+            </info>
+            <value>Not-set</value>
+          </param>
+
+          <param name="unitsStr" type="String">
+            <label>Units</label>
+            <description>Units for this channel</description>
+            <info>
+              <![CDATA[
+              The units string will appear in the GUI next to the readout for this channel.
+              ]]>
+            </info>
+            <value>not-set</value>
+          </param>
+
+          <param name="offset" type="Double">
+            <label>Offset</label>
+            <description>Offset for computing analog value.</description>
+            <info>
+              <![CDATA[
+              The analog channel will return a voltage between -10V and +10V. This real value will be computed as volts * slope + offset.
+              ]]>
+            </info>
+            <value>0.0</value>
+          </param>
+
+          <param name="slope" type="Double">
+            <label>Slope</label>
+            <description>Slope for computing analog value.</description>
+            <info>
+              <![CDATA[
+              The analog channel will return a voltage between -10V and +10V. This real value will be computed as volts * slope + offset.
+              ]]>
+            </info>
+            <value>1.0</value>
+          </param>
+
+          <param name="warn" type="Boolean">
+            <label>Warn</label>
+            <description>Warn on this channel if out of limits?</description>
+            <info>
+              <![CDATA[
+              If set, this channel will warn if the value is not between the minimum and maximum values.
+              ]]>
+            </info>
+            <value>false</value>
+          </param>
+
+          <param name="minimum" type="Double">
+            <label>Minimum</label>
+            <description>Minimum valid valud for this channel.</description>
+            <info>
+              <![CDATA[
+              If the value goes below this, and warn is true this channel will generate a warning
+              ]]>
+            </info>
+            <value>-10.0</value>
+          </param>
+
+          <param name="maximum" type="Double">
+            <label>Maximum</label>
+            <description>Maximum valid valud for this channel.</description>
+            <info>
+              <![CDATA[
+              If the value goes above this, and warn is true this channel will generate a warning
+              ]]>
+            </info>
+            <value>10.0</value>
+          </param>
+
+          <param name="active" type="Boolean">
+            <label>Active</label>
+            <description>Is this channel active?</description>
+            <info>
+              <![CDATA[
+              It is possible that not all analog channels will be active. This flag indicates the active status of the channel.
+              ]]>
+            </info>
+            <value>false</value>
+          </param>
+
+        </param>
+
+        <!-- ======= end of collection analog_7 ======= -->
+
+      </param>
+
+      <!-- ======= end of collection analogs ======= -->
+
+      <!-- ====== start of collection dacs ====== -->
+
+      <param name="dacs" type="Collection" view_x="150" view_y="150" view_width="523" view_height="247">
+        <label>Dac channels</label>
+        <description>Set up the dac channels</description>
+
+        <!-- ====== start of collection dac_0 ====== -->
+
+        <param name="dac_0" type="Collection" view_x="200" view_y="200" view_width="661" view_height="302">
+          <label>Dac 0</label>
+          <description>Parameters for dac channel 0</description>
+
+          <param name="labelStr" type="String">
+            <label>Channel label</label>
+            <description>Label for this dac channel</description>
+            <info>
+              <![CDATA[
+              This label will appear in the GUI above the slider for this channel.
+              ]]>
+            </info>
+            <value>AFC</value>
+          </param>
+
+          <param name="valueAtStartup" type="Integer">
+            <label>ValueAtStartup</label>
+            <description>Value for DAC at startup.</description>
+            <value>2316</value>
+          </param>
+
+          <param name="dataDelay" type="Integer">
+            <label>Delay between saving data value (msecs)</label>
+            <description>Slider value will be saved at this interval.</description>
+            <value>200</value>
+          </param>
+
+          <param name="active" type="Boolean">
+            <label>Channel active?</label>
+            <description>Is this dac channel active?</description>
+            <info>
+              <![CDATA[
+              The user can configure which daces are active. Only the active channels will be shown.
+              ]]>
+            </info>
+            <value>true</value>
+          </param>
+
+        </param>
+
+        <!-- ======= end of collection dac_0 ======= -->
+
+        <!-- ====== start of collection dac_1 ====== -->
+
+        <param name="dac_1" type="Collection" view_x="200" view_y="200" view_width="658" view_height="288">
+          <label>Dac 1</label>
+          <description>Parameters for dac channel 1</description>
+
+          <param name="labelStr" type="String">
+            <label>Channel label</label>
+            <description>Label for this dac channel</description>
+            <info>
+              <![CDATA[
+              This label will appear in the GUI above the slider for this channel.
+              ]]>
+            </info>
+            <value>not-set</value>
+          </param>
+
+          <param name="valueAtStartup" type="Integer">
+            <label>ValueAtStartup</label>
+            <description>Value for DAC at startup.</description>
+            <value>0</value>
+          </param>
+
+          <param name="dataDelay" type="Integer">
+            <label>Delay between saving data value (msecs)</label>
+            <description>Slider value will be saved at this interval.</description>
+            <value>200</value>
+          </param>
+
+          <param name="active" type="Boolean">
+            <label>Channel active?</label>
+            <description>Is this dac channel active?</description>
+            <info>
+              <![CDATA[
+              The user can configure which daces are active. Only the active channels will be shown.
+              ]]>
+            </info>
+            <value>false</value>
+          </param>
+
+        </param>
+
+        <!-- ======= end of collection dac_1 ======= -->
+
+        <param name="preferredWidth" type="Integer">
+          <label>PreferredWidth</label>
+          <description>Set width for slider in pixels</description>
+          <info>
+            <![CDATA[
+            Used to manage window layout.
+            ]]>
+          </info>
+          <value>200</value>
+        </param>
+
+      </param>
+
+      <!-- ======= end of collection dacs ======= -->
+
+      <!-- ====== start of collection ErrorFlags ====== -->
+
+      <param name="ErrorFlags" type="Collection" view_x="-1" view_y="-1" view_width="263" view_height="355">
+        <label>Error flags</label>
+        <description>Error flags show errors for such items as data comminucations and antenna control.</description>
+
+        <!-- ====== start of collection errorFlags_0 ====== -->
+
+        <param name="errorFlags_0" type="Collection" view_x="-1" view_y="-1" view_width="445" view_height="223">
+          <label>ErrorFlags 0</label>
+          <description>Parameters for error flags channel 0</description>
+
+          <param name="labelStr" type="String">
+            <label>Channel label</label>
+            <description>Label for this error flags channel</description>
+            <info>
+              <![CDATA[
+              This label will appear in the GUI next to the controls and LED for this channel.
+              ]]>
+            </info>
+            <value>Trigger</value>
+          </param>
+
+          <param name="active" type="Boolean">
+            <label>Channel active?</label>
+            <description>Is this error flags channel active?</description>
+            <info>
+              <![CDATA[
+              The user configures which error flags channels are active. Only the active channels will be shown.
+              ]]>
+            </info>
+            <value>true</value>
+          </param>
+
+          <param name="normalState" type="Option">
+            <label>Normal state</label>
+            <description>Normal state for this channel.</description>
+            <info>
+              <![CDATA[
+              The light will be green if the channel is in this state
+              ]]>
+            </info>
+            <value>OK</value>
+          </param>
+
+          <param name="warn" type="Boolean">
+            <label>Warn</label>
+            <description>Warn on this channel if state is not normal?</description>
+            <info>
+              <![CDATA[
+              If set, this channel will warn if the state is not the normal state selected.
+              ]]>
+            </info>
+            <value>true</value>
+          </param>
+
+        </param>
+
+        <!-- ======= end of collection errorFlags_0 ======= -->
+
+        <!-- ====== start of collection errorFlags_1 ====== -->
+
+        <param name="errorFlags_1" type="Collection" view_x="-1" view_y="-1" view_width="445" view_height="223">
+          <label>ErrorFlags 1</label>
+          <description>Parameters for error flags channel 1</description>
+
+          <param name="labelStr" type="String">
+            <label>Channel label</label>
+            <description>Label for this error flags channel</description>
+            <info>
+              <![CDATA[
+              This label will appear in the GUI next to the controls and LED for this channel.
+              ]]>
+            </info>
+            <value>Elevation</value>
+          </param>
+
+          <param name="active" type="Boolean">
+            <label>Channel active?</label>
+            <description>Is this error flags channel active?</description>
+            <info>
+              <![CDATA[
+              The user configures which error flags channels are active. Only the active channels will be shown.
+              ]]>
+            </info>
+            <value>true</value>
+          </param>
+
+          <param name="normalState" type="Option">
+            <label>Normal state</label>
+            <description>Normal state for this channel.</description>
+            <info>
+              <![CDATA[
+              The light will be green if the channel is in this state
+              ]]>
+            </info>
+            <value>OK</value>
+          </param>
+
+          <param name="warn" type="Boolean">
+            <label>Warn</label>
+            <description>Warn on this channel if state is not normal?</description>
+            <info>
+              <![CDATA[
+              If set, this channel will warn if the state is not the normal state selected.
+              ]]>
+            </info>
+            <value>false</value>
+          </param>
+
+        </param>
+
+        <!-- ======= end of collection errorFlags_1 ======= -->
+
+        <!-- ====== start of collection errorFlags_2 ====== -->
+
+        <param name="errorFlags_2" type="Collection" view_x="-1" view_y="-1" view_width="445" view_height="223">
+          <label>ErrorFlags 2</label>
+          <description>Parameters for error flags channel 2</description>
+
+          <param name="labelStr" type="String">
+            <label>Channel label</label>
+            <description>Label for this error flags channel</description>
+            <info>
+              <![CDATA[
+              This label will appear in the GUI next to the controls and LED for this channel.
+              ]]>
+            </info>
+            <value>Azimuth</value>
+          </param>
+
+          <param name="active" type="Boolean">
+            <label>Channel active?</label>
+            <description>Is this error flags channel active?</description>
+            <info>
+              <![CDATA[
+              The user configures which error flags channels are active. Only the active channels will be shown.
+              ]]>
+            </info>
+            <value>true</value>
+          </param>
+
+          <param name="normalState" type="Option">
+            <label>Normal state</label>
+            <description>Normal state for this channel.</description>
+            <info>
+              <![CDATA[
+              The light will be green if the channel is in this state
+              ]]>
+            </info>
+            <value>OK</value>
+          </param>
+
+          <param name="warn" type="Boolean">
+            <label>Warn</label>
+            <description>Warn on this channel if state is not normal?</description>
+            <info>
+              <![CDATA[
+              If set, this channel will warn if the state is not the normal state selected.
+              ]]>
+            </info>
+            <value>true</value>
+          </param>
+
+        </param>
+
+        <!-- ======= end of collection errorFlags_2 ======= -->
+
+        <!-- ====== start of collection errorFlags_3 ====== -->
+
+        <param name="errorFlags_3" type="Collection" view_x="-1" view_y="-1" view_width="445" view_height="223">
+          <label>ErrorFlags 3</label>
+          <description>Parameters for error flags channel 3</description>
+
+          <param name="labelStr" type="String">
+            <label>Channel label</label>
+            <description>Label for this error flags channel</description>
+            <info>
+              <![CDATA[
+              This label will appear in the GUI next to the controls and LED for this channel.
+              ]]>
+            </info>
+            <value>TcpIp comms</value>
+          </param>
+
+          <param name="active" type="Boolean">
+            <label>Channel active?</label>
+            <description>Is this error flags channel active?</description>
+            <info>
+              <![CDATA[
+              The user configures which error flags channels are active. Only the active channels will be shown.
+              ]]>
+            </info>
+            <value>true</value>
+          </param>
+
+          <param name="normalState" type="Option">
+            <label>Normal state</label>
+            <description>Normal state for this channel.</description>
+            <info>
+              <![CDATA[
+              The light will be green if the channel is in this state
+              ]]>
+            </info>
+            <value>OK</value>
+          </param>
+
+          <param name="warn" type="Boolean">
+            <label>Warn</label>
+            <description>Warn on this channel if state is not normal?</description>
+            <info>
+              <![CDATA[
+              If set, this channel will warn if the state is not the normal state selected.
+              ]]>
+            </info>
+            <value>true</value>
+          </param>
+
+        </param>
+
+        <!-- ======= end of collection errorFlags_3 ======= -->
+
+        <!-- ====== start of collection errorFlags_4 ====== -->
+
+        <param name="errorFlags_4" type="Collection">
+          <label>ErrorFlags 4</label>
+          <description>Parameters for error flags channel 4</description>
+
+          <param name="labelStr" type="String">
+            <label>Channel label</label>
+            <description>Label for this error flags channel</description>
+            <info>
+              <![CDATA[
+              This label will appear in the GUI next to the controls and LED for this channel.
+              ]]>
+            </info>
+            <value>not-set</value>
+          </param>
+
+          <param name="active" type="Boolean">
+            <label>Channel active?</label>
+            <description>Is this error flags channel active?</description>
+            <info>
+              <![CDATA[
+              The user configures which error flags channels are active. Only the active channels will be shown.
+              ]]>
+            </info>
+            <value>false</value>
+          </param>
+
+          <param name="normalState" type="Option">
+            <label>Normal state</label>
+            <description>Normal state for this channel.</description>
+            <info>
+              <![CDATA[
+              The light will be green if the channel is in this state
+              ]]>
+            </info>
+            <value>OK</value>
+          </param>
+
+          <param name="warn" type="Boolean">
+            <label>Warn</label>
+            <description>Warn on this channel if state is not normal?</description>
+            <info>
+              <![CDATA[
+              If set, this channel will warn if the state is not the normal state selected.
+              ]]>
+            </info>
+            <value>false</value>
+          </param>
+
+        </param>
+
+        <!-- ======= end of collection errorFlags_4 ======= -->
+
+        <!-- ====== start of collection errorFlags_5 ====== -->
+
+        <param name="errorFlags_5" type="Collection">
+          <label>ErrorFlags 5</label>
+          <description>Parameters for error flags channel 5</description>
+
+          <param name="labelStr" type="String">
+            <label>Channel label</label>
+            <description>Label for this error flags channel</description>
+            <info>
+              <![CDATA[
+              This label will appear in the GUI next to the controls and LED for this channel.
+              ]]>
+            </info>
+            <value>not-set</value>
+          </param>
+
+          <param name="active" type="Boolean">
+            <label>Channel active?</label>
+            <description>Is this error flags channel active?</description>
+            <info>
+              <![CDATA[
+              The user configures which error flags channels are active. Only the active channels will be shown.
+              ]]>
+            </info>
+            <value>false</value>
+          </param>
+
+          <param name="normalState" type="Option">
+            <label>Normal state</label>
+            <description>Normal state for this channel.</description>
+            <info>
+              <![CDATA[
+              The light will be green if the channel is in this state
+              ]]>
+            </info>
+            <value>OK</value>
+          </param>
+
+          <param name="warn" type="Boolean">
+            <label>Warn</label>
+            <description>Warn on this channel if state is not normal?</description>
+            <info>
+              <![CDATA[
+              If set, this channel will warn if the state is not the normal state selected.
+              ]]>
+            </info>
+            <value>false</value>
+          </param>
+
+        </param>
+
+        <!-- ======= end of collection errorFlags_5 ======= -->
+
+        <!-- ====== start of collection errorFlags_6 ====== -->
+
+        <param name="errorFlags_6" type="Collection">
+          <label>ErrorFlags 6</label>
+          <description>Parameters for error flags channel 6</description>
+
+          <param name="labelStr" type="String">
+            <label>Channel label</label>
+            <description>Label for this error flags channel</description>
+            <info>
+              <![CDATA[
+              This label will appear in the GUI next to the controls and LED for this channel.
+              ]]>
+            </info>
+            <value>not-set</value>
+          </param>
+
+          <param name="active" type="Boolean">
+            <label>Channel active?</label>
+            <description>Is this error flags channel active?</description>
+            <info>
+              <![CDATA[
+              The user configures which error flags channels are active. Only the active channels will be shown.
+              ]]>
+            </info>
+            <value>false</value>
+          </param>
+
+          <param name="normalState" type="Option">
+            <label>Normal state</label>
+            <description>Normal state for this channel.</description>
+            <info>
+              <![CDATA[
+              The light will be green if the channel is in this state
+              ]]>
+            </info>
+            <value>OK</value>
+          </param>
+
+          <param name="warn" type="Boolean">
+            <label>Warn</label>
+            <description>Warn on this channel if state is not normal?</description>
+            <info>
+              <![CDATA[
+              If set, this channel will warn if the state is not the normal state selected.
+              ]]>
+            </info>
+            <value>false</value>
+          </param>
+
+        </param>
+
+        <!-- ======= end of collection errorFlags_6 ======= -->
+
+        <!-- ====== start of collection errorFlags_7 ====== -->
+
+        <param name="errorFlags_7" type="Collection">
+          <label>ErrorFlags 7</label>
+          <description>Parameters for error flags channel 7</description>
+
+          <param name="labelStr" type="String">
+            <label>Channel label</label>
+            <description>Label for this error flags channel</description>
+            <info>
+              <![CDATA[
+              This label will appear in the GUI next to the controls and LED for this channel.
+              ]]>
+            </info>
+            <value>not-set</value>
+          </param>
+
+          <param name="active" type="Boolean">
+            <label>Channel active?</label>
+            <description>Is this error flags channel active?</description>
+            <info>
+              <![CDATA[
+              The user configures which error flags channels are active. Only the active channels will be shown.
+              ]]>
+            </info>
+            <value>false</value>
+          </param>
+
+          <param name="normalState" type="Option">
+            <label>Normal state</label>
+            <description>Normal state for this channel.</description>
+            <info>
+              <![CDATA[
+              The light will be green if the channel is in this state
+              ]]>
+            </info>
+            <value>OK</value>
+          </param>
+
+          <param name="warn" type="Boolean">
+            <label>Warn</label>
+            <description>Warn on this channel if state is not normal?</description>
+            <info>
+              <![CDATA[
+              If set, this channel will warn if the state is not the normal state selected.
+              ]]>
+            </info>
+            <value>false</value>
+          </param>
+
+        </param>
+
+        <!-- ======= end of collection errorFlags_7 ======= -->
+
+      </param>
+
+      <!-- ======= end of collection ErrorFlags ======= -->
+
+      <param name="showErrorFlags" type="Boolean">
+        <label>Show error flags in GUI</label>
+        <description>Option to show error flag status window in GUI</description>
+        <info>
+          <![CDATA[
+          Set to true to see error flags reported in control panel.
+          ]]>
+        </info>
+        <value>true</value>
+      </param>
+
+      <param name="showDacOnRight" type="Boolean">
+        <label>DAC controls on right</label>
+        <description>Show Dac controls in right-hand panel.</description>
+        <info>
+          <![CDATA[
+          If false, DAC control will appear on the left.
+          ]]>
+        </info>
+        <value>true</value>
+      </param>
+
+      <param name="allowResize" type="Boolean">
+        <label>Allow resize</label>
+        <description>Allow the window to be resized</description>
+        <info>
+          <![CDATA[
+          Normally this will be set to false. If the developer makes changes this may be set to true while the changes are made and then back to false when done.
+          ]]>
+        </info>
+        <value>true</value>
+      </param>
+
+      <param name="xx" type="Integer">
+        <label>X offset</label>
+        <description>The X offset from the parent</description>
+        <info>
+          <![CDATA[
+          This the the X offset, in pixels, from the main frame of the application.
+          ]]>
+        </info>
+        <value>600</value>
+      </param>
+
+      <param name="yy" type="Integer">
+        <label>Y offset</label>
+        <description>The Y offset from the parent</description>
+        <info>
+          <![CDATA[
+          This the the Y offset, in pixels, from the main frame of the application.
+          ]]>
+        </info>
+        <value>0</value>
+      </param>
+
+      <param name="width" type="Integer">
+        <label>Width</label>
+        <description>The window width in pixels</description>
+        <value>577</value>
+      </param>
+
+      <param name="height" type="Integer">
+        <label>Height</label>
+        <description>The window height in pixels</description>
+        <value>719</value>
+      </param>
+
+      <param name="startVisible" type="Boolean">
+        <label>Start visible</label>
+        <description>Start with the window visible?</description>
+        <info>
+          <![CDATA[
+          If true, the program will start with the Control Panel visible. If not, it will be hidden at startup
+          ]]>
+        </info>
+        <value>true</value>
+      </param>
+
+    </param>
+
+    <!-- ======= end of collection control ======= -->
+
+    <!-- ====== start of collection logging ====== -->
+
+    <param name="logging" type="Collection" view_x="-1" view_y="-1" view_width="525" view_height="426">
+      <label>Logging parameters</label>
+      <description>Edit the logging params</description>
+
+      <param name="fileFolder" type="String">
+        <label>Logging file folder</label>
+        <description>Folder in which to save and retrieve logging files</description>
+        <value>./logging</value>
+      </param>
+
+      <param name="field" type="Option">
+        <label>Field</label>
+        <description>Logging field</description>
+        <value>DBZ</value>
+      </param>
+
+      <param name="msecsBetweenBeams" type="Double">
+        <label>Msecs between beams</label>
+        <description>Time between logging beams (msecs).</description>
+        <info>
+          <![CDATA[
+          This is the number of msecs between saving out beams to the log. Set to 0 to save every beam.
+          ]]>
+        </info>
+        <value>1000.0</value>
+      </param>
+
+      <param name="maxNBeams" type="Integer">
+        <label>Max N Beams</label>
+        <description>Max number of beams logged per file.</description>
+        <info>
+          <![CDATA[
+          When this number of beams has been logged to a file, the logging is stopped automatically.
+          ]]>
+        </info>
+        <value>10000</value>
+      </param>
+
+      <param name="startRange" type="Double">
+        <label>Start range</label>
+        <description>Start range for saved data (km).</description>
+        <info>
+          <![CDATA[
+          Only data between the start and end ranges will be logged.
+          ]]>
+        </info>
+        <value>0.0</value>
+      </param>
+
+      <param name="endRange" type="Double">
+        <label>End range</label>
+        <description>End range for saved data (km).</description>
+        <info>
+          <![CDATA[
+          Only data between the start and end ranges will be logged.
+          ]]>
+        </info>
+        <value>10.0</value>
+      </param>
+
+      <param name="logTime" type="Boolean">
+        <label>Log time</label>
+        <description>Include time on log line?</description>
+        <info>
+          <![CDATA[
+          If true, year, month, day, hour, min, sec, msec are added to the start of the log line.
+          ]]>
+        </info>
+        <value>false</value>
+      </param>
+
+      <param name="xx" type="Integer">
+        <label>X offset</label>
+        <description>The X offset from the parent</description>
+        <info>
+          <![CDATA[
+          This the the X offset, in pixels, from the main frame of the application.
+          ]]>
+        </info>
+        <value>0</value>
+      </param>
+
+      <param name="yy" type="Integer">
+        <label>Y offset</label>
+        <description>The Y offset from the parent</description>
+        <info>
+          <![CDATA[
+          This the the Y offset, in pixels, from the main frame of the application.
+          ]]>
+        </info>
+        <value>510</value>
+      </param>
+
+      <param name="width" type="Integer">
+        <label>Width</label>
+        <description>The window width in pixels</description>
+        <value>600</value>
+      </param>
+
+      <param name="height" type="Integer">
+        <label>Height</label>
+        <description>The window height in pixels</description>
+        <value>227</value>
+      </param>
+
+      <param name="startVisible" type="Boolean">
+        <label>Start visible</label>
+        <description>Start with the window visible?</description>
+        <info>
+          <![CDATA[
+          If true, the program will start with the PPI visible. If not, it will be hidden at startup
+          ]]>
+        </info>
+        <value>false</value>
+      </param>
+
+    </param>
+
+    <!-- ======= end of collection logging ======= -->
+
+    <!-- ====== start of collection warningLog ====== -->
+
+    <param name="warningLog" type="Collection" view_x="100" view_y="100" view_width="534" view_height="288">
+      <label>Warning log parameters</label>
+      <description>Edit the warning log params</description>
+
+      <param name="loggingActive" type="Boolean">
+        <label>Is logging active?</label>
+        <description>Should warnings be logged to file?</description>
+        <info>
+          <![CDATA[
+          If true, warnings will be logged to a file when an error occurs or the error state changes.
+          ]]>
+        </info>
+        <value>true</value>
+      </param>
+
+      <param name="logChangeToNormal" type="Boolean">
+        <label>Log change back to normal?</label>
+        <description>Log change from error state back to normal?</description>
+        <info>
+          <![CDATA[
+          If true, a log message will be generated when the status returns from error to normal. If false, log messages will only be generated when (a) a state change occurs and (b) an error condition still exists.
+          ]]>
+        </info>
+        <value>true</value>
+      </param>
+
+      <param name="minSecsOperateMode" type="Integer">
+        <label>Min secs in Operate mode</label>
+        <description>Min number of secs in operate mode before logging starts.</description>
+        <info>
+          <![CDATA[
+          Warnings should only be logged in Operate mode. This is the number of seconds in which the system must be in Operate mode before we start logging warnings.
+          ]]>
+        </info>
+        <value>5</value>
+      </param>
+
+      <param name="minSecsSteady" type="Integer">
+        <label>Min secs in steady state</label>
+        <description>Min number of secs in steady state before warnings are logged.</description>
+        <info>
+          <![CDATA[
+          Warnings should only be logged if the warning state remains steady. This is the minimum number of seconds for the warning state to be steady before a warnings are logged.
+          ]]>
+        </info>
+        <value>10</value>
+      </param>
+
+      <param name="fileFolder" type="String">
+        <label>Warning logs file folder</label>
+        <description>Folder in which to save and warning logs</description>
+        <value>./warnings</value>
+      </param>
+
+    </param>
+
+    <!-- ======= end of collection warningLog ======= -->
+
+    <!-- ====== start of collection mainWindow ====== -->
+
+    <param name="mainWindow" type="Collection" view_x="-1" view_y="-1" view_width="457" view_height="305">
+      <label>Main window</label>
+      <description>Main window</description>
+
+      <param name="imageName" type="String">
+        <label>Image name</label>
+        <description>Name of image in main window</description>
+        <value>/edu/ucar/rap/titan/RdasControl/images/main_window.png</value>
+      </param>
+
+      <param name="fontSize" type="Float">
+        <label>Font size</label>
+        <description>Font size for pos and time</description>
+        <info>
+          <![CDATA[
+          This is the font size for rendering the time and antenna position over the main image.
+          ]]>
+        </info>
+        <value>22.0</value>
+      </param>
+
+      <param name="xx" type="Integer">
+        <label>X offset</label>
+        <description>The X offset from the parent</description>
+        <info>
+          <![CDATA[
+          This the the X offset, in pixels, from the main frame of the application.
+          ]]>
+        </info>
+        <value>0</value>
+      </param>
+
+      <param name="yy" type="Integer">
+        <label>Y offset</label>
+        <description>The Y offset from the parent</description>
+        <info>
+          <![CDATA[
+          This the the Y offset, in pixels, from the main frame of the application.
+          ]]>
+        </info>
+        <value>0</value>
+      </param>
+
+      <param name="width" type="Integer">
+        <label>Width</label>
+        <description>The window width in pixels</description>
+        <value>598</value>
+      </param>
+
+      <param name="height" type="Integer">
+        <label>Height</label>
+        <description>The window height in pixels</description>
+        <value>506</value>
+      </param>
+
+    </param>
+
+    <!-- ======= end of collection mainWindow ======= -->
+
+    <!-- ====== start of collection JrpViewParameters ====== -->
+
+    <param name="JrpViewParameters" type="Collection" view_x="-1" view_y="-1" view_width="504" view_height="345">
+      <label>View params</label>
+      <description>Parameters for controlling the View.</description>
+      <info>
+        <![CDATA[
+        This sets parameters which control how the View for editing the parameters is laid out.
+        ]]>
+      </info>
+
+      <param name="cascadeOffsetX" type="Integer">
+        <label>Cascade offset X</label>
+        <description>The X offset when cascading.</description>
+        <info>
+          <![CDATA[
+          Parameters collections may be nested to any depth. This is the offset applied to cascade the X offset for the View window as the user opens a parameter at the next level down.
+          ]]>
+        </info>
+        <value>50</value>
+      </param>
+
+      <param name="cascadeOffsetY" type="Integer">
+        <label>Cascade offset Y</label>
+        <description>The Y offset when cascading.</description>
+        <info>
+          <![CDATA[
+          Parameters collections may be nested to any depth. This is the offset applied to cascade the Y offset for the View window as the user opens a parameter at the next level down.
+          ]]>
+        </info>
+        <value>50</value>
+      </param>
+
+      <param name="infoX" type="Integer">
+        <label>Info window X</label>
+        <description>The X location of the Info window</description>
+        <value>800</value>
+      </param>
+
+      <param name="infoY" type="Integer">
+        <label>Info window Y</label>
+        <description>The Y location of the Info window</description>
+        <value>0</value>
+      </param>
+
+      <param name="infoWidth" type="Integer">
+        <label>Info window width</label>
+        <description>The width of the Info window</description>
+        <value>500</value>
+      </param>
+
+      <param name="infoHeight" type="Integer">
+        <label>Info window height</label>
+        <description>The height of the Info window</description>
+        <value>300</value>
+      </param>
+
+    </param>
+
+    <!-- ======= end of collection JrpViewParameters ======= -->
+
+  </param>
+
+  <!-- ======= end of collection Root ======= -->
+
+</parameters>
+

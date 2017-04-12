@@ -1,0 +1,436 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="yes"?>
+<!DOCTYPE parameters [
+ <!ELEMENT parameters (param+) >
+ <!ELEMENT param (label?, description?, info?, value?, param*) >
+ <!ELEMENT label (#PCDATA)>
+ <!ELEMENT description (#PCDATA)>
+ <!ELEMENT info (#PCDATA)>
+ <!ELEMENT value (#PCDATA)>
+ <!ATTLIST param name NMTOKEN #REQUIRED>
+ <!ATTLIST param type NMTOKEN #REQUIRED>
+ <!ATTLIST param type ( String | Boolean | Integer | Float | Double | Option | Collection ) #REQUIRED>
+ <!ATTLIST param view_x NMTOKEN #IMPLIED>
+ <!ATTLIST param view_y NMTOKEN #IMPLIED>
+ <!ATTLIST param view_width NMTOKEN #IMPLIED>
+ <!ATTLIST param view_height NMTOKEN #IMPLIED>
+]>
+
+<parameters>
+
+  <!-- ====== start of collection Root ====== -->
+
+  <param name="Root" type="Collection" view_x="20" view_y="100" view_width="392" view_height="305">
+    <label>Param manager</label>
+    <description>Root-depth parameter manager</description>
+
+    <param name="debug" type="Boolean">
+      <label>Debugging flag</label>
+      <description></description>
+      <value>false</value>
+    </param>
+
+    <param name="verbose" type="Boolean">
+      <label>Verbose flag</label>
+      <description></description>
+      <value>true</value>
+    </param>
+
+    <!-- ====== start of collection mainWindow ====== -->
+
+    <param name="mainWindow" type="Collection" view_x="176" view_y="405" view_width="512" view_height="263">
+      <label>Main window</label>
+      <description>Main window</description>
+
+      <param name="radarName" type="String">
+        <label>Radar name</label>
+        <description>Name of radar</description>
+        <value>DOW7</value>
+      </param>
+
+      <param name="imageName" type="String">
+        <label>Image name</label>
+        <description>Name of image in main window</description>
+        <value>/edu/ucar/rap/titan/RapidDowControl/images/rapid_dow.jpg</value>
+      </param>
+
+      <param name="textColor" type="Color">
+        <label>Color of text labels</label>
+        <description>Color of text in plot.</description>
+        <value>0xff0000</value>
+      </param>
+
+      <param name="fontSize" type="Float">
+        <label>Font size</label>
+        <description>Font size for pos and time</description>
+        <info>
+          <![CDATA[
+          This is the font size for rendering the time and antenna position over the main image.
+          ]]>
+        </info>
+        <value>20.0</value>
+      </param>
+
+      <param name="xx" type="Integer">
+        <label>X offset</label>
+        <description>The X offset from the parent</description>
+        <info>
+          <![CDATA[
+          This the the X offset, in pixels, from the main frame of the application.
+          ]]>
+        </info>
+        <value>0</value>
+      </param>
+
+      <param name="yy" type="Integer">
+        <label>Y offset</label>
+        <description>The Y offset from the parent</description>
+        <info>
+          <![CDATA[
+          This the the Y offset, in pixels, from the main frame of the application.
+          ]]>
+        </info>
+        <value>25</value>
+      </param>
+
+      <param name="width" type="Integer">
+        <label>Width</label>
+        <description>The window width in pixels</description>
+        <value>647</value>
+      </param>
+
+      <param name="height" type="Integer">
+        <label>Height</label>
+        <description>The window height in pixels</description>
+        <value>621</value>
+      </param>
+
+    </param>
+
+    <!-- ======= end of collection mainWindow ======= -->
+
+    <!-- ====== start of collection comms ====== -->
+
+    <param name="comms" type="Collection" view_x="121" view_y="405" view_width="618" view_height="272">
+      <label>Communications</label>
+      <description>Edit the communication parameters</description>
+
+      <param name="drxHost" type="String">
+        <label>DRX host</label>
+        <description>IP address of digital receiver host</description>
+        <info>
+          <![CDATA[
+          This can be either a hostname or IP address.
+          ]]>
+        </info>
+        <value>drx</value>
+      </param>
+
+      <param name="drxPort" type="Integer">
+        <label>Port for DRX process</label>
+        <description>TCP/IP port for DRX</description>
+        <value>15000</value>
+      </param>
+
+      <param name="rayHost" type="String">
+        <label>Host for ray data</label>
+        <description>We query this host to get the antenna angles from RadxMon</description>
+        <info>
+          <![CDATA[
+          This can be either a hostname or IP address.
+          ]]>
+        </info>
+        <value>drx</value>
+      </param>
+
+      <param name="rayPort" type="Integer">
+        <label>Port for ray data from RadxMon</label>
+        <description>TCP/IP port for ray</description>
+        <value>12000</value>
+      </param>
+
+    </param>
+
+    <!-- ======= end of collection comms ======= -->
+
+    <!-- ====== start of collection control ====== -->
+
+    <param name="control" type="Collection" view_x="49" view_y="145" view_width="760" view_height="493">
+      <label>Control panel</label>
+      <description>Control panel</description>
+
+      <param name="drxConfig" type="String">
+        <label>DRX-config</label>
+        <description>List of available config files</description>
+        <info>
+          <![CDATA[
+          <pre>Edit this list to give the user a choice of configurations.
+
+# - start comment lines start with '#'
+
+Each line entry should be formatted as follows:
+
+  label: config_file_name
+
+
+          ]]>
+        </info>
+        <value># ========================
+# DRX configuration
+# ========================
+Test sample: dowdrx.test
+120km range, 4/5 stagger, 1250 PRF, 800ns pulse, 120m gate:  dowdrx.120km
+75km range,   4/5 stagger, 2000 PRF, 500ns pulse, 75m   gate:  dowdrx.75km
+60km range,   4/5 stagger, 2500 PRF, 400ns pulse, 60m   gate:  dowdrx.60km
+37km range,   4/5 stagger, 3333 PRF, 300ns pulse, 45m   gate:  dowdrx.37km
+30km range,   4/5 stagger, 1250 PRF, 200ns pulse, 30m   gate:  dowdrx.30km
+</value>
+      </param>
+
+      <param name="fontSize" type="Float">
+        <label>Font size</label>
+        <description>Font size for pos and time</description>
+        <info>
+          <![CDATA[
+          This is the font size for the control panel.
+          ]]>
+        </info>
+        <value>12.0</value>
+      </param>
+
+      <param name="allowResize" type="Boolean">
+        <label>Allow resize</label>
+        <description>Allow the window to be resized</description>
+        <info>
+          <![CDATA[
+          Normally this will be set to false. If the developer makes changes this may be set to true while the changes are made and then back to false when done.
+          ]]>
+        </info>
+        <value>true</value>
+      </param>
+
+      <param name="xx" type="Integer">
+        <label>X offset</label>
+        <description>The X offset from the parent</description>
+        <info>
+          <![CDATA[
+          This the the X offset, in pixels, from the main frame of the application.
+          ]]>
+        </info>
+        <value>0</value>
+      </param>
+
+      <param name="yy" type="Integer">
+        <label>Y offset</label>
+        <description>The Y offset from the parent</description>
+        <info>
+          <![CDATA[
+          This the the Y offset, in pixels, from the main frame of the application.
+          ]]>
+        </info>
+        <value>621</value>
+      </param>
+
+      <param name="width" type="Integer">
+        <label>Width</label>
+        <description>The window width in pixels</description>
+        <value>647</value>
+      </param>
+
+      <param name="height" type="Integer">
+        <label>Height</label>
+        <description>The window height in pixels</description>
+        <value>317</value>
+      </param>
+
+      <param name="startVisible" type="Boolean">
+        <label>Start visible</label>
+        <description>Start with the window visible?</description>
+        <info>
+          <![CDATA[
+          If true, the program will start with the Control Panel visible. If not, it will be hidden at startup
+          ]]>
+        </info>
+        <value>true</value>
+      </param>
+
+    </param>
+
+    <!-- ======= end of collection control ======= -->
+
+    <!-- ====== start of collection status ====== -->
+
+    <param name="status" type="Collection" view_x="765" view_y="169" view_width="714" view_height="256">
+      <label>Status panel</label>
+      <description>Status panel</description>
+
+      <param name="intervalSecs" type="Double">
+        <label>Status data interval (s).</label>
+        <description>Interval for getting status (secs).</description>
+        <info>
+          <![CDATA[
+          A special thread is started to gather status information from the DowDriver. This is the interval, in seconds, between gathering the status data.
+          ]]>
+        </info>
+        <value>0.5</value>
+      </param>
+
+      <param name="maxFpgaTemp" type="Double">
+        <label>Max safe temperature for FPGA (C).</label>
+        <description>Max safe temp for FPGA.</description>
+        <info>
+          <![CDATA[
+          If the temp exceeds this, red text is used to indicate a problem.
+          ]]>
+        </info>
+        <value>70.0</value>
+      </param>
+
+      <param name="maxBoardTemp" type="Double">
+        <label>Max safe temperature for Pentek board (C).</label>
+        <description>Max safe temp for Pentek board.</description>
+        <info>
+          <![CDATA[
+          If the temp exceeds this, red text is used to indicate a problem.
+          ]]>
+        </info>
+        <value>70.0</value>
+      </param>
+
+      <param name="fontSize" type="Float">
+        <label>Font size</label>
+        <description>Font size for pos and time</description>
+        <info>
+          <![CDATA[
+          This is the font size for rendering the antenna and sun position, and the radar and clock time.
+          ]]>
+        </info>
+        <value>12.0</value>
+      </param>
+
+      <param name="allowResize" type="Boolean">
+        <label>Allow resize</label>
+        <description>Allow the window to be resized</description>
+        <info>
+          <![CDATA[
+          Normally this will be set to false. If the developer makes changes this may be set to true while the changes are made and then back to false when done.
+          ]]>
+        </info>
+        <value>true</value>
+      </param>
+
+      <param name="xx" type="Integer">
+        <label>X offset</label>
+        <description>The X offset from the parent</description>
+        <info>
+          <![CDATA[
+          This the the X offset, in pixels, from the main frame of the application.
+          ]]>
+        </info>
+        <value>647</value>
+      </param>
+
+      <param name="yy" type="Integer">
+        <label>Y offset</label>
+        <description>The Y offset from the parent</description>
+        <info>
+          <![CDATA[
+          This the the Y offset, in pixels, from the main frame of the application.
+          ]]>
+        </info>
+        <value>0</value>
+      </param>
+
+      <param name="width" type="Integer">
+        <label>Width</label>
+        <description>The window width in pixels</description>
+        <value>589</value>
+      </param>
+
+      <param name="height" type="Integer">
+        <label>Height</label>
+        <description>The window height in pixels</description>
+        <value>793</value>
+      </param>
+
+      <param name="startVisible" type="Boolean">
+        <label>Start visible</label>
+        <description>Start with the window visible?</description>
+        <info>
+          <![CDATA[
+          If true, the program will start with the Status Panel visible. If not, it will be hidden at startup
+          ]]>
+        </info>
+        <value>true</value>
+      </param>
+
+    </param>
+
+    <!-- ======= end of collection status ======= -->
+
+    <!-- ====== start of collection JrpViewParameters ====== -->
+
+    <param name="JrpViewParameters" type="Collection" view_x="-1" view_y="-1" view_width="486" view_height="279">
+      <label>View params</label>
+      <description>Parameters for controlling the View.</description>
+      <info>
+        <![CDATA[
+        This sets parameters which control how the View for editing the parameters is laid out.
+        ]]>
+      </info>
+
+      <param name="cascadeOffsetX" type="Integer">
+        <label>Cascade offset X</label>
+        <description>The X offset when cascading.</description>
+        <info>
+          <![CDATA[
+          Parameters collections may be nested to any depth. This is the offset applied to cascade the X offset for the View window as the user opens a parameter at the next level down.
+          ]]>
+        </info>
+        <value>50</value>
+      </param>
+
+      <param name="cascadeOffsetY" type="Integer">
+        <label>Cascade offset Y</label>
+        <description>The Y offset when cascading.</description>
+        <info>
+          <![CDATA[
+          Parameters collections may be nested to any depth. This is the offset applied to cascade the Y offset for the View window as the user opens a parameter at the next level down.
+          ]]>
+        </info>
+        <value>50</value>
+      </param>
+
+      <param name="infoX" type="Integer">
+        <label>Info window X</label>
+        <description>The X location of the Info window</description>
+        <value>800</value>
+      </param>
+
+      <param name="infoY" type="Integer">
+        <label>Info window Y</label>
+        <description>The Y location of the Info window</description>
+        <value>0</value>
+      </param>
+
+      <param name="infoWidth" type="Integer">
+        <label>Info window width</label>
+        <description>The width of the Info window</description>
+        <value>500</value>
+      </param>
+
+      <param name="infoHeight" type="Integer">
+        <label>Info window height</label>
+        <description>The height of the Info window</description>
+        <value>300</value>
+      </param>
+
+    </param>
+
+    <!-- ======= end of collection JrpViewParameters ======= -->
+
+  </param>
+
+  <!-- ======= end of collection Root ======= -->
+
+</parameters>
+

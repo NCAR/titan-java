@@ -1,0 +1,4 @@
+java -jar $HOME/cvs/java/dist/lib/DowControl.jar -instance display -params params/DowControl.ops &
+
+
+

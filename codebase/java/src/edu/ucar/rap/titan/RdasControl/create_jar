@@ -1,0 +1,5 @@
+#! /bin/csh
+
+cd $HOME/rap/java/src
+
+jar cvfm RdasControl.jar edu/ucar/rap/titan/RdasControl/MANIFEST.MF edu/ucar/rap/jrp edu/ucar/rap/titan/RdasControl
