@@ -1,0 +1,509 @@
+<?xml version="1.0"?>
+<!-- *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=* -->
+<!-- ** Copyright UCAR (c) 1992 - 2012 -->
+<!-- ** University Corporation for Atmospheric Research(UCAR) -->
+<!-- ** National Center for Atmospheric Research(NCAR) -->
+<!-- ** Research Applications Laboratory(RAL) -->
+<!-- ** P.O.Box 3000, Boulder, Colorado, 80307-3000, USA -->
+<!-- ** 2012/8/23 16:21:9 -->
+<!-- *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=* -->
+
+<project name="libraries" basedir="../../../../..">
+<!--targets to be called like methods, passing props-->
+
+  <property file="${basedir}/src/edu/ucar/rap/ant/build.properties"
+            description="Load common build properties."/>
+
+  <target name="compile">
+    <echo message="Compiling code in ${build.include}."/>
+    <mkdir dir="${build.dir}"/>
+    <javac srcdir="${src.dir}" destdir="${build.dir}" debug="${build.debug}"
+      includes="${build.include}" excludes="${build.exclude}"
+      deprecation="${build.deprecation}" includeantruntime="false">
+      <!--TODO: include fileset id?-->
+      <include name="${build.include}" />
+      <classpath refid="build.classpath"/>
+    </javac>
+  </target>
+
+  <target name="compile-lint">
+    <echo message="Compiling code in ${build.include}."/>
+    <javac srcdir="${src.dir}" destdir="${build.dir}" debug="${build.debug}"
+      includes="${build.include}" excludes="${build.exclude}" >
+      <include name="${build.include}" />
+      <classpath refid="build.classpath"/>
+      <compilerarg value="-Xlint:unchecked"/>
+      <compilerarg value="-Xlint:deprecation"/>
+    </javac>
+  </target>
+
+  <target name="compile1.1">
+    <echo message="Compiling code in ${build.include}."/>
+    <javac srcdir="${src.dir}" destdir="${build.dir}" debug="${build.debug}" source="1.2" >
+      <!--TODO: include fileset id?-->
+      <include name="${build.include}" />
+      <classpath refid="build.classpath"/>
+    </javac>
+  </target>
+
+  <target name="compile1.4">
+    <echo message="Compiling code in ${build.include}."/>
+    <javac srcdir="${src.dir}" destdir="${build.dir}" debug="${build.debug}" source="1.4" >
+      <!--TODO: include fileset id?-->
+      <include name="${build.include}" />
+      <classpath refid="build.classpath"/>
+    </javac>
+  </target>
+
+ <target name="compile1.5">
+    <echo message="Compiling code in ${build.include}."/>
+    <javac srcdir="${src.dir}" destdir="${build.dir}" debug="${build.debug}" source="1.5" >
+      <!--TODO: include fileset id?-->
+      <include name="${build.include}" />
+      <classpath refid="build.classpath"/>
+    </javac>
+  </target>
+
+ <target name="compileTo1.5">
+    <echo message="Compiling code in ${build.include}."/>
+    <javac srcdir="${src.dir}" destdir="${build.dir}" debug="${build.debug}" source="1.5" target="1.5">
+      <!--TODO: include fileset id?-->
+      <include name="${build.include}" />
+      <classpath refid="build.classpath"/>
+    </javac>
+  </target>
+
+ <target name="compileTo1.6">
+    <echo message="Compiling code in ${build.include}."/>
+    <javac srcdir="${src.dir}" includeantruntime="false" destdir="${build.dir}" debug="${build.debug}" source="1.6" target="1.6">
+      <!--TODO: include fileset id?-->
+      <include name="${build.include}" />
+      <classpath refid="build.classpath"/>
+    </javac>
+  </target>
+
+  <target name="compileweb">
+    <echo message="Compiling code in ${build.include}."/>
+    <javac srcdir="${src.dir}" destdir="${web.build.dir}" debug="${build.debug}"
+      includes="${build.include}" excludes="${build.exclude}" >
+      <!--TODO: include fileset id?-->
+      <include name="${build.include}" />
+      <classpath refid="build.classpath"/>
+    </javac>
+  </target>
+
+  <!-- Jars up the files which are part of the includes and not part of the excludes into a jarfile
+       of the given name. The jar is placed in the lib output directory.
+       A manifest is automatically created for the jar file. If a mainclass property is supplied, it
+       is set in the manifest as the main class to execute. If a dist.lib reference is supplied, the
+       jars it references are added to the classpath of the manifest.
+
+       Required properties:
+       jar.file     Property indicating the name of the jarfile to create.
+
+       Optional properties and references:
+       jar.basedir   Property indicating the directory below which to gather files for the jar.
+                     By default, this is set to build.dir.
+       jar.includes  Property indicating which files below the basedir to include in the jar.
+                     By default, this is set to "**".
+       jar.excludes  Property indicating which files below the basedir to exclude from the jar.
+       manifest.file The filename of a file to use as the manifest for this jar.
+       dist.jar      Reference to a Filelist of jars to include in the 'Class-Path' directive of the
+                     manifest. The filenames are stripped from their paths and included in the
+                     manifest as a list of relative resources in the current directory.
+  -->
+  <target name="jar">
+    <!--Note, Invoker is responsible for satisfying dependencies.-->
+    <tstamp/>
+    <!-- Prepare a manifest file containing the creation date and optionally, -->
+    <!-- the main-class from which to begin execution and a list of classpath jars. -->
+    <manifest file="${manifest.file}">
+      <!--Put creation date into manifest.
+          Mostly for convenience but also an excuse to replace any existing manifest.-->
+      <attribute name="Creation-Date" value="${DSTAMP}:${TSTAMP}"/>
+    </manifest>
+    <antcall target="maybe-add-main-class-to-manifest"/>
+    <condition property="addclasspath">
+      <isreference refid="dist.jar"/>
+    </condition>
+    <antcall target="maybe-add-classpath-to-manifest">
+      <reference refid="dist.jar"/>
+    </antcall>
+    <!-- Set some defaults -->
+    <condition property="jar.basedir" value="${build.dir}">
+      <not>
+        <isset property="${jar.basedir}"/>
+      </not>
+    </condition>
+    <condition property="jar.includes" value="**">
+      <not>
+        <isset property="${jar.includes}"/>
+      </not>
+    </condition>
+    <!-- Make the jar -->
+    <jar destfile = "${jar.file}"
+         basedir  = "${jar.basedir}"
+         includes = "${jar.includes}"
+         excludes = "${jar.excludes}"
+         manifest = "${manifest.file}"
+    />
+    <!-- See if this jar should be signed -->
+    <antcall target="maybe-signjar">
+      <param name="jar.file" value="${jar.file}"/>
+    </antcall>
+  </target>
+
+  <target name="maybe-add-main-class-to-manifest" if="main.class">
+    <manifest file="${manifest.file}" mode="update">
+      <attribute name="Main-Class" value="${main.class}"/>
+    </manifest>
+  </target>
+
+  <!-- Add the names of all external jars to the classpath attribute of the jar, so they can be found
+       when running 'java -jar file.jar' This assumes all jars will be deployed to the current dir. -->
+  <target name="maybe-add-classpath-to-manifest" if="addclasspath">
+    <pathconvert property="jar.classpath" refid="dist.jar">
+      <mapper type="flatten"/>
+    </pathconvert>
+    <propertyregex property="jar.classpath" override="true" input="${jar.classpath}"
+      regexp=":" replace=" " global="true" defaultValue="${jar.classpath}"/>
+    <!-- We have to do this hokey splitting of the jar list because the manifest specification
+         doesn't allow lines longer than 72 characters. So, we essentially have to put each jar
+         on a continuation line. Of course, we first have to have a line with the proper java
+         manifest attribute indicating that what follows will be classpath locations. Doh! -->
+    <manifest file="${manifest.file}" mode="update">
+      <attribute name="Class-Path" value="${jar.classpath}"/>
+    </manifest>
+  </target>
+
+  <!-- ================================================== -->
+  <!-- Jar Signing Targets and supporting utility targets -->
+  <!-- ================================================== -->
+
+  <!-- Evaluates whether or not a jar signing password has already been set in a property-->
+  <target name="evaluate-conditions">
+    <condition property="condition.sign.jars">
+      <istrue value="${jar.sign}"/>
+    </condition>
+    <condition property="condition.need.jarsignpass">
+      <not>
+        <isset property="jar.sign.storepass"/>
+      </not>
+    </condition>
+  </target>
+
+  <!-- Determines whether a jar needs to be signed -->
+  <target name="maybe-signjar" depends="evaluate-conditions" if="condition.sign.jars">
+    <antcall target="signjar">
+      <param name="jar.file" value="${jar.file}"/>
+    </antcall>
+  </target>
+
+  <!-- Prompts the user for a jar signing password and stores that password in a property for reuse -->
+  <target name="get-signjar-password" depends="evaluate-conditions" if="condition.need.jarsignpass"
+    description="Asks the user for the jar signing password and saves it for future use">
+    <input message="Enter password for signing jar file:"
+           addproperty="jar.sign.storepass" />
+  </target>
+
+  <!-- Signs a single jar file, which must be specified with the "jar.file" property -->
+  <target name="signjar" depends="get-signjar-password"
+          description="Sign the JAR file defined as jar.file.">
+    <!--Note: jar.file must be set before called.
+        To sign a jar from the command line:
+        "ant -Djar.file=foo.jar signjar"-->
+    <signjar jar       = "${jar.file}"
+             alias     = "${jar.sign.alias}"
+             storepass = "${jar.sign.storepass}"
+             keystore  = "${jar.sign.keystore}"
+             tsaurl    = "${jar.tsa}"
+             maxmemory = "512M"
+    />
+  </target>
+
+  <!-- Un-jars the APPLICATION.JNLP file and places it in the dist/signed/ directory -->
+  <!-- If -Djar.JnlpName is specified, renames the file to the specified name        -->
+  <target name="unjarJnlp" description="Unjars APPLICATION.JNLP to the  dist/signed directory and renames the file if -DJnlpName was specified on the command line">
+    <property name="jar.JnlpName" value="APPLICATION.JNLP" />
+    <unzip src="${dist.dir}/signed/${app.jar.file}" dest="${dist.dir}/signed/">
+      <patternset>
+        <include name="JNLP-INF/APPLICATION.JNLP"/>
+      </patternset>
+    </unzip>
+    <copy file="${dist.dir}/signed/JNLP-INF/APPLICATION.JNLP" tofile="${dist.dir}/signed/${jar.JnlpName}"/>
+    <delete dir="${dist.dir}/signed/JNLP-INF"/>
+  </target>
+
+  <!-- Signs all of the jars in the ${dist.dir}/lib directory after adding the needed JNLP file
+       (if specified with the ${jnlp.file} property) and after updating the manifest entries, 
+       (if specified with the ${jar.Permissions}, ${jar.Codebase}, and/or ${jar.Application-Name} properties). -->
+  <target name="signjars" depends="get-signjar-password"
+          description="Sign all jars in dist/lib  and move them to dist/signed ">
+
+    <!-- Perform pre-signing updates to the jars -->
+    <antcall target="secure-jars"/>
+
+    <!-- Sign the jars -->
+    <signjar alias     = "${jar.sign.alias}"
+             storepass = "${jar.sign.storepass}"
+             maxmemory = "512M"
+             keystore  = "${jar.sign.keystore}"
+             tsaurl    = "${jar.tsa}" >
+      <fileset dir="${dist.dir}/lib" >
+        <include name="**/*.jar" />
+      </fileset>
+    </signjar>
+
+    <!-- Move the signed jars to the signed subdirectory, renaming with the revision suffix if necessary -->
+    <if>
+      <not>
+        <isset property="revision"/>
+      </not>
+      <then>
+        <property name="revision" value=""/>
+      </then>
+    </if>
+    <move todir="${temp.dist.dir}" >
+      <mapper type="glob" from="*.jar" to="*${revision}.jar"/>
+      <fileset dir="${dist.dir}/lib" >
+        <include name="*.jar"/>
+      </fileset>
+    </move>
+
+  </target>
+
+  <target name="sign_3rd_party" depends="get-signjar-password"
+          description="Sign all jars in dist/lib  and move them to dist/signed "
+          unless="skip_sign_3rd_party">
+    <signjar alias     = "${jar.sign.alias}"
+             storepass = "${jar.sign.storepass}"
+             maxmemory = "512M"
+             keystore  = "${jar.sign.keystore}"
+             tsaurl    = "${jar.tsa}" >
+      <fileset dir="${dist.dir}/lib" >
+        <include name="**/*.jar" />
+      </fileset>
+    </signjar>
+
+    <move todir="${temp.dist.dir}" >
+      <fileset dir="${dist.dir}/lib" >
+        <include name="*.jar"/>
+      </fileset>
+    </move>
+
+  </target>
+
+  <!-- Update the jars in the ${dist.dir}/lib directory as needed to comply with the Oracle
+       Java Webstart security requirements. -->
+  <target name="secure-jars">
+
+    <!-- If any of the jar manifest properties are set, call the target to update their manifests -->
+    <if>
+      <or>
+        <isset property="jar.Permissions"/>
+        <isset property="jar.Codebase"/>
+        <isset property="jar.Application-Name"/>
+      </or>
+      <then>
+        <echo>Updating security attributes for jars in ${dist.dir}/lib 
+              (Permissions:${jar.Permissions}, Codebase:${jar.Codebase}, Application-Name:${jar.Application-Name})</echo>
+        <foreach target="jar-add-security-manifest" param="jar.file" inheritall="true">
+          <path>
+            <fileset dir="${dist.dir}/lib">
+              <include name="*.jar"/>
+            </fileset>
+          </path>
+        </foreach>
+      </then>
+    </if>
+
+    <!-- If the jnlp file property is set, call the target to add it to the jars. This only really needs to be done
+         for the jar that contains the entry class with the main() method, but it is safe (and easier) to put it in all. -->
+    <if>
+      <isset property="jnlp.file"/>
+      <then>
+
+        <!-- First copy the jnlp file to the proper path name needed by the Oracle security (JNLP-INF/APPLICATION.JNLP) -->
+        <dirname property="jnlp.dir" file="${jnlp.file}"/>
+        <mkdir dir="${jnlp.dir}/JNLP-INF"/>
+        <echo>Making copy of jnlp file ${jnlp.file} to ${jnlp.dir}/JNLP-INF/APPLICATION.JNLP</echo> 
+        <copy file="${jnlp.file}" tofile="${jnlp.dir}/JNLP-INF/APPLICATION.JNLP" overwrite="true"/>
+
+        <!-- Set the jnlp file's 'codebase' location to the value set in the property -->
+        <if>
+          <isset property="jar.Codebase"/>
+          <then>
+            <replaceregexp file="${jnlp.dir}/JNLP-INF/APPLICATION.JNLP" match="codebase=.*" replace='codebase="${jar.Codebase}"'/>
+          </then>
+        </if>
+      
+        <!-- Then, see if the jnlp file needs to have the jar resources' paths updated with the current revision -->
+        <if>
+          <isset property="revision"/>
+          <then>
+            <replace file="${jnlp.dir}/JNLP-INF/APPLICATION.JNLP" token='.jar"' value='${revision}.jar"'/>
+          </then>
+        </if>
+
+        <!-- Lastly, add this jnlp file to each of the jars. Again, it only needs to go in the main jar, but which one is that? -->
+        <foreach target="jar-add-jnlp-file" param="jar.file" inheritall="true">
+          <path>
+            <fileset dir="${dist.dir}/lib">
+              <include name="*.jar"/>
+            </fileset>
+          </path>
+        </foreach>
+
+      </then>
+    </if>
+    
+  </target>
+
+  <!-- Adds the necessary security attributes to the jar -->
+  <target name="jar-add-security-manifest" description="Adds security attributes to JAR file manifest">
+    <if>
+      <isset property="jar.Permissions"/>
+      <then>
+        <jar update="true" jarfile="${jar.file}">
+          <manifest>
+            <attribute name="Permissions" value="${jar.Permissions}"/>
+          </manifest>
+        </jar>
+      </then>
+    </if>
+    <if>
+      <isset property="jar.Codebase"/>
+      <then>
+        <jar update="true" jarfile="${jar.file}">
+          <manifest>
+            <attribute name="Codebase" value="${jar.Codebase}"/>
+          </manifest>
+        </jar>
+      </then>
+    </if>
+    <if>
+      <isset property="jar.Application-Name"/>
+      <then>
+        <jar update="true" jarfile="${jar.file}">
+          <manifest>
+            <attribute name="Application-Name" value="${jar.Application-Name}"/>
+          </manifest>
+        </jar>
+      </then>
+    </if>
+  </target>
+
+  <!-- Includes the jnlp file, expected at ${jnlp.dir}/JNLP-INF/APPLICATION.JNLP, into each jar file 
+       located at ${dist.dir}/lib.
+       Places the file into the JNLP-INF directory with the jar. This is needed to satisfy the new
+       Oracle security requirements, which are needed to set properties from within the JNLP -->
+  <target name="jar-add-jnlp-file">
+            <echo>Adding jnlp file (${jnlp.dir}/JNLP-INF/APPLICATION.JNLP) to jar file: ${jar.file}</echo>
+    <jar update="true" jarfile="${jar.file}">
+      <fileset dir="${jnlp.dir}">
+        <include name="JNLP-INF/APPLICATION.JNLP" />
+      </fileset>
+    </jar>
+  </target>
+
+
+  <!-- ================================================== -->
+  <!-- Version Control utility targets -->
+  <!-- ================================================== -->
+
+  <!-- Sets the "cvsroot" property to the value of the CVSROOT environment variable
+       or the default pserver:${username}@cvs:/cvs which is defined in build.properties -->
+  <target name="get-cvsroot">
+    <!-- Set the cvsroot variable to the CVSROOT environment variable, if available -->
+    <property environment="env"/>
+    <if>
+      <isset property="env.CVSROOT"/>
+      <then>
+        <property name="cvsroot" value="${env.CVSROOT}"/>
+        <!-- echo>Setting cvsroot to the value of the CVSROOT environment variable: ${env.CVSROOT}</echo -->
+      </then>
+      <else>
+        <property name="cvsroot" value="${cvs.root}"/>
+        <!-- echo>Setting cvsroot to a value derived from the username: ${cvs.root}</echo -->
+      </else>
+    </if>
+  </target>
+
+  <!-- Check out a specific module from CVS -->
+  <target name="cvs-checkout"
+          description="Checkout the module defined by the cvs.module property from CVS"
+          depends="get-cvsroot">
+    <dirname property="cvs.dir" file="${basedir}"/>
+    <!--echo>cvs-checkout: Stripping the cvs basedir, ${cvs.dir}, from the cvs.module name, ${cvs.module}</echo -->
+    <if>
+      <isset property="cvs.module"/>
+      <then>
+        <propertyregex property="cvs.module" override="true" input="${cvs.module}"
+                       defaultValue="${cvs.module}" regexp="${cvs.dir}/(.*)" select="\1"
+                       casesensitive="true"/>
+        <echo>cvs-checkout: Checking out ${cvs.module} from the CVSROOT: ${cvsroot}...</echo>
+        <!--<cvs cvsroot="${cvsroot}" package="${cvs.module}" dest=".."/>-->
+
+        <property name="revision" value=""/>
+        <property name="r_date" value=""/>
+
+        <if>
+          <and>
+            <equals arg1="${revision}" arg2=""/>
+            <equals arg1="${r_date}" arg2=""/>
+          </and>
+          <then>
+            <cvs cvsroot="${cvsroot}" package="${cvs.module}" dest=".."/>
+          </then>
+        </if>
+
+        <if>
+          <not>
+            <equals arg1="${revision}" arg2=""/>
+          </not>
+          <then>
+            <echo>cvs-checkout: Using revision: ${revision} ...</echo>
+            <cvs cvsroot="${cvsroot}" package="${cvs.module}" tag="${revision}" dest=".."/>
+          </then>
+        </if>
+
+        <if>
+          <not>
+            <equals arg1="${r_date}" arg2=""/>
+          </not>
+          <then>
+            <echo>cvs-checkout: Using r_date: ${r_date} ...</echo>
+            <cvs cvsroot="${cvsroot}" package="${cvs.module}" date="${r_date}" dest=".."/>
+          </then>
+        </if>
+
+      </then>
+    </if>
+
+  </target>
+
+  <!-- Check out a specific module from CVS -->
+  <target name="cvs-tag"
+          description="Tag the module defined by the cvs.module property in CVS"
+          depends="get-cvsroot">
+    <dirname property="cvs.dir" file="${basedir}"/>
+    <echo>cvs-checkout: Stripping the cvs basedir, ${cvs.dir}, from the cvs.module name, ${cvs.module}</echo>
+    <propertyregex property="cvs.module" override="true" input="${cvs.module}"
+      defaultValue="${cvs.module}" regexp="${cvs.dir}/(.*)" select="\1" casesensitive="true" />
+    <echo message="Tagging ${cvs.module} with tag named ${tag.name}" />
+    <cvs cvsRoot="${cvsroot}" command="tag ${tag.name} ${cvs.module}" dest=".."/>
+  </target>
+
+  <!-- Check out a specific module from CVS -->
+  <target name="cvs-remove-tag" description="Un-tag the module defined by the cvs.module property in CVS"
+    depends="get-cvsroot">
+    <dirname property="cvs.dir" file="${basedir}"/>
+    <propertyregex property="cvs.module" override="true" input="${cvs.module}"
+      defaultValue="${cvs.module}" regexp="${cvs.dir}/(.*)" select="\1" casesensitive="true" />
+    <echo message="Untagging ${cvs.module} with tag named ${tag.name}" />
+    <cvs cvsRoot="${cvs.root}" command="tag -d ${tag.name} ${cvs.module}" failonerror="true" dest=".."/>
+  </target>
+
+</project>
+
+

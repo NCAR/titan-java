@@ -1,0 +1,1393 @@
+<?xml version="1.0"?>
+<!-- *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=* -->
+<!-- ** Copyright UCAR (c) 1992 - 2012 -->
+<!-- ** University Corporation for Atmospheric Research(UCAR) -->
+<!-- ** National Center for Atmospheric Research(NCAR) -->
+<!-- ** Research Applications Laboratory(RAL) -->
+<!-- ** P.O.Box 3000, Boulder, Colorado, 80307-3000, USA -->
+<!-- ** 2012/8/23 16:21:6 -->
+<!-- *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=* -->
+
+<project name="master" default="all" basedir="../../../../..">
+
+  <property file="src/edu/ucar/rap/ant/build.properties"
+            description="Load common build properties."
+            />
+
+  <import file="build_includes.xml"/>
+
+  <property name="root.dir" value="/" />
+  <!--Default classpath. Should be overridden by child builds.-->
+  <path id="build.classpath">
+    <fileset dir="${ext.lib}">
+      <include name="*.jar"/>
+    </fileset>
+  </path>
+
+  <!--Targets-->
+
+  <target name="all" description="" depends="clean-build,clean-dist,clean-test,dist"/>
+
+  <target name="clean" description="Remove all products of this build file.">
+    <echo message="Removing both java/build, java/dist and java/testbuild." />
+    <echo message="Deprecated, consider using a more specific clean target, such as clean-dist or clean-build" />
+    <delete dir="${build.dir}"/>
+    <delete dir="${test.build.dir}"/>
+    <delete dir="${dist.dir}"/>
+  </target>
+
+  <target name="clean-dist" description="Remove all products of this build file.">
+    <echo message="Removing java/dist." />
+    <delete dir="${dist.dir}"/>
+  </target>
+
+  <target name="clean-build" description="Remove all products of this build file.">
+    <echo message="Removing java/build." />
+    <delete dir="${build.dir}"/>
+  </target>
+
+  <target name="clean-test" description="Remove all built test products of this build file.">
+    <delete dir="${test.build.dir}"/>
+  </target>
+
+  <!--TODO: "clean-all" remove src but not build.xml files? depends on clean-->
+  <!--or    clean (or clean-kids) delegate to kids (too much trust?), clean-all wipes build and dist?-->
+  <target name="clean_src" description="Remove source directory. E.g. to prepare for clean checkout.">
+    <delete dir="${src.dir}"/>
+  </target>
+
+  <target name="init" description="Set up for the build.">
+    <tstamp/>
+    <mkdir dir="${build.dir}" description="Directory for built stuff (i.e. to be jarred)"/>
+    <mkdir dir="${build.dir}/META-INF" description="Directory for manifest"/>
+    <mkdir dir="${dist.dir}" description="Directory for distributables"/>
+    <mkdir dir="${dist.dir}/lib" description="Library directory for jar files"/>
+    <mkdir dir="${temp.dist.dir}" description="Directory for signing jars"/>
+    <mkdir dir="${web.build.dir}" description="Directory for built stuff (i.e. to be jarred)"/>
+  </target>
+
+  <target name="print-java-version" >
+    <echo message="Java version = ${ant.java.version}" />
+  </target>
+
+  <!--target name="checkout-build-files">
+    NOTE: Need cvs task for each file. Would be nice to iterate over a fileset.
+    <cvs cvsroot="${cvs.root}"
+         package="java/${util.build.file}"
+         dest=".."/>
+  </target-->
+
+  <!--===================== Targets to compile only =====================-->
+
+  <target name="compile" depends="init"
+          description="Compile everything in src directory.">
+    <javac srcdir="${src.dir}" destdir="${build.dir}" debug="${build.debug}" source="1.5" memoryMaximumSize="1000M" fork="true" >
+      <classpath refid="build.classpath"/>
+      <include name="**" />
+    </javac>
+  </target>
+
+  <!-- Compiles all build.xml files in direct subdirectories, then compiles this directory.
+       If there is a subdirectory called "core" it is compiled before any steps above.
+       Note: the "package.dir" reference must be set to the directory below which to act. -->
+  <target name="compile_all" depends="init"
+          description="Run the compile_all task in every direct subdirectory that contains a build.xml file.">
+    <!-- If there is a build file in a core subdirectory, call it first -->
+    <if>
+      <available file="${package.dir}/core/build.xml" type="file" property="subcompile.file" value="${package.dir}/core/build.xml" />
+    <then>
+      <antcall target="subcompile" />
+    </then>
+    </if>
+
+    <!-- For each subdirectory under ${package.dir} which has a build file, call that build file's compile_all target -->
+    <foreach target="subcompile" param="subcompile.file">
+      <path>
+        <fileset dir="${src.dir}/${package.dir}/">
+          <include name="*/build.xml" />
+        </fileset>
+      </path>
+    </foreach>
+
+    <!-- Compile the current directory to catch anything in this directory and any subdirectories that don't have a build file -->
+    <ant antfile="${src.dir}/${package.dir}/build.xml" target="compile" inheritall="false"/>
+  </target>
+
+  <!-- Calls the compile_all task on the ant buildfile set as the "subcompile.file" ref -->
+  <!-- Should only be called from the compile_all task. DO NOT USE DIRECTLY -->
+  <target name="subcompile">
+    <ant antfile="${subcompile.file}" target="compile_all" inheritall="false" />
+  </target>
+
+  <!--Targets to compile larger units, e.g. project system-->
+  <!--target name="4dwx" depends="jviz, atec-cqt, wwt, mat"/-->
+  <!-- Removed portlets, cqt, jobqueue2, sysview2 (replaced with sysview) and zudnik from 4dwx build -->
+  <!--temporarily removed sysview target name="4dwx" depends="clean-build,clean-dist,init,alert,cadb,fido,fourDWX,jade,jade-core,sysview,util,util118,wwt,obsDataServlet" description="Compile everything for 4dwx." -->
+  <target name="4dwx" depends="clean-build,clean-dist,init,alert,cadb,fido,fourDWX,jade,jade-core,util,util118,wwt,obsDataServlet,modelUtil,portalStartup" description="Compile everything for 4dwx.">
+  </target>
+
+  <!--target name="uaedb" depends="uae-viz,fido"/-->
+  <target name="4deis" depends="clean-build,clean-dist,init,atec-jade,fido,fourDWX,jade,jade-core,jadedriver,uae-viz,miniapps,util,util118,zudnik,sysview2,uae-servlets"
+          description="Compile everything for 4DEiS (uaedb)">
+  </target>
+
+  <!--target name="mds" depends="util,zudnik"/-->
+  <target name="mds" depends="clean-build,clean-dist, init,miniapps,gribToMdv,sysview2,util,util118,zudnik" description="Compile everything for mds.">
+    <ant antfile="${mds.build.file}" target="compile" inheritall="false"/>
+  </target>
+
+  <!--Targets to compile sub packages-->
+
+  <target name="alert">
+    <ant antfile="${alert.build.file}" target="compile" inheritall="false"/>
+  </target>
+
+  <target name="atec-cqt">
+    <ant antfile="${atec.cqt.build.file}" target="compile" inheritall="false"/>
+  </target>
+
+  <target name="atec-jade">
+    <ant antfile="${atec.jade.build.file}" target="compile" inheritall="false"/>
+  </target>
+
+  <target name="browser">
+    <ant antfile="${browser.build.file}"  target="compile" inheritall="false"/>
+  </target>
+
+  <target name="cadb">
+    <ant antfile="${cadb.build.file}" target="compile" inheritall="false"/>
+  </target>
+
+  <target name="catapp">
+    <ant antfile="${catapp.build.file}"  target="compile" inheritall="false"/>
+  </target>
+
+  <target name="cospadb" >
+    <ant antfile="${cospadb.build.file}"   target="compile" inheritall="false"/>
+  </target>
+
+  <target name="cpt">
+    <ant antfile="${cpt.build.file}"  target="compile" inheritall="false"/>
+  </target>
+
+  <target name="cqt">
+    <ant antfile="${cqt.build.file}"  target="compile" inheritall="false"/>
+  </target>
+
+  <target name="datamap">
+    <ant antfile="${datamap.build.file}" target="compile" inheritall="false"/>
+  </target>
+
+  <target name="datatype">
+    <ant antfile="${datatype.build.file}" target="compile" inheritall="false"/>
+  </target>
+
+  <target name="datatype-checkout">
+    <antcall target="cvs-checkout">
+      <param name="cvs.module" value="${datatype.build.file}"/>
+    </antcall>
+    <ant antfile="${datatype.build.file}" target="cvs-checkout-all" inheritall="false"/>
+  </target>
+
+  <target name="didss">
+    <ant antfile="${didss.build.file}" target="compile" inheritall="false"/>
+  </target>
+
+  <target name="dsserver">
+    <ant antfile="${dsserver.build.file}" target="compile" inheritall="false"/>
+  </target>
+
+  <target name="euclid">
+    <ant antfile="${euclid.build.file}" target="compile" inheritall="false"/>
+  </target>
+
+  <target name="fido">
+    <ant antfile="${fido.build.file}"  target="compile" inheritall="false"/>
+    <ant antfile="${fido2.build.file}" target="compile" inheritall="false"/>
+  </target>
+
+  <target name="fido2">
+    <ant antfile="${fido2.build.file}" target="compile" inheritall="false" />
+  </target>
+
+  <target name="fido2monitor">
+    <ant antfile="${fido2monitor.build.file}" target="compile" inheritall="false"/>
+  </target>
+
+  <target name="filter">
+    <ant antfile="${filter.build.file}" target="compile" inheritall="false"/>
+  </target>
+
+  <target name="fourDWX">
+    <ant antfile="${fourDWX.build.file}" target="compile" inheritall="false"/>
+  </target>
+
+  <target name="gis" >
+    <ant antfile="${gis.build.file}" target="compile" inheritall="false"/>
+  </target>
+
+  <target name="graphics" >
+    <ant antfile="${graphics.build.file}" target="compile" inheritall="false"/>
+  </target>
+
+  <target name="graphs" >
+    <ant antfile="${graphs.build.file}" target="compile" inheritall="false"/>
+  </target>
+
+  <target name="gribreader">
+    <ant antfile="${gribreader.build.file}" target="compile" inheritall="false"/>
+  </target>
+
+  <target name="gribToMdv">
+    <ant antfile="${gribToMdv.build.file}" target="compile" inheritall="false"/>
+  </target>
+
+  <target name="idv" >
+    <ant antfile="${idv.build.file}" target="compile" inheritall="false"/>
+  </target>
+
+  <target name="image" >
+    <ant antfile="${image.build.file}" target="compile" inheritall="false"/>
+  </target>
+
+  <!-- Builds all of JADE -->
+  <target name="jade" >
+    <ant antfile="${jade.build.file}" target="compile" inheritall="false"/>
+  </target>
+
+  <!-- Builds JADE, excluding the extensions package -->
+  <target name="jade-core">
+    <ant antfile="${jade.build.file}" target="compile-core" inheritall="false"/>
+  </target>
+
+  <target name="jadeite">
+    <ant antfile="${jadeite.build.file}" target="compile" inheritall="false"/>
+  </target>
+
+  <target name="jadedriver" >
+    <ant antfile="${jadedriver.build.file}" target="compile" inheritall="false"/>
+  </target>
+
+  <target name="jobManager" >
+    <ant antfile="${jobManager.build.file}" target="compile" inheritall="false"/>
+  </target>
+
+  <target name="jrp" >
+    <ant antfile="${jrp.build.file}" target="compile" inheritall="false" />
+  </target>
+
+  <target name="jviz" >
+    <ant antfile="${jviz.build.file}" target="compile" inheritall="false">
+         <property name="range" value="${range}" />
+    </ant>
+  </target>
+
+  <target name="jwiz" >
+    <ant antfile="${jwiz.build.file}" target="compile" inheritall="false"/>
+  </target>
+
+  <target name="jobqueue2" >
+    <ant antfile="${jobqueue2.build.file}" target="compile" inheritall="false"/>
+  </target>
+
+  <target name="login" >
+    <ant antfile="${login.build.file}" target="compile" inheritall="false"/>
+  </target>
+
+  <target name="kml" >
+    <ant antfile="${kml.build.file}" target="compile" inheritall="false"/>
+  </target>
+
+  <target name="mantis">
+    <ant antfile="${mantis.build.file}" target="compile" inheritall="false"/>
+  </target>
+
+  <target name="mdss-core">
+    <ant antfile="${mdss.core.build.file}" target="compile" inheritall="false"/>
+  </target>
+
+  <target name="mdss-oldcore">
+    <ant antfile="${mdss.oldcore.build.file}" target="compile" inheritall="false"/>
+  </target>
+
+  <target name="mdss-diags">
+    <ant antfile="${mdss.diags.build.file}" target="compile" inheritall="false"/>
+  </target>
+
+  <target name="mdss-exts">
+    <ant antfile="${mdss.exts.build.file}" target="compile" inheritall="false"/>
+  </target>
+
+  <target name="mdss-graphs">
+    <ant antfile="${mdss.graphs.build.file}" target="compile" inheritall="false"/>
+  </target>
+
+  <target name="mdv" depends="dsserver" >
+    <ant antfile="${mdv.build.file}" target="compile" inheritall="false"/>
+  </target>
+
+  <target name="mdv118" depends="dsserver" >
+    <ant antfile="${mdv118.build.file}" target="compile" inheritall="false"/>
+  </target>
+
+  <target name="media" >
+    <ant antfile="${media.build.file}" target="compile" inheritall="false"/>
+  </target>
+
+  <target name="metvault">
+    <ant antfile="${metvault.build.file}" target="compile" inheritall="false"/>
+  </target>
+
+  <target name="metvault-core">
+    <ant antfile="${metvault.build.file}" target="compile-core" inheritall="false"/>
+  </target>
+
+  <target name="metvault-dist">
+    <ant antfile="${metvault.build.file}" target="dist" inheritall="false"/>
+  </target>
+
+  <target name="metvault-jar">
+    <ant antfile="${metvault.build.file}" target="jar" inheritall="false"/>
+  </target>
+
+  <target name="metvault-messaging">
+    <ant antfile="${metvault.build.file}" target="compile-messaging" inheritall="false"/>
+  </target>
+
+  <target name="metvault-util">
+    <ant antfile="${metvault.build.file}" target="compile-util" inheritall="false"/>
+  </target>
+
+  <target name="metvault-jar-util">
+    <ant antfile="${metvault.build.file}" target="jar-util" inheritall="false"/>
+  </target>
+
+  <target name="metvaultCrawler">
+    <ant antfile="${metvaultCrawler.build.file}" target="compile" inheritall="false"/>
+  </target>
+
+  <target name="metvaultCrawler-dist">
+    <ant antfile="${metvaultCrawler.build.file}" target="dist" inheritall="false"/>
+  </target>
+
+  <target name="metvaultRemote">
+    <ant antfile="${metvaultRemote.build.file}" target="compile" inheritall="false"/>
+  </target>
+
+  <target name="metvaultRemote-dist">
+    <ant antfile="${metvaultRemote.build.file}" target="dist" inheritall="false"/>
+  </target>
+
+  <target name="metvaultServlet-dist">
+    <ant antfile="${metvaultServlet.build.file}" target="dist" inheritall="false"/>
+  </target>
+
+  <target name="modelUtil" >
+    <ant antfile="${modelUtil.build.file}" target="compile" inheritall="false"/>
+  </target>
+
+  <target name="msg">
+    <ant antfile="${msg.build.file}" target="compile" inheritall="false"/>
+  </target>
+
+  <target name="nnew">
+    <ant antfile="${nnew.build.file}" target="compile" inheritall="false"/>
+  </target>
+
+  <target name="obsDataServlet" >
+    <ant antfile="${obsDataServlet.build.file}" target="compile" inheritall="false"/>
+  </target>
+
+  <target name="portalStartup" >
+    <ant antfile="${portalStartup.build.file}" target="compile" inheritall="false"/>
+  </target>
+
+  <target name="procview" >
+    <ant antfile="${procview.build.file}" target="compile" inheritall="false"/>
+  </target>
+
+  <target name="rapmath" >
+    <ant antfile="${rapmath.build.file}" target="compile" inheritall="false"/>
+  </target>
+
+  <target name="rapplot" >
+    <ant antfile="${rapplot.build.file}" target="compile" inheritall="false"/>
+  </target>
+
+  <target name="miniapps" depends="util" >
+    <ant antfile="${miniapps.build.file}" target="compile" inheritall="false"/>
+  </target>
+
+  <target name="shield">
+    <ant antfile="${shield.build.file}" target="compile" inheritall="false"/>
+  </target>
+
+  <target name="rapsql" >
+    <ant antfile="${rapsql.build.file}"   target="compile" inheritall="false"/>
+  </target>
+
+ <target name="secondaryAppsServer">
+    <ant antfile="${secondaryAppsServer.build.file}" target="compile" inheritall="false"/>
+  </target>
+
+  <target name="secondaryAppsServer-util">
+    <ant antfile="${secondaryAppsServer.build.file}" target="compile-util" inheritall="false"/>
+  </target>
+
+  <target name="sysview">
+    <ant antfile="${sysview.build.file}" target="jar" inheritall="false"/>
+  </target>
+
+  <target name="sysview2">
+    <ant antfile="${sysview2.build.file}" target="compile" inheritall="false"/>
+  </target>
+
+  <target name="sysview-core">
+    <ant antfile="${sysview.core.build.file}" target="compile" inheritall="false"/>
+  </target>
+
+  <target name="spdb">
+    <ant antfile="${spdb.build.file}" target="compile" inheritall="false"/>
+  </target>
+
+  <target name="spdbFormats" depends="dsserver" >
+    <ant antfile="${spdbFormats.build.file}" target="compile" inheritall="false"/>
+  </target>
+
+  <target name="tomcatmonitor">
+      <ant antfile="${tomcatmonitor.build.file}" target="compile" inheritall="false"/>
+  </target>
+
+  <target name="uae-viz" >
+    <ant antfile="${uae-viz.build.file}" target="compile" inheritall="false"/>
+  </target>
+
+  <target name="uae-servlets" >
+    <ant antfile="${uae-servlets.build.file}" target="compile" inheritall="false"/>
+  </target>
+
+  <target name="util118" >
+    <ant antfile="${util118.build.file}"   target="compile" inheritall="false"/>
+  </target>
+
+  <target name="util" >
+    <ant antfile="${util.build.file}"   target="compile" inheritall="false"/>
+  </target>
+
+  <target name="util-log" >
+    <ant antfile="${util-log.build.file}"   target="compile" inheritall="false"/>
+  </target>
+
+  <target name="util-time" >
+    <ant antfile="${util-time.build.file}"   target="compile" inheritall="false"/>
+  </target>
+
+  <target name="vmet" >
+    <ant antfile="${vmet.build.file}"   target="compile" inheritall="false"/>
+  </target>
+
+  <target name="wwt" >
+    <ant antfile="${wwt.build.file}"   target="compile" inheritall="false"/>
+  </target>
+
+  <target name="xml" >
+    <ant antfile="${xml.build.file}"   target="compile" inheritall="false"/>
+  </target>
+
+  <target name="zudnik">
+    <ant antfile="${zudnik.build.file}" target="compile" inheritall="false"/>
+  </target>
+
+  <!--===================== CVS checkout targets =====================-->
+  <target name="cvs-checkout" description="interface to ant libraries' version of checkout">
+    <ant antfile="${libraries.build.file}" target="cvs-checkout" inheritall="false"/>
+  </target>
+
+  <!-- *** Check out required JADE files from cvs *** -->
+  <target name="cvs-checkout-jade" depends="cvs-checkout-jadebuildfile">
+    <ant antfile="${jade.build.file}" target="cvs-checkout-all" inheritall="false"/>
+  </target>
+  <!-- Check out the jade/build.xml file from cvs -->
+  <target name="cvs-checkout-jadebuildfile"
+          description="Checkout of CVS the files needed to build JADE.">
+    <filelist id="build.src" dir="${src.dir}" files="edu/ucar/rap/jade/build.xml" />
+    <foreach target="cvs-checkout" param="cvs.module">
+      <path>
+        <filelist refid="build.src" />
+      </path>
+    </foreach>
+  </target>
+
+  <!-- *** Check out required JViz files from cvs *** -->
+  <target name="cvs-checkout-jviz" depends="cvs-checkout-jvizbuildfile">
+    <ant antfile="${jviz.build.file}" target="cvs-checkout-all" inheritall="false"/>
+  </target>
+  <!-- Check out the jade/build.xml file from cvs -->
+  <target name="cvs-checkout-jvizbuildfile"
+          description="Checkout of CVS the files needed to build JViz.">
+    <filelist id="build.src" dir="${src.dir}" files="edu/ucar/rap/jviz/build.xml" />
+    <foreach target="cvs-checkout" param="cvs.module">
+      <path>
+        <filelist refid="build.src" />
+      </path>
+    </foreach>
+  </target>
+
+  <!-- Check out the JAR signing keystore -->
+  <target name="cvs-checkout-keystore"
+          description="Checkout of CVS the keystore used for signing JAR files.">
+    <filelist id="build.src" dir="${src.dir}" files="${jar.sign.keystore}" />
+    <foreach target="cvs-checkout" param="cvs.module">
+      <path>
+        <filelist refid="build.src" />
+      </path>
+    </foreach>
+  </target>
+
+  <!--===================== Targets to jar =====================-->
+
+  <target name="jar" depends="compile">
+    <echo message="Calling Master's jar. Doing Nothing."/>
+    <!--TODO: jar everything in build to rap.jar? -->
+  </target>
+
+  <target name="secondaryAppsServer-jar">
+    <ant antfile="${secondaryAppsServer.build.file}" target="jar" inheritall="false"/>
+  </target>
+
+  <target name="secondaryAppsServer-jar-util">
+    <ant antfile="${secondaryAppsServer.build.file}" target="jar-util" inheritall="false"/>
+  </target>
+
+  <!--Targets to prepare distribution-->
+
+  <target name="dist" depends="jar" >
+  <!--TODO: for each build file in fileset (defined via properties file or search) call dist target?-->
+  </target>
+
+  <!-- temporarily removed sysview:  target name="4dwx-dist" depends="clean-build,clean-dist,init,4dwx,alert-dist,cadb-dist,fido-dist,fido2monitor-dist,fourDWX-dist,idv-dist,jade-dist,jade-dist-core,sysview-dist,tomcatmonitor-dist,util-dist,util118-dist,wwt-dist,obsDataServlet-dist" -->
+  <target name="4dwx-dist" depends="clean-build,clean-dist,init,4dwx,alert-dist,cadb-dist,fido-dist,fido2monitor-dist,fourDWX-dist,idv-dist,jade-dist,jade-dist-core,sysview-dist,tomcatmonitor-dist,util-dist,util118-dist,wwt-dist,obsDataServlet-dist,modelUtil-dist,portalStartup-dist"
+          description="Compile everything for 4dwx.">
+  </target>
+
+  <target name="metvaultApp-dist" depends="clean-build,clean-dist,init,metvault-dist,metvaultRemote-dist,metvaultCrawler-dist,util-dist"
+          description="Compile everything for Metvault.">
+  </target>
+
+  <target name="4deis-dist" depends="clean-build,clean-dist,init,4deis,atec-jade-dist,fido-dist,fourDWX-dist,jade-dist-extensions,jade-dist-core,jadedriver-dist,uae-viz-dist,miniapps-dist,util-dist,util118-dist,zudnik-dist,sysview2-dist"
+          description="Make jars for 4DEiS (uaedb).">
+  </target>
+
+  <!--target name="mds-dist" -->
+  <target name="mds-dist" depends="clean-build,clean-dist,init,cagips-dist,catapp-dist,jmblget-dist,gribToMdv-dist,sysview2-dist,zudnik-dist,mds-monitor-dist"
+          description="Compile everything for mds/4dwx.">
+    <ant antfile="${mds.build.file}" target="dist" inheritall="false" />
+  </target>
+
+  <target name="alert-dist">
+    <ant antfile="${alert.build.file}" target="dist" inheritall="false"/>
+  </target>
+
+  <target name="atec-cqt-dist">
+    <ant antfile="${atec.cqt.build.file}" target="dist" inheritall="false"/>
+  </target>
+
+  <target name="atec-jade-dist">
+    <ant antfile="${atec.jade.build.file}" target="dist" inheritall="false"/>
+  </target>
+
+  <target name="browser-dist">
+    <ant antfile="${browser.build.file}"  target="dist" inheritall="false"/>
+  </target>
+
+  <target name="cadb-jar" >
+    <ant antfile="${cadb.build.file}"   target="jar" inheritall="false"/>
+  </target>
+
+  <target name="cadb-dist" >
+    <ant antfile="${cadb.build.file}"   target="dist" inheritall="false"/>
+  </target>
+
+  <target name="cagips-dist">
+    <ant antfile="${cagips.build.file}"  target="dist" inheritall="false"/>
+  </target>
+
+  <target name="catapp-dist">
+    <ant antfile="${catapp.build.file}"  target="dist" inheritall="false"/>
+  </target>
+
+  <target name="cpt-dist">
+    <ant antfile="${cpt.build.file}"  target="dist" inheritall="false"/>
+  </target>
+
+  <target name="cqt-dist">
+    <ant antfile="${cqt.build.file}"  target="dist" inheritall="false"/>
+  </target>
+
+  <target name="datamap-dist">
+    <ant antfile="${datamap.build.file}" target="dist" inheritall="false"/>
+  </target>
+
+  <target name="didss-dist">
+    <ant antfile="${didss.build.file}" target="dist" inheritall="false"/>
+  </target>
+
+  <target name="dsserver-dist">
+    <ant antfile="${dsserver.build.file}" target="dist" inheritall="false"/>
+  </target>
+
+  <target name="euclid-dist">
+    <ant antfile="${euclid.build.file}" target="dist" inheritall="false"/>
+  </target>
+
+  <target name="fido-dist">
+    <ant antfile="${fido.build.file}"  target="dist" inheritall="false"/>
+    <ant antfile="${fido2.build.file}" target="dist" inheritall="false"/>
+  </target>
+
+  <target name="fido2-dist">
+    <ant antfile="${fido2.build.file}" target="dist" inheritall="false" />
+  </target>
+
+  <target name="fido2monitor-dist">
+    <ant antfile="${fido2monitor.build.file}" target="dist" inheritall="false"/>
+  </target>
+
+  <target name="filter-dist">
+    <ant antfile="${filter.build.file}" target="dist" inheritall="false"/>
+  </target>
+
+  <target name="fourDWX-dist">
+    <ant antfile="${fourDWX.build.file}" target="dist" inheritall="false"/>
+  </target>
+
+  <target name="gis-dist" >
+    <ant antfile="${gis.build.file}" target="dist" inheritall="false"/>
+  </target>
+
+  <target name="graphics-dist" >
+    <ant antfile="${graphics.build.file}" target="dist" inheritall="false"/>
+  </target>
+
+  <target name="graphs-dist" >
+    <ant antfile="${graphs.build.file}" target="dist" inheritall="false"/>
+  </target>
+
+  <target name="gribreader-dist" >
+    <ant antfile="${gribreader.build.file}" target="dist" inheritall="false"/>
+  </target>
+
+  <target name="gribToMdv-dist" >
+    <ant antfile="${gribToMdv.build.file}" target="dist" inheritall="false"/>
+  </target>
+
+  <target name="idv-dist" >
+    <ant antfile="${idv.build.file}" target="dist" inheritall="false"/>
+  </target>
+
+  <target name="image-dist" >
+    <ant antfile="${image.build.file}" target="dist" inheritall="false"/>
+  </target>
+
+  <target name="jade-dist" >
+    <ant antfile="${jade.build.file}" target="dist" inheritall="false"/>
+  </target>
+
+  <target name="jadedriver-dist" >
+    <ant antfile="${jadedriver.build.file}" target="dist" inheritall="false"/>
+  </target>
+
+  <!-- JADE distribution, excluding the extensions package -->
+  <target name="jade-dist-core" >
+    <ant antfile="${jade.build.file}" target="dist-core" inheritall="false"/>
+  </target>
+
+  <!-- JADE-Extensions distribution-->
+  <target name="jade-dist-extensions" >
+    <ant antfile="${jade.build.file}" target="dist-extensions" inheritall="false"/>
+  </target>
+
+  <target name="jmblget-dist">
+    <ant antfile="${jmblget.build.file}"  target="dist" inheritall="false"/>
+  </target>
+
+   <target name="jobManager-dist" >
+    <ant antfile="${jobManager.build.file}" target="dist" inheritall="false"/>
+  </target>
+
+  <target name="jviz-dist" >
+    <ant antfile="${jviz.build.file}" target="dist" inheritall="false">
+         <property name="range" value="${range}" />
+    </ant>
+  </target>
+
+  <target name="jwiz-dist" >
+    <ant antfile="${jwiz.build.file}" target="dist" inheritall="false"/>
+  </target>
+
+  <target name="jobqueue2-dist" >
+    <ant antfile="${jobqueue.build.file}"  target="dist" inheritall="false"/>
+    <ant antfile="${jobqueue2.build.file}" target="dist" inheritall="false"/>
+  </target>
+
+  <target name="mdv-dist" >
+    <ant antfile="${mdv.build.file}" target="dist" inheritall="false"/>
+  </target>
+
+  <target name="mdv118-dist" >
+    <ant antfile="${mdv118.build.file}" target="dist" inheritall="false"/>
+  </target>
+
+  <target name="miniapps-dist" >
+    <ant antfile="${miniapps.build.file}" target="dist" inheritall="false"/>
+  </target>
+
+ <target name="modelUtil-dist" >
+    <ant antfile="${modelUtil.build.file}" target="dist" inheritall="false"/>
+ </target>
+
+  <target name="msg-dist" >
+    <ant antfile="${msg.build.file}" target="dist" inheritall="false"/>
+  </target>
+
+  <target name="obsDataServlet-dist" >
+    <ant antfile="${obsDataServlet.build.file}" target="dist" inheritall="false"/>
+  </target>
+
+  <target name="portalStartup-dist" >
+    <ant antfile="${portalStartup.build.file}" target="dist" inheritall="false"/>
+  </target>
+
+  <target name="procview-dist" >
+    <ant antfile="${procview.build.file}" target="dist" inheritall="false"/>
+  </target>
+
+  <target name="rapmath-dist" >
+    <ant antfile="${rapmath.build.file}" target="dist" inheritall="false"/>
+  </target>
+
+  <target name="rapplot-dist" >
+    <ant antfile="${rapplot.build.file}" target="dist" inheritall="false"/>
+  </target>
+
+  <target name="shield-dist" depends="util-dist, jade-dist, jade-dist-core, atec-jade-dist, didss-dist, dsserver-dist, jobqueue2-dist, mdv-dist, util-dist, util118-dist" >
+    <ant antfile="${shield.build.file}" target="dist" inheritall="false"/>
+  </target>
+
+  <target name="rapsql-jar" >
+    <ant antfile="${rapsql.build.file}" target="jar" inheritall="false"/>
+  </target>
+
+  <target name="rapsql-dist" >
+    <ant antfile="${rapsql.build.file}" target="dist" inheritall="false"/>
+  </target>
+
+  <target name="secondaryAppsServer-dist">
+    <ant antfile="${secondaryAppsServer.build.file}" target="dist" inheritall="false"/>
+  </target>
+
+  <target name="secondaryAppsServer-dis-util">
+    <ant antfile="${secondaryAppsServer.build.file}" target="dist-util" inheritall="false"/>
+  </target>
+
+  <target name="sysview-dist" depends="util-dist">
+    <ant antfile="${sysview.build.file}" target="dist" inheritall="false"/>
+  </target>
+
+  <target name="sysview2-dist" depends="util-dist">
+    <ant antfile="${sysview2.build.file}" target="dist" inheritall="false"/>
+  </target>
+
+  <target name="tomcatmonitor-dist">
+      <ant antfile="${tomcatmonitor.build.file}" target="dist" inheritall="false"/>
+  </target>
+
+  <target name="uae-viz-dist" >
+    <ant antfile="${uae-viz.build.file}" target="dist" inheritall="false"/>
+  </target>
+
+  <target name="uae-servlets-dist" >
+    <ant antfile="${uae-servlets.build.file}" target="dist" inheritall="false"/>
+  </target>
+
+  <target name="util118-dist" >
+    <ant antfile="${util118.build.file}"   target="dist" inheritall="false"/>
+  </target>
+
+  <target name="gis-jar" >
+    <ant antfile="${gis.build.file}"   target="jar" inheritall="false"/>
+  </target>
+
+  <target name="util-jar" >
+    <ant antfile="${util.build.file}"   target="jar" inheritall="false"/>
+  </target>
+
+  <target name="util-dist" >
+    <ant antfile="${util.build.file}"   target="dist" inheritall="false"/>
+  </target>
+
+  <target name="vmet-dist" >
+    <ant antfile="${vmet.build.file}"   target="dist" inheritall="false"/>
+  </target>
+
+  <target name="wwt-dist" >
+    <ant antfile="${wwt.build.file}"   target="dist" inheritall="false"/>
+  </target>
+
+  <target name="xml-jar" >
+    <ant antfile="${xml.build.file}"   target="jar" inheritall="false"/>
+  </target>
+
+  <target name="xml-dist" >
+    <ant antfile="${xml.build.file}"   target="dist" inheritall="false"/>
+  </target>
+
+  <target name="zudnik-dist">
+    <ant antfile="${zudnik.build.file}" target="dist" inheritall="false"/>
+  </target>
+
+  <target name="mds-monitor-dist">
+    <ant antfile="${mds.monitor.build.file}" target="dist" inheritall="false"/>
+  </target>
+
+  <!--===================== Targets for checkouts =====================-->
+
+  <target name="atec-cqt-checkout-all" >
+    <antcall target="cvs-checkout" inheritall="true">
+      <param name="cvs.module" value="java/src/edu/ucar/rap/atec/cqt/build.xml"/>
+    </antcall>
+    <ant antfile="${atec.cqt.build.file}"   target="cvs-checkout-all" inheritall="false"/>
+  </target>
+
+  <target name="atec-jade-checkout-all" >
+    <antcall target="cvs-checkout" inheritall="true">
+      <param name="cvs.module" value="java/src/edu/ucar/rap/atec/jade/build_jade.xml"/>
+    </antcall>
+    <ant antfile="${atec.jade.build.file}"   target="cvs-checkout-all" inheritall="false"/>
+  </target>
+
+  <target name="alert-checkout-all" >
+    <antcall target="cvs-checkout" inheritall="true">
+      <param name="cvs.module" value="java/src/edu/ucar/rap/atec/apps/alert/build.xml"/>
+    </antcall>
+    <ant antfile="${alert.build.file}"   target="cvs-checkout-all" inheritall="false"/>
+  </target>
+
+  <target name="browser-checkout-all" >
+    <antcall target="cvs-checkout" inheritall="true">
+      <param name="cvs.module" value="java/src/edu/ucar/rap/browser/build.xml"/>
+    </antcall>
+    <ant antfile="${browser.build.file}"   target="cvs-checkout-all" inheritall="false"/>
+  </target>
+
+  <target name="cadb-checkout-all" >
+    <antcall target="cvs-checkout" inheritall="true">
+      <param name="cvs.module" value="java/src/edu/ucar/rap/cadb/build.xml"/>
+    </antcall>
+    <ant antfile="${cadb.build.file}"   target="cvs-checkout-all" inheritall="false"/>
+  </target>
+
+  <target name="catapp-checkout-all" >
+    <antcall target="cvs-checkout" inheritall="true">
+      <param name="cvs.module" value="java/src/edu/ucar/rap/miniapps/catapp/build.xml"/>
+    </antcall>
+    <ant antfile="${catapp.build.file}"   target="cvs-checkout-all" inheritall="false"/>
+  </target>
+
+  <target name="cpt-checkout-all" >
+    <antcall target="cvs-checkout" inheritall="true">
+      <param name="cvs.module" value="java/src/edu/ucar/rap/atec/cpcs/build.xml"/>
+    </antcall>
+    <ant antfile="${cpt.build.file}"   target="cvs-checkout-all" inheritall="false"/>
+  </target>
+
+  <target name="cqt-checkout-all" >
+    <antcall target="cvs-checkout" inheritall="true">
+      <param name="cvs.module" value="java/src/edu/ucar/rap/atec/apps/cqt/build.xml"/>
+    </antcall>
+    <ant antfile="${cqt.build.file}"   target="cvs-checkout-all" inheritall="false"/>
+  </target>
+
+  <target name="datacanvas-checkout-all" >
+    <antcall target="cvs-checkout" inheritall="true">
+      <param name="cvs.module" value="java/src/edu/ucar/rap/datacanvas/build.xml"/>
+    </antcall>
+    <ant antfile="${datacanvas.build.file}"   target="cvs-checkout-all" inheritall="false"/>
+  </target>
+
+  <target name="datamap-checkout-all" >
+    <antcall target="cvs-checkout" inheritall="true">
+      <param name="cvs.module" value="java/src/edu/ucar/rap/datamap/build.xml"/>
+    </antcall>
+    <ant antfile="${datamap.build.file}"   target="cvs-checkout-all" inheritall="false"/>
+  </target>
+
+  <target name="didss-checkout-all" >
+    <antcall target="cvs-checkout" inheritall="true">
+      <param name="cvs.module" value="java/src/edu/ucar/rap/didss/build.xml"/>
+    </antcall>
+    <ant antfile="${didss.build.file}"   target="cvs-checkout-all" inheritall="false"/>
+  </target>
+
+  <target name="dobson-checkout-all" >
+    <antcall target="cvs-checkout" inheritall="true">
+      <param name="cvs.module" value="java/src/edu/ucar/rap/dobson/build.xml"/>
+    </antcall>
+    <ant antfile="${dobson.build.file}"   target="cvs-checkout-all" inheritall="false"/>
+  </target>
+
+  <target name="dsserver-checkout-all" >
+    <antcall target="cvs-checkout" inheritall="true">
+      <param name="cvs.module" value="java/src/edu/ucar/rap/dsserver/build.xml"/>
+    </antcall>
+    <ant antfile="${dsserver.build.file}"   target="cvs-checkout-all" inheritall="false"/>
+  </target>
+
+  <target name="euclid-checkout-all" >
+    <antcall target="cvs-checkout" inheritall="true">
+      <param name="cvs.module" value="java/src/edu/ucar/rap/euclid/build.xml"/>
+    </antcall>
+    <ant antfile="${euclid.build.file}"   target="cvs-checkout-all" inheritall="false"/>
+  </target>
+
+  <target name="fido-checkout-all" >
+    <antcall target="cvs-checkout" inheritall="true">
+      <param name="cvs.module" value="java/src/edu/ucar/rap/fido/build.xml"/>
+    </antcall>
+    <ant antfile="${fido.build.file}"   target="cvs-checkout-all" inheritall="false"/>
+  </target>
+
+  <target name="fido2-checkout-all" >
+    <antcall target="cvs-checkout" inheritall="true">
+      <param name="cvs.module" value="java/src/edu/ucar/rap/fido2/build.xml"/>
+    </antcall>
+    <ant antfile="${fido2.build.file}"   target="cvs-checkout-all" inheritall="false"/>
+  </target>
+
+  <target name="fido2monitor-checkout-all">
+    <antcall target="cvs-checkout" inheritall="true">
+      <param name="cvs.module" value="java/src/edu/ucar/rap/atec/monitor/fido2monitor/build.xml"/>
+    </antcall>
+    <ant antfile="${fido2monitor.build.file}" target="cvs-checkout-all" inheritall="false"/>
+  </target>
+
+  <target name="filter-checkout-all" >
+    <antcall target="cvs-checkout" inheritall="true">
+      <param name="cvs.module" value="java/src/edu/ucar/rap/filter/build.xml"/>
+    </antcall>
+    <ant antfile="${filter.build.file}"   target="cvs-checkout-all" inheritall="false"/>
+  </target>
+
+  <target name="fourDWX-checkout-all" >
+    <antcall target="cvs-checkout" inheritall="true">
+      <param name="cvs.module" value="java/src/edu/ucar/rap/fourDWX/build.xml"/>
+    </antcall>
+    <ant antfile="${fourDWX.build.file}"   target="cvs-checkout-all" inheritall="false"/>
+  </target>
+
+  <target name="geometry-checkout-all" >
+    <antcall target="cvs-checkout" inheritall="true">
+      <param name="cvs.module" value="java/src/edu/ucar/rap/geometry/build.xml"/>
+    </antcall>
+    <ant antfile="${geometry.build.file}"   target="cvs-checkout-all" inheritall="false"/>
+  </target>
+
+  <target name="graphics-checkout-all" >
+    <antcall target="cvs-checkout" inheritall="true">
+      <param name="cvs.module" value="java/src/edu/ucar/rap/graphics/build.xml"/>
+    </antcall>
+    <ant antfile="${graphics.build.file}"   target="cvs-checkout-all" inheritall="false"/>
+  </target>
+
+  <target name="graphs-checkout-all" >
+    <antcall target="cvs-checkout" inheritall="true">
+      <param name="cvs.module" value="java/src/edu/ucar/rap/graphs/build.xml"/>
+    </antcall>
+    <ant antfile="${graphs.build.file}"   target="cvs-checkout-all" inheritall="false"/>
+  </target>
+
+  <target name="gribingest-checkout-all" >
+    <antcall target="cvs-checkout" inheritall="true">
+      <param name="cvs.module" value="java/src/edu/ucar/rap/ingest/gribingest/build.xml"/>
+    </antcall>
+    <ant antfile="${gribingest.build.file}"   target="cvs-checkout-all" inheritall="false"/>
+  </target>
+
+  <target name="gribreader-checkout-all" >
+    <antcall target="cvs-checkout" inheritall="true">
+      <param name="cvs.module" value="java/src/edu/ucar/rap/gribreader/build.xml"/>
+    </antcall>
+    <ant antfile="${gribreader.build.file}"   target="cvs-checkout-all" inheritall="false"/>
+  </target>
+
+  <target name="gribToMdv-checkout-all" >
+    <antcall target="cvs-checkout" inheritall="true">
+      <param name="cvs.module" value="java/src/edu/ucar/rap/gribToMdv/build.xml"/>
+    </antcall>
+    <ant antfile="${gribToMdv.build.file}"   target="cvs-checkout-all" inheritall="false"/>
+  </target>
+
+  <target name="highAlt-checkout-all" >
+    <antcall target="cvs-checkout" inheritall="true">
+      <param name="cvs.module" value="java/src/edu/ucar/rap/highAlt/build.xml"/>
+    </antcall>
+    <ant antfile="${highAlt.build.file}"   target="cvs-checkout-all" inheritall="false"/>
+  </target>
+
+  <target name="idv-checkout-all" >
+    <antcall target="cvs-checkout" inheritall="true">
+      <param name="cvs.module" value="java/src/edu/ucar/rap/idv/build.xml"/>
+    </antcall>
+    <ant antfile="${idv.build.file}"   target="cvs-checkout-all" inheritall="false"/>
+  </target>
+
+  <target name="image-checkout-all" >
+    <antcall target="cvs-checkout" inheritall="true">
+      <param name="cvs.module" value="java/src/edu/ucar/rap/image/build.xml"/>
+    </antcall>
+    <ant antfile="${image.build.file}"   target="cvs-checkout-all" inheritall="false"/>
+  </target>
+
+  <target name="jade-checkout-all" >
+    <antcall target="cvs-checkout" inheritall="true">
+      <param name="cvs.module" value="java/src/edu/ucar/rap/jade/build.xml"/>
+    </antcall>
+    <ant antfile="${jade.build.file}"   target="cvs-checkout-all" inheritall="false"/>
+  </target>
+
+  <target name="jadeite-checkout-all" >
+    <antcall target="cvs-checkout" inheritall="true">
+      <param name="cvs.module" value="java/src/edu/ucar/rap/jadeite/build.xml"/>
+    </antcall>
+    <ant antfile="${jadeite.build.file}"   target="cvs-checkout-all" inheritall="false"/>
+  </target>
+
+  <target name="jade-checkout-core" >
+    <antcall target="cvs-checkout" inheritall="true">
+      <param name="cvs.module" value="java/src/edu/ucar/rap/jade/build.xml"/>
+    </antcall>
+    <ant antfile="${jade.build.file}"   target="cvs-checkout-core" inheritall="false"/>
+  </target>
+
+  <target name="jviz-checkout-all" >
+    <antcall target="cvs-checkout" inheritall="true">
+      <param name="cvs.module" value="java/src/edu/ucar/rap/jviz/build.xml"/>
+    </antcall>
+    <ant antfile="${jviz.build.file}"   target="cvs-checkout-all" inheritall="false"/>
+  </target>
+
+  <target name="jobqueue-checkout-all" >
+    <antcall target="cvs-checkout" inheritall="true">
+      <param name="cvs.module" value="java/src/edu/ucar/rap/jobqueue/build.xml"/>
+    </antcall>
+    <ant antfile="${jobqueue.build.file}"   target="cvs-checkout-all" inheritall="false"/>
+  </target>
+
+  <target name="jobqueue2-checkout-all" >
+    <antcall target="cvs-checkout" inheritall="true">
+      <param name="cvs.module" value="java/src/edu/ucar/rap/jobqueue2/build.xml"/>
+    </antcall>
+    <ant antfile="${jobqueue2.build.file}"   target="cvs-checkout-all" inheritall="false"/>
+  </target>
+
+  <target name="mdss-checkout-all" >
+    <antcall target="cvs-checkout" inheritall="true">
+      <param name="cvs.module" value="java/src/edu/ucar/rap/mdss/build.xml"/>
+    </antcall>
+    <ant antfile="${mdss.build.file}"   target="cvs-checkout-all" inheritall="false"/>
+  </target>
+
+  <target name="mdss-checkout-core" >
+    <antcall target="cvs-checkout" inheritall="true">
+      <param name="cvs.module" value="java/src/edu/ucar/rap/mdss/core/build.xml"/>
+    </antcall>
+    <ant antfile="${mdss.core.build.file}"   target="cvs-checkout-all" inheritall="false"/>
+  </target>
+
+  <target name="mdss-checkout-oldcore" >
+    <antcall target="cvs-checkout" inheritall="true">
+      <param name="cvs.module" value="java/src/edu/ucar/rap/mdss/oldCore/build.xml"/>
+    </antcall>
+    <ant antfile="${mdss.oldcore.build.file}"   target="cvs-checkout-all" inheritall="false"/>
+  </target>
+
+  <target name="mdss-checkout-exts" >
+    <antcall target="cvs-checkout" inheritall="true">
+      <param name="cvs.module" value="java/src/edu/ucar/rap/mdss/exts/build.xml"/>
+    </antcall>
+    <ant antfile="${mdss.exts.build.file}"   target="cvs-checkout-all" inheritall="false"/>
+  </target>
+
+  <target name="mdss-checkout-diags" >
+    <antcall target="cvs-checkout" inheritall="true">
+      <param name="cvs.module" value="java/src/edu/ucar/rap/mdss/exts/diags/build.xml"/>
+    </antcall>
+    <ant antfile="${mdss.diags.build.file}"   target="cvs-checkout-all" inheritall="false"/>
+  </target>
+
+  <target name="mdss-checkout-graphs" >
+    <antcall target="cvs-checkout" inheritall="true">
+      <param name="cvs.module" value="java/src/edu/ucar/rap/mdss/exts/graphs/build.xml"/>
+    </antcall>
+    <ant antfile="${mdss.graphs.build.file}"   target="cvs-checkout-all" inheritall="false"/>
+  </target>
+
+  <target name="mdss-checkout-jade" >
+    <antcall target="cvs-checkout" inheritall="true">
+      <param name="cvs.module" value="java/src/edu/ucar/rap/mdss/jade/build.xml"/>
+    </antcall>
+    <ant antfile="${mdss.jade.build.file}"   target="cvs-checkout-all" inheritall="false"/>
+  </target>
+
+  <target name="mdv-checkout-all" >
+    <antcall target="cvs-checkout" inheritall="true">
+      <param name="cvs.module" value="java/src/edu/ucar/rap/mdv/build.xml"/>
+    </antcall>
+    <ant antfile="${mdv.build.file}"   target="cvs-checkout-all" inheritall="false"/>
+  </target>
+
+  <target name="mdv118-checkout-all" >
+    <antcall target="cvs-checkout" inheritall="true">
+      <param name="cvs.module" value="java/src/edu/ucar/rap/mdv118/build.xml"/>
+    </antcall>
+    <ant antfile="${mdv118.build.file}"   target="cvs-checkout-all" inheritall="false"/>
+  </target>
+
+  <target name="miniapps-checkout-all" >
+    <antcall target="cvs-checkout" inheritall="true">
+      <param name="cvs.module" value="java/src/edu/ucar/rap/miniapps/build.xml"/>
+    </antcall>
+    <ant antfile="${miniapps.build.file}"   target="cvs-checkout-all" inheritall="false"/>
+  </target>
+
+  <target name="msg-checkout-all" >
+    <antcall target="cvs-checkout" inheritall="true">
+      <param name="cvs.module" value="java/src/edu/ucar/rap/msg/build.xml"/>
+    </antcall>
+    <ant antfile="${msg.build.file}"   target="cvs-checkout-all" inheritall="false"/>
+  </target>
+
+  <target name="procview-checkout-all" >
+    <antcall target="cvs-checkout" inheritall="true">
+      <param name="cvs.module" value="java/src/edu/ucar/rap/procview/build.xml"/>
+    </antcall>
+    <ant antfile="${procview.build.file}"   target="cvs-checkout-all" inheritall="false"/>
+  </target>
+
+  <target name="rangerove-checkout-all" >
+    <antcall target="cvs-checkout" inheritall="true">
+      <param name="cvs.module" value="java/src/edu/ucar/rap/atec/apps/rangeRove"/>
+    </antcall>
+    <ant antfile="${rangerove.build.file}"   target="cvs-checkout-all" inheritall="false"/>
+  </target>
+
+  <target name="rapmath-checkout-all" >
+    <antcall target="cvs-checkout" inheritall="true">
+      <param name="cvs.module" value="java/src/edu/ucar/rap/rapmath/build.xml"/>
+    </antcall>
+    <ant antfile="${rapmath.build.file}"   target="cvs-checkout-all" inheritall="false"/>
+  </target>
+
+  <target name="rapplot-checkout-all" >
+    <antcall target="cvs-checkout" inheritall="true">
+      <param name="cvs.module" value="java/src/edu/ucar/rap/rapplot/build.xml"/>
+    </antcall>
+    <ant antfile="${rapplot.build.file}"   target="cvs-checkout-all" inheritall="false"/>
+  </target>
+
+  <target name="rove-checkout-all" >
+    <antcall target="cvs-checkout" inheritall="true">
+      <param name="cvs.module" value="java/src/edu/ucar/rap/rove"/>
+    </antcall>
+    <ant antfile="${rove.build.file}"   target="cvs-checkout-all" inheritall="false"/>
+  </target>
+
+  <target name="secondaryAppsServer-checkout-all">
+    <antcall target="cvs-checkout" inheritall="true">
+      <param name="cvs.module" value="java/src/edu/ucar/rap/atec/apps/secondaryApplicationsServer/build.xml"/>
+    </antcall>
+    <ant antfile="${secondaryAppsServer.build.file}" target="cvs-checkout-all" inheritall="false"/>
+  </target>
+
+  <target name="shield-checkout-all" >
+    <antcall target="cvs-checkout" inheritall="true">
+      <param name="cvs.module" value="java/src/edu/ucar/rap/shield/build.xml"/>
+    </antcall>
+    <ant antfile="${shield.build.file}"   target="cvs-checkout-all" inheritall="false"/>
+  </target>
+
+  <target name="spdb-checkout-all" >
+    <antcall target="cvs-checkout" inheritall="true">
+      <param name="cvs.module" value="java/src/edu/ucar/rap/spdb/build.xml"/>
+    </antcall>
+    <ant antfile="${spdb.build.file}"   target="cvs-checkout-all" inheritall="false"/>
+  </target>
+
+  <target name="spdbFormats-checkout-all" >
+    <antcall target="cvs-checkout" inheritall="true">
+      <param name="cvs.module" value="java/src/edu/ucar/rap/spdbFormats/build.xml"/>
+    </antcall>
+    <ant antfile="${spdbFormats.build.file}"   target="cvs-checkout-all" inheritall="false"/>
+  </target>
+
+  <target name="rapsql-checkout-all" >
+    <antcall target="cvs-checkout" inheritall="true">
+      <param name="cvs.module" value="java/src/edu/ucar/rap/sql/build.xml"/>
+    </antcall>
+    <ant antfile="${rapsql.build.file}"   target="cvs-checkout-all" inheritall="false"/>
+  </target>
+
+  <target name="sysview-checkout-core" >
+    <antcall target="cvs-checkout" inheritall="true">
+      <param name="cvs.module" value="java/src/edu/ucar/rap/sysview/appcore/build.xml"/>
+    </antcall>
+    <ant antfile="${sysview.core.build.file}"   target="cvs-checkout-all" inheritall="false"/>
+  </target>
+
+  <target name="sysview-checkout-all" >
+    <antcall target="cvs-checkout" inheritall="true">
+      <param name="cvs.module" value="java/src/edu/ucar/rap/sysview2/build.xml"/>
+    </antcall>
+    <ant antfile="${sysview.build.file}"   target="cvs-checkout-all" inheritall="false"/>
+  </target>
+
+  <target name="sysview2-checkout-all" >
+    <antcall target="cvs-checkout" inheritall="true">
+      <param name="cvs.module" value="java/src/edu/ucar/rap/sysview2/build.xml"/>
+    </antcall>
+    <ant antfile="${sysview2.build.file}"   target="cvs-checkout-all" inheritall="false"/>
+  </target>
+
+  <target name="tomcatmonitor-checkout-all">
+    <antcall target="cvs-checkout" inheritall="true">
+      <param name="cvs.module" value="java/src/edu/ucar/rap/atec/monitor/tomcatmonitor/build.xml"/>
+    </antcall>
+    <ant antfile="${tomcatmonitor.build.file}" target="cvs-checkout-all" inheritall="false"/>
+  </target>
+
+  <target name="util-checkout-all" >
+    <antcall target="cvs-checkout" inheritall="true">
+      <param name="cvs.module" value="java/src/edu/ucar/rap/util/build.xml"/>
+    </antcall>
+    <ant antfile="${util.build.file}"   target="cvs-checkout-all" inheritall="false"/>
+  </target>
+
+  <target name="util-awt-checkout-all" >
+    <antcall target="cvs-checkout" inheritall="true">
+      <param name="cvs.module" value="java/src/edu/ucar/rap/util/awt/build.xml"/>
+    </antcall>
+    <ant antfile="${util-awt.build.file}"   target="cvs-checkout-all" inheritall="false"/>
+  </target>
+
+  <target name="util-event-checkout-all" >
+    <antcall target="cvs-checkout" inheritall="true">
+      <param name="cvs.module" value="java/src/edu/ucar/rap/util/event/build.xml"/>
+    </antcall>
+    <ant antfile="${util-event.build.file}"   target="cvs-checkout-all" inheritall="false"/>
+  </target>
+
+  <target name="util-formula-checkout-all" >
+    <antcall target="cvs-checkout" inheritall="true">
+      <param name="cvs.module" value="java/src/edu/ucar/rap/util/formula/build.xml"/>
+    </antcall>
+    <ant antfile="${util-formula.build.file}"   target="cvs-checkout-all" inheritall="false"/>
+  </target>
+
+  <target name="util-geo-checkout-all" >
+    <antcall target="cvs-checkout" inheritall="true">
+      <param name="cvs.module" value="java/src/edu/ucar/rap/util/geo/build.xml"/>
+    </antcall>
+    <ant antfile="${util-geo.build.file}"   target="cvs-checkout-all" inheritall="false"/>
+  </target>
+
+  <target name="util-graphics-checkout-all" >
+    <antcall target="cvs-checkout" inheritall="true">
+      <param name="cvs.module" value="java/src/edu/ucar/rap/util/graphics/build.xml"/>
+    </antcall>
+    <ant antfile="${util-graphics.build.file}"   target="cvs-checkout-all" inheritall="false"/>
+  </target>
+
+  <target name="util-log-checkout-all" >
+    <antcall target="cvs-checkout" inheritall="true">
+      <param name="cvs.module" value="java/src/edu/ucar/rap/util/log/build.xml"/>
+    </antcall>
+    <ant antfile="${util-log.build.file}"   target="cvs-checkout-all" inheritall="false"/>
+  </target>
+
+  <target name="util-math-checkout-all" >
+     <antcall target="cvs-checkout" inheritall="true">
+       <param name="cvs.module" value="java/src/edu/ucar/rap/util/math/build.xml"/>
+     </antcall>
+     <ant antfile="${util-math.build.file}"   target="cvs-checkout-all" inheritall="false"/>
+  </target>
+
+  <target name="util-misc-checkout-all" >
+    <antcall target="cvs-checkout" inheritall="true">
+      <param name="cvs.module" value="java/src/edu/ucar/rap/util/misc/build.xml"/>
+    </antcall>
+    <ant antfile="${util-misc.build.file}"   target="cvs-checkout-all" inheritall="false"/>
+  </target>
+
+  <target name="util-net-checkout-all" >
+    <antcall target="cvs-checkout" inheritall="true">
+      <param name="cvs.module" value="java/src/edu/ucar/rap/util/net/build.xml"/>
+    </antcall>
+    <ant antfile="${util-net.build.file}"   target="cvs-checkout-all" inheritall="false"/>
+  </target>
+
+  <target name="util-swing-checkout-all" >
+     <antcall target="cvs-checkout" inheritall="true">
+       <param name="cvs.module" value="java/src/edu/ucar/rap/util/swing/build.xml"/>
+     </antcall>
+     <ant antfile="${util-swing.build.file}"   target="cvs-checkout-all" inheritall="false"/>
+  </target>
+
+  <target name="util-time-checkout-all" >
+    <antcall target="cvs-checkout" inheritall="true">
+      <param name="cvs.module" value="java/src/edu/ucar/rap/util/time/build.xml"/>
+    </antcall>
+    <ant antfile="${util-time.build.file}"   target="cvs-checkout-all" inheritall="false"/>
+  </target>
+
+  <target name="util-unit-checkout-all" >
+    <antcall target="cvs-checkout" inheritall="true">
+      <param name="cvs.module" value="java/src/edu/ucar/rap/util/unit/build.xml"/>
+    </antcall>
+    <ant antfile="${util-unit.build.file}"   target="cvs-checkout-all" inheritall="false"/>
+  </target>
+
+  <target name="util118-checkout-all" >
+    <antcall target="cvs-checkout" inheritall="true">
+      <param name="cvs.module" value="java/src/edu/ucar/rap/util118/build.xml"/>
+    </antcall>
+    <ant antfile="${util118.build.file}"   target="cvs-checkout-all" inheritall="false"/>
+  </target>
+
+  <target name="wwt-checkout-all" >
+    <antcall target="cvs-checkout" inheritall="true">
+      <param name="cvs.module" value="java/src/edu/ucar/rap/atec/apps/wwt/build.xml"/>
+    </antcall>
+    <ant antfile="${wwt.build.file}"   target="cvs-checkout-all" inheritall="false"/>
+  </target>
+
+  <target name="xml-checkout-all" >
+    <antcall target="cvs-checkout" inheritall="true">
+      <param name="cvs.module" value="java/src/edu/ucar/rap/xml/build.xml"/>
+    </antcall>
+    <ant antfile="${xml.build.file}"   target="cvs-checkout-all" inheritall="false"/>
+  </target>
+
+  <target name="zudnik-checkout-all" >
+    <antcall target="cvs-checkout" inheritall="true">
+      <param name="cvs.module" value="java/src/edu/ucar/rap/zudnik/build.xml"/>
+    </antcall>
+    <ant antfile="${zudnik.build.file}"   target="cvs-checkout-all" inheritall="false"/>
+  </target>
+
+  <target name="portlets">
+      <ant antfile="${portlets.build.file}" target="all" inheritall="false"/>
+  </target>
+
+</project>
+
+

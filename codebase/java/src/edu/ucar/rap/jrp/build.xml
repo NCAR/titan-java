@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<!-- *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=* -->
+<!-- ** Copyright UCAR (c) 1992 - 2012 -->
+<!-- ** University Corporation for Atmospheric Research(UCAR) -->
+<!-- ** National Center for Atmospheric Research(NCAR) -->
+<!-- ** Research Applications Laboratory(RAL) -->
+<!-- ** P.O.Box 3000, Boulder, Colorado, 80307-3000, USA -->
+<!-- ** 2012/9/14 15:37:59 -->
+<!-- *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=* -->
+
+<project name="jrp" default="compile" basedir="../../../../..">
+
+  <property file="src/edu/ucar/rap/ant/build.properties"
+            description="Load common build properties."/>
+
+  <!--Import common targets.-->
+  <import file="../ant/build_includes.xml"/>
+
+  <property name="thisdir" value="${basedir}/src/edu/ucar/rap/jrp" />
+
+  <property name="package.name" value="${ant.project.name}"
+            description="Name of the subpackage. Used for jar file name and such."/>
+  <property name="package.dir"  value="edu/ucar/rap/jrp"
+            description="Full package name as a directory path."/>
+
+  <filelist id="ext.jar" dir="${basedir}" files="
+    ${jdom.jar} "
+  />
+
+  <path id="build.classpath" description="Classpath needed to compile.">
+    <pathelement location="${build.dir}" />
+    <filelist refid="ext.jar" />
+    <!--Add other classpath elements below.-->
+  </path>
+
+  <!-- Default compile target -->
+  <target name="compile" depends="init"
+          description="Call basic compile then package specific stuff.">
+    <ant antfile="${libraries.build.file}" target="compile" inheritall="false">
+      <reference refid="build.classpath"/>
+      <reference refid="ext.jar"/>
+      <property name="build.include" value="${package.dir}/**/*.java" />
+    </ant>
+
+    <!-- Copy the images subdirectory to the build area -->
+    <copy todir="${build.dir}/${package.dir}/images" >
+      <fileset dir="${src.dir}/${package.dir}/images" >
+        <include name="*.png"/>
+      </fileset>
+    </copy>
+
+  </target>
+
+</project>

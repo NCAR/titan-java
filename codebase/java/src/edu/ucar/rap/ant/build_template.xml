@@ -1,0 +1,73 @@
+<?xml version="1.0"?>
+<!-- *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=* -->
+<!-- ** Copyright UCAR (c) 1992 - 2012 -->
+<!-- ** University Corporation for Atmospheric Research(UCAR) -->
+<!-- ** National Center for Atmospheric Research(NCAR) -->
+<!-- ** Research Applications Laboratory(RAL) -->
+<!-- ** P.O.Box 3000, Boulder, Colorado, 80307-3000, USA -->
+<!-- ** 2012/8/23 16:20:58 -->
+<!-- *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=* -->
+
+<!--
+Template for the Java builds.
+Note, this file loads properties from build.properties
+  and imports reusable targets from build_includes.
+Copy this file into the directory where the code of interest exists
+  (e.g. cvs/java/src/edu/ucar/rap/foo).
+Change the project name "template" to the name of the directory
+  (e.g. "foo").
+Add needed elements to the build.classpath path.
+Add project specific compile tasks, if any, to the "compile" target.
+Implement the "dist" target to prepare a distibutable.
+-->
+
+<project name="template" default="compile" basedir="../../../../..">
+
+  <property file="${basedir}/src/edu/ucar/rap/ant/build.properties"
+            description="Load common build properties."/>
+
+  <!--Import common targets.-->
+  <import file="${basedir}/build_includes.xml"/>
+
+  <property name="package.name" value="${ant.project.name}"
+            description="Name of the subpackage. Used for jar file name and such."/>
+  <property name="package.dir"  value="edu/ucar/rap/${package.name}"
+            description="Full package name as a directory path."/>
+
+  <path id="build.classpath" description="Classpath needed to compile.">
+    <pathelement location="${build.dir}" />
+    <!--Add other classpath elements below.-->
+  </path>
+
+  <target name="checkout"
+          description="Checkout of CVS everything needed to directly support this build.">
+    <cvs cvsroot="${cvs.root}"
+         package="java/src/${package.dir}"
+         dest=".."/>
+    <!--Add other cvs checkouts below.-->
+  </target>
+
+  <target name="compile" depends="init"
+          description="Call basic compile then package specific stuff.">
+    <ant antfile="${libraries.build.file}" target="compile" inheritall="false">
+      <reference refid="build.classpath"/>
+      <property name="build.include" value="${package.dir}/**/*.java" />
+    </ant>
+    <!--Add project specific compile tasks below.-->
+  </target>
+
+  <target name="jar" depends="compile" description="Jar up classes for this package only.">
+    <ant antfile="${libraries.build.file}" target="jar" inheritall="false">
+      <property name="jar.file" value="${dist.dir}/lib/${package.name}.jar" />
+      <property name="jar.basedir" value="${build.dir}" />
+      <property name="jar.includes" value="${package.dir}/**" />
+    </ant>
+  </target>
+
+  <target name="dist" depends="jar" >
+    <!--Add distribution tasks here.-->
+  </target>
+
+</project>
+
+
